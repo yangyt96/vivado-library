@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 Library UNISIM;
 use UNISIM.vcomponents.all;
 
-entity clock_forwarder_v1_0 is
+entity clock_forwarder is
     generic (
         kArch : string := "artix7"
     );
@@ -15,9 +15,9 @@ entity clock_forwarder_v1_0 is
 	  iCE : in std_logic;
 	  OutClk : out std_logic
 	);
-end clock_forwarder_v1_0;
+end clock_forwarder;
 
-architecture arch_imp of clock_forwarder_v1_0 is
+architecture arch_imp of clock_forwarder is
 begin
 
 zynquplus: if kArch = "zynquplus" or kArch = "kintexuplus" or kArch = "virtexuplus" generate
