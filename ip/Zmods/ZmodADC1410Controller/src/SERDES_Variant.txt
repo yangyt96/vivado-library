@@ -1,0 +1,991 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 01/10/2019 11:43:00 AM
+-- Design Name: 
+-- Module Name: ZmodADC1410_Controller - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+library UNISIM;
+use UNISIM.VComponents.all;
+
+entity ZmodADC1410_Controller is
+
+    Port (
+         clk2         : in  std_logic; -- 2nd 100MHz clock from PS
+         RST          : in std_logic;
+         sys_clk      : out std_logic;
+         CALIB_DONE_N : out std_logic;
+ 
+         ADC1_CHA : out std_logic_vector (13 downto 0);
+         ADC1_CHB : out std_logic_vector (13 downto 0);  
+
+        --AD9648
+         CLKIN_ADC_P : out std_logic;
+         CLKIN_ADC_N : out std_logic;
+         ADC_SYNC  : out std_logic;
+         ADC_DCO  : in std_logic;
+         --
+         ADC_DATA    : in std_logic_vector(13 downto 0);
+         --      
+         sdio_sc : inout std_logic;
+         cs_sc1 : out std_logic;
+         sclk_sc : out std_logic;
+         --RELAYS
+         SC1_AC_H   : out std_logic;
+         SC1_AC_L   : out std_logic;
+         SC2_AC_H   : out std_logic;
+         SC2_AC_L   : out std_logic;
+         SC1_GAIN_H   : out std_logic;
+         SC1_GAIN_L   : out std_logic;
+         SC2_GAIN_H   : out std_logic;
+         SC2_GAIN_L   : out std_logic;
+         SC_COM_H   : out std_logic;
+         SC_COM_L   : out std_logic
+         );
+end ZmodADC1410_Controller;
+
+architecture Behavioral of ZmodADC1410_Controller is
+
+signal dtWryDmm, dtRdyDmm : std_logic;
+
+
+--signal rst : std_logic;
+--
+signal shAdcDat : std_logic_vector(14*8-1 downto 0);
+signal reAdcDat : std_logic_vector(14*8-1 downto 0);
+signal dout_adc_dly : std_logic_vector(27 downto 0);
+
+signal scSync1, scSync2 : std_logic_vector(7 downto 0);
+signal clkout_adc_dly : std_logic := '1';
+
+signal clk, clk_test, clkb, clkAdc1x, clkAdc1xi, clkAdc1xb, clkAdc1, clkAdc1b, clkAdc2x, clkAdc2xb, clkAdc3x, clkAdc3xb, clkAdcfb, clkDac, usb_ena, clkAdc200, clkAdc200b : std_logic;
+signal ddrAdcIn : std_logic;
+signal PllRst, PllLock, Test : std_logic_vector(3 downto 0);
+signal rstAdc,rstAdc_fsm, rstAdc2_fsm, rstAdc2, cntSync : std_logic_vector(7 downto 0) := x"FF";
+signal Calib_done_r, Calib_done_fsm : std_logic;
+
+signal shAdcClk, reAdcClk : std_logic_vector(15 downto 0);
+
+component AD9648_SPI is
+Port ( 
+        CLK : in STD_LOGIC;
+        RST : in STD_LOGIC;
+        SPI_CLK : out STD_LOGIC;
+        SDIO : inout STD_LOGIC;
+        CS : out STD_LOGIC;
+        RD_DATA : out std_logic_vector(15 downto 0);
+        WR_DATA : in std_logic_vector(15 downto 0);
+        ADDRESS : in std_logic_vector(12 downto 0);
+        WIDTH : in std_logic_vector(1 downto 0);
+        RD_EN : in STD_LOGIC;
+        WR_EN : in STD_LOGIC;
+        DONE : out STD_LOGIC);
+end component;
+
+signal ADC1_rd_data, ADC1_rd_data_r : std_logic_vector(15 downto 0);
+signal ADC1_wr_data, ADC1_wr_data_r : std_logic_vector(15 downto 0);
+signal ADC1_addr, ADC1_addr_r : std_logic_vector(12 downto 0);
+signal ADC1_width, ADC1_width_r : std_logic_vector(1 downto 0);
+signal ADC1_rd_en, ADC1_rd_en_r : std_logic;
+signal ADC1_wr_en, ADC1_wr_en_r : std_logic;
+signal adc1_done : std_logic;
+type states is (ST_CONFIG_RELAY1, ST_CONFIG_RELAY2, ST_CONFIG_RELAY3, ST_CONFIG_ADC1, ST_WRITE_OFFSET, ST_WRITE_AWG_OFFSET, ST_CHECK_INDEX, ST_CHECK_INDEX1, ST_WRITE_SOFTRESET, ST_WAIT_DONE_RESET, ST_READ_SOFT_RESET, ST_WAIT_DONE_RESET1, ST_WAIT_DONE1, ST_WAIT_DONE2, ST_WAIT_DONE3, ST_READ_ID1, ST_WRITE_CLKDIV, ST_READ_CLKDIV, ST_IDLE, ST_CALIB_WAIT, ST_CALIB_WAIT1,ST_CALIB_OFFSET1,ST_CALIB1_DEC, ST_CALIB1_INC, WRITE_DAC_REG, READ_DAC_REG1, READ_DAC_REG2, ST_CALIB_DONE, ST_ERROR); 
+signal current_state, next_state : states;
+signal fsmcfg_state, fsmcfg_state_r : std_logic_vector(4 downto 0);
+
+
+
+type ADC_SPI_COMMANDS is array (21 downto 0) of std_logic_vector(23 downto 0);
+type ADC_SPI_READBACK is array (21 downto 0) of std_logic_vector(7 downto 0);
+signal ADC_SPI_cmd : ADC_SPI_COMMANDS;
+signal ADC_SPI_rdbck : ADC_SPI_READBACK;
+signal index : integer range 0 to 21;
+signal inc_index, rst_index : std_logic;
+type SERDES_DATA_ARRAY is array (13 downto 0) of std_logic_vector(7 downto 0);
+type IDELAY_CNTVALUEIN_DATA is array (13 downto 0) of std_logic_vector(4 downto 0);
+type IDELAY_CNTVALUEIN_DCO is array (1 downto 0) of std_logic_vector(4 downto 0);
+signal serdes_data : SERDES_DATA_ARRAY;
+signal cntvaluein  :  IDELAY_CNTVALUEIN_DATA;
+signal cntvaluein_dco : std_logic_vector(4 downto 0);
+signal dco_adc1 : std_logic_vector(7 downto 0);
+signal ADC1_CHB_inv : std_logic_vector(13 downto 0);
+signal scope1, scope2, HPF_Out1, HPF_Out2 : std_logic_vector(13 downto 0);
+
+signal relay_presc : std_logic_vector(15 downto 0);
+signal relay_counter : std_logic_vector(15 downto 0);
+signal relay_cnt_en, relay_rst : std_logic;
+signal sc_com_fsm, ia_sel_fsm, ia_com_fsm : std_logic_vector(1 downto 0);
+signal sc_com_r, ia_sel_r, ia_com_r : std_logic_vector(1 downto 0); 
+signal sc_acdc_fsm, sc_gain_fsm : std_logic_vector(7 downto 0);
+signal sc_acdc_r, sc_gain_r : std_logic_vector(7 downto 0);
+ 
+    attribute mark_debug : string;
+    attribute keep : string;
+    attribute mark_debug of sys_clk : signal is "true";
+    attribute keep of sys_clk : signal is "true";
+    attribute mark_debug of fsmcfg_state_r : signal is "true";
+    attribute keep of fsmcfg_state_r : signal is "true";
+    attribute mark_debug of index : signal is "true";
+    attribute keep of index : signal is "true";
+    attribute mark_debug of scope1 : signal is "true";
+    attribute keep of scope1 : signal is "true";
+    attribute mark_debug of scope2 : signal is "true";
+    attribute keep of scope2 : signal is "true";
+
+    --attribute mark_debug of dco_adc1 : signal is "true";
+    --attribute keep of dco_adc1 : signal is "true";
+    
+begin
+
+sys_clk <= clk_test;
+CALIB_DONE_N <= Calib_done_r;
+
+CALIBDONE_REG_PROC: process (CLK)  -- SYS_CLK = 100MHz => AP_START=1MHz
+begin
+    if (CLK' event and CLK = '1') then
+        if (RST = '1') then
+            Calib_done_r <= '1';
+        else
+            Calib_done_r <= Calib_done_fsm;  
+        end if;
+    end if;
+end process;
+
+--CONFIG RELAYS
+SC1_AC_H <= '0';
+SC1_AC_L <= '0';
+SC2_AC_H <= '0';
+SC2_AC_L <= '0';
+SC1_GAIN_H <= '0';
+SC1_GAIN_L <= '0';
+SC2_GAIN_H <= '0';
+SC2_GAIN_L <= '0';
+SC_COM_H <= '0';
+SC_COM_L <= '0';
+
+RELAY_REG_PROC: process (CLK)  -- SYS_CLK = 100MHz => AP_START=1MHz
+begin
+    if (CLK' event and CLK = '1') then
+        if (RST = '1') then
+            sc_com_r <= (others => '0');
+            sc_acdc_r <= (others => '0');
+            sc_gain_r <= (others => '0');
+            ia_sel_r <= (others => '0');
+            ia_com_r <= (others => '0'); 
+        else
+            sc_com_r <= sc_com_fsm;
+            sc_acdc_r <= sc_acdc_fsm;
+            sc_gain_r <= sc_gain_fsm;
+            ia_sel_r <= ia_sel_fsm;
+            ia_com_r <= ia_com_fsm;   
+        end if;
+    end if;
+end process;
+
+RELAY_PRESCALER_PROC: process (CLK)  -- SYS_CLK = 100MHz => AP_START=1MHz
+begin
+    if (CLK' event and CLK = '1') then
+        if ((RST = '1') or (relay_rst = '1')) then
+            relay_presc <= (others => '0');
+        else
+            relay_presc <= relay_presc + '1';
+            if (relay_presc = x"FFFF") then
+                relay_cnt_en <= '1';
+            else
+                relay_cnt_en <= '0';
+            end if;    
+        end if;
+    end if;
+end process;
+
+RELAY_COUNTER_PROC: process (CLK)  -- SYS_CLK = 100MHz => AP_START=1MHz
+begin
+    if (CLK' event and CLK = '1') then
+        if ((RST = '1') or (relay_rst = '1')) then
+            relay_counter <= (others => '0');
+        else
+            if(relay_cnt_en = '1') then
+                relay_counter <= relay_counter + '1';
+            end if;        
+        end if;
+    end if;
+end process;
+
+--ADC Configuration
+
+AD9648_SPI_inst: AD9648_SPI 
+Port Map( 
+    --
+    CLK => clk2,
+    RST => RST,
+    SPI_CLK => sclk_sc,
+    SDIO => sdio_sc,
+    CS => cs_sc1, 
+    RD_DATA => ADC1_rd_data,
+    WR_DATA => ADC1_wr_data_r,
+    ADDRESS => ADC1_addr_r,
+    WIDTH => ADC1_width_r,
+    RD_EN => ADC1_rd_en_r,
+    WR_EN => ADC1_wr_en_r,
+    DONE => adc1_done
+    );
+                   
+SERDES_DATA_ASSIGN : process (shAdcDat, serdes_data)
+begin
+    for i in 0 to 13 loop
+        serdes_data(i) <= shAdcDat((i*8+7) downto i*8); 
+        --reAdcDat((i*8+4) downto (i*8)) <= cntvaluein(i);
+    end loop;
+end process;  
+
+ADC1_CHA_CHB_ASSIGN : process (shAdcDat, serdes_data)
+begin
+    for i in 0 to 13 loop
+        ADC1_CHA(i) <= serdes_data(i)(4); 
+        scope1(i) <= serdes_data(i)(4); 
+        ADC1_CHB_inv(i) <= not(serdes_data(i)(0));
+    end loop;
+end process;   
+
+ADC1_CHB <= ADC1_CHB_inv + '1';
+scope2 <= ADC1_CHB_inv + '1';
+
+--end process;  
+ 
+   
+cntvaluein(0) <= "01110";
+cntvaluein(1) <= "01111";
+cntvaluein(2) <= "01111";
+cntvaluein(3) <= "01111";
+cntvaluein(4) <= "01111";
+cntvaluein(5) <= "01111";
+cntvaluein(6) <= "10000";
+cntvaluein(7) <= "01111";
+cntvaluein(8) <= "01111";
+cntvaluein(9) <= "01111";
+cntvaluein(10) <= "10001";
+cntvaluein(11) <= "10010";
+cntvaluein(12) <= "10010";
+cntvaluein(13) <= "10010";
+cntvaluein_dco <= "10010";
+
+
+dco_adc1 <= shAdcClk(7 downto 0);
+
+ADC_SPI_cmd(0) <= x"000503"; --Device index A|B
+ADC_SPI_cmd(1) <= x"000803"; -- Power modes: full power down
+ADC_SPI_cmd(2) <= x"000501"; --Device index: A
+ADC_SPI_cmd(3) <= x"001431"; --Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
+ADC_SPI_cmd(4) <= x"000502"; --Device index: B
+ADC_SPI_cmd(5) <= x"001421"; --Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
+ADC_SPI_cmd(6) <= x"000500"; --Device index: none
+ADC_SPI_cmd(7) <= x"000B03"; --Clck Divide: 4
+ADC_SPI_cmd(8) <= x"001600";
+ADC_SPI_cmd(9) <= x"002A00"; --Overrange control: output disable
+ADC_SPI_cmd(10) <= x"001511"; --Output adjust: CMOS drive strength 00 - 1X [DCO | DOUT]
+--ADC_SPI_cmd(0) <= x"001700"; --Output delay 
+ADC_SPI_cmd(11) <= x"003A02"; --Sync control : sync next only | sync enable | 0
+ADC_SPI_cmd(12) <= x"000503"; --Device index: A|B
+ADC_SPI_cmd(13) <= x"000800"; --Power modes: Normal operation
+ADC_SPI_cmd(14) <= x"000500"; --Device index: none
+ADC_SPI_cmd(15) <= x"000501";
+ADC_SPI_cmd(16) <= x"001431";--x"001431"; --x"001430";
+ADC_SPI_cmd(17) <= x"000D00";--x"000D00"; --x"000D03";
+ADC_SPI_cmd(18) <= x"000502";
+ADC_SPI_cmd(19) <= x"001421";--x"001421"; --x"001420";
+ADC_SPI_cmd(20) <= x"000D00";--x"000D00"; --x"000D02";
+ADC_SPI_cmd(21) <= x"000500";
+
+ADC_SPI_rdbck(0) <= x"03"; --Device index A|B
+ADC_SPI_rdbck(1) <= x"03"; -- Power modes: full power down
+ADC_SPI_rdbck(2) <= x"01"; --Device index: A
+ADC_SPI_rdbck(3) <= x"31"; --Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
+ADC_SPI_rdbck(4) <= x"02"; --Device index: B
+ADC_SPI_rdbck(5) <= x"21"; --Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
+ADC_SPI_rdbck(6) <= x"00"; --Device index: none
+ADC_SPI_rdbck(7) <= x"03"; --Clck Divide: 4
+ADC_SPI_rdbck(8) <= x"00";
+ADC_SPI_rdbck(9) <= x"00"; --Overrange control: output disable
+ADC_SPI_rdbck(10) <= x"11"; --Output adjust: CMOS drive strength 00 - 1X [DCO | DOUT]
+--ADC_SPI_cmd(0) <= x"001700"; --Output delay 
+ADC_SPI_rdbck(11) <= x"02"; --Sync control : sync next only | sync enable | 0
+ADC_SPI_rdbck(12) <= x"03"; --Device index: A|B
+ADC_SPI_rdbck(13) <= x"00"; --Power modes: Normal operation
+ADC_SPI_rdbck(14) <= x"00"; --Device index: none
+ADC_SPI_rdbck(15) <= x"01";
+ADC_SPI_rdbck(16) <= x"31";--x"31";
+ADC_SPI_rdbck(17) <= x"00";--x"00";
+ADC_SPI_rdbck(18) <= x"02";
+ADC_SPI_rdbck(19) <= x"21";--x"21";
+ADC_SPI_rdbck(20) <= x"00";--x"00";
+ADC_SPI_rdbck(21) <= x"00";
+
+COUNTER_PROC: process (clk2)  
+begin
+    if (clk2' event and clk2 = '1') then
+        if (rst_index = '1' or rst = '1') then
+            index <= 0;
+        else
+            if (inc_index = '1') then
+                index <= index + 1;
+            end if;
+        end if;        
+    end if;
+end process;
+
+INDEX_PROC: process (clk2)  
+   begin
+       if (clk2' event and clk2 = '1') then
+        clk_test <= not clk_test;
+       end if;
+   end process;
+   
+--ADC1 CONFIG
+FSM_SYNC_PROC: process (clk2, rst)
+      begin
+         if (clk2'event and clk2 = '1') then
+            if (rst = '1') then
+               current_state <= ST_IDLE;
+               fsmcfg_state_r <= (others => '0');
+               ADC1_rd_en_r <= '0';
+               ADC1_wr_en_r <= '0';
+               ADC1_wr_data_r <= (others => '0');
+               ADC1_addr_r <= (others => '0');
+               ADC1_width_r <= (others => '0');
+               rstAdc <= (others => '1');
+               rstAdc2 <= (others => '1');
+            else
+               current_state <= next_state;
+               fsmcfg_state_r <= fsmcfg_state;
+               ADC1_rd_en_r <= ADC1_rd_en;
+               ADC1_wr_en_r <= ADC1_wr_en;
+               ADC1_wr_data_r <= ADC1_wr_data;
+               ADC1_addr_r <= ADC1_addr;
+               ADC1_width_r <= ADC1_width;
+               rstAdc <= rstAdc_fsm;
+               rstAdc2 <= rstAdc2_fsm;
+            end if;        
+         end if;
+      end process;
+      
+NEXT_STATE_DECODE: process (current_state, ADC1_rd_data, ADC1_done, relay_cnt_en, ADC_SPI_cmd, index, ADC_SPI_rdbck)
+      begin         
+         next_state <= current_state;  
+         rstAdc_fsm <= (others => '0');
+         rstAdc2_fsm <= (others => '0');
+         fsmcfg_state <= "00000";
+         ADC1_wr_data <= (others => '0');
+         ADC1_addr <= (others => '0');
+         ADC1_width <= (others => '0');
+         ADC1_rd_en <= '0';
+         ADC1_wr_en  <= '0';
+         rst_index <= '0';
+         inc_index <= '0';
+
+         sc_com_fsm <= "00"; --sc_com[0] = com_sc_l, sc_com[1] = com_sc_h
+         sc_acdc_fsm <= "00000000"; --LSB->MSB: SC1_AC_L, SC1_AC_H, SC2_AC_L, SC2_AC_H, SC3_AC_L, SC3_AC_H, SC4_AC_L, SC4_AC_H
+         sc_gain_fsm <= "00000000";--"01010101"; --LSB->MSB: SC1_GAIN_L, SC1_GAIN_H, SC2_GAIN_L, SC2_GAIN_H, SC3_GAIN_L, SC3_GAIN_H, SC4_GAIN_L, SC4_GAIN_H
+         ia_sel_fsm <= "10"; --ia_sel[0] = ia_sel_l, is_sel[1] = ia_sel_h
+         ia_com_fsm <= "01"; --Ia_com[0] = ia_com_l, Ia_com[1] = ia_com_h
+         relay_rst <= '1';
+         Calib_done_fsm <= '1';
+         
+         case (current_state) is
+            when ST_IDLE =>
+                fsmcfg_state <= "00000";
+                next_state <= ST_CONFIG_RELAY1;
+                
+             when ST_CONFIG_RELAY1 => --select DC coupling & BNC connector as scope input
+                fsmcfg_state <= "00001";
+                relay_rst <= '0';
+                sc_com_fsm <= "01"; --sc_com[0] = com_sc_l, sc_com[1] = com_sc_h
+                sc_acdc_fsm <= "10101010"; --LSB->MSB: SC1_AC_L, SC1_AC_H, SC2_AC_L, SC2_AC_H, SC3_AC_L, SC3_AC_H, SC4_AC_L, SC4_AC_H
+                sc_gain_fsm <= "00000000";
+                ia_com_fsm <= "01"; --Ia_com[0] = ia_com_l, Ia_com[1] = ia_com_h
+                ia_sel_fsm <= "10"; --ia_sel[0] = ia_sel_l, is_sel[1] = ia_sel_h
+                if (relay_cnt_en = '1') then
+                    next_state <= ST_CONFIG_RELAY2;
+                end if;   
+                  
+             when ST_CONFIG_RELAY2 => 
+                fsmcfg_state <= "00010";
+                relay_rst <= '1'; 
+                next_state <= ST_CONFIG_RELAY3; 
+                
+             when ST_CONFIG_RELAY3 => --select Low Gain
+                fsmcfg_state <= "00011";
+                relay_rst <= '0';
+                sc_com_fsm <= "10"; --sc_com[0] = com_sc_l, sc_com[1] = com_sc_h
+                sc_acdc_fsm <= "00000000"; --LSB->MSB: SC1_AC_L, SC1_AC_H, SC2_AC_L, SC2_AC_H, SC3_AC_L, SC3_AC_H, SC4_AC_L, SC4_AC_H
+                sc_gain_fsm <= "01010101";
+                ia_com_fsm <= "01"; --Ia_com[0] = ia_com_l, Ia_com[1] = ia_com_h
+                ia_sel_fsm <= "10"; --ia_sel[0] = ia_sel_l, is_sel[1] = ia_sel_h
+                if (relay_cnt_en = '1') then
+                    next_state <= ST_WRITE_OFFSET;
+                end if;   
+                
+            when ST_WRITE_OFFSET =>     
+                fsmcfg_state <= "00100";
+                next_state <= ST_WRITE_AWG_OFFSET;
+
+            when ST_WRITE_AWG_OFFSET =>     
+                  next_state <= ST_CONFIG_ADC1;
+
+                
+            when ST_CONFIG_ADC1 =>
+                fsmcfg_state <= "00101";  
+                rst_index <= '1';
+                inc_index <= '0';
+                --if (sc_offset_done = '1') then
+                    next_state <= ST_WRITE_SOFTRESET;
+                --end if;
+                
+            when ST_WRITE_SOFTRESET =>
+                fsmcfg_state <= "00110";
+                ADC1_wr_data <= x"3C00";
+                ADC1_addr <= "0000000000000";
+                ADC1_width <= (others => '0');
+                ADC1_rd_en <= '0';
+                ADC1_wr_en  <= '1';
+                if (ADC1_done = '1') then
+                    next_state <= ST_WAIT_DONE_RESET;  
+                end if;  
+
+             when ST_WAIT_DONE_RESET =>
+                fsmcfg_state <= "00111";
+                ADC1_rd_en <= '0';
+                ADC1_wr_en  <= '0';
+                if (ADC1_done = '1') then
+                    next_state <= ST_READ_SOFT_RESET;
+                end if;  
+
+            when ST_READ_SOFT_RESET =>
+                fsmcfg_state <= "01000";
+                ADC1_wr_data <= (others => '0');
+                ADC1_addr <= "0000000000000";
+                ADC1_width <= (others => '0');
+                ADC1_rd_en <= '1';
+                ADC1_wr_en  <= '0';
+                next_state <= ST_WAIT_DONE_RESET1; 
+
+             when ST_WAIT_DONE_RESET1 =>
+                fsmcfg_state <= "01001";
+                if (ADC1_done = '1') then
+                    if (ADC1_rd_data(7 downto 0) = x"18") then
+                        next_state <= ST_READ_ID1;
+                    else
+                        next_state <= ST_ERROR;
+                    end if;
+                end if; 
+              
+            when ST_READ_ID1 =>
+                fsmcfg_state <= "01010";
+                ADC1_wr_data <= (others => '0');
+                ADC1_addr <= "0000000000001";
+                ADC1_width <= (others => '0');
+                ADC1_rd_en <= '1';
+                ADC1_wr_en  <= '0';
+                next_state <= ST_WAIT_DONE1;
+                
+             when ST_WAIT_DONE1 =>
+                fsmcfg_state <= "01011";
+                ADC1_rd_en <= '0';
+                ADC1_wr_en  <= '0';
+                if (ADC1_done = '1') then
+                    if (ADC1_rd_data(7 downto 0) = x"88") then
+                        next_state <= ST_WRITE_CLKDIV;
+                    else
+                        next_state <= ST_IDLE;
+                    end if;
+                end if;
+                
+            when ST_WRITE_CLKDIV =>
+                rst_index <= '0';
+                inc_index <= '0';
+                fsmcfg_state <= "01100";
+                ADC1_wr_data <= ADC_SPI_cmd(index)(7 downto 0) & x"00";
+                ADC1_addr <= ADC_SPI_cmd(index)(20 downto 8);
+                ADC1_width <= ADC_SPI_cmd(index)(22 downto 21);
+                ADC1_rd_en <= '0';
+                ADC1_wr_en  <= '1';
+                if (ADC1_done = '1') then
+                    next_state <= ST_WAIT_DONE2;  
+                end if;  
+
+             when ST_WAIT_DONE2 =>
+                fsmcfg_state <= "01101";
+                ADC1_rd_en <= '0';
+                ADC1_wr_en  <= '0';
+                if (ADC1_done = '1') then
+                    next_state <= ST_READ_CLKDIV;
+                end if;
+
+            when ST_READ_CLKDIV =>
+                fsmcfg_state <= "01110";
+                ADC1_wr_data <= (others => '0');
+                ADC1_addr <= ADC_SPI_cmd(index)(20 downto 8);
+                ADC1_width <= ADC_SPI_cmd(index)(22 downto 21);
+                ADC1_rd_en <= '1';
+                ADC1_wr_en  <= '0';
+                next_state <= ST_WAIT_DONE3; 
+
+             when ST_WAIT_DONE3 =>
+                fsmcfg_state <= "01111";
+                if (ADC1_done = '1') then
+                    if (ADC1_rd_data(7 downto 0) = ADC_SPI_rdbck(index)) then
+                        next_state <= ST_CHECK_INDEX;
+                    else
+                        next_state <= ST_ERROR;
+                    end if;
+                end if;   
+
+             when ST_CHECK_INDEX =>
+                fsmcfg_state <= "10000";
+                if (index = 21) then
+                    rst_index <= '0';
+                    rstAdc_fsm <= (others => '0');
+                    rstAdc2_fsm <= (others => '0');
+                    next_state <= ST_CALIB_WAIT;
+                else
+                    rst_index <= '0';
+                    inc_index <= '1';
+                    next_state <= ST_WRITE_CLKDIV;       
+                end if;   
+
+             when ST_CALIB_WAIT =>
+                fsmcfg_state <= "10001";
+                rstAdc_fsm <= (others => '0');
+                rstAdc2_fsm <= (others => '0');
+                relay_rst <= '0';
+                rst_index <= '1';
+                inc_index <= '0';
+                if (relay_counter = x"006F") then
+                    next_state <= ST_CALIB_DONE;--ST_CALIB_OFFSET1;ST_CALIB_DONE
+                end if;
+                
+                
+                
+             when ST_CALIB_DONE =>
+                fsmcfg_state <= "11010";
+                rstAdc_fsm <= (others => '0');
+                rstAdc2_fsm <= (others => '0');
+                Calib_done_fsm <= '0';
+                next_state <= ST_CALIB_DONE;
+                                
+             when ST_ERROR =>
+                fsmcfg_state <= "11011";
+                next_state <= ST_IDLE;
+                                       
+            when others =>
+                next_state <= ST_IDLE;
+         end case;      
+      end process; 
+      
+------ ADC CLOCK
+
+MMCME2_ADV_inst : MMCME2_ADV
+generic map (
+   BANDWIDTH => "LOW",      -- Jitter programming (OPTIMIZED, HIGH, LOW)
+   CLKFBOUT_MULT_F => 8.0,        -- Multiply value for all CLKOUT (2.000-64.000).
+   CLKFBOUT_PHASE => 0.0,         -- Phase offset in degrees of CLKFB (-360.000-360.000).
+   -- CLKIN_PERIOD: Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
+   CLKIN1_PERIOD => 10.0,
+   CLKIN2_PERIOD => 0.0,
+   -- CLKOUT0_DIVIDE - CLKOUT6_DIVIDE: Divide amount for CLKOUT (1-128)
+   CLKOUT0_DIVIDE_F => 8.0,       -- Divide amount for CLKOUT0 (1.000-128.000).
+   CLKOUT1_DIVIDE => 2,
+   CLKOUT2_DIVIDE => 2,
+   CLKOUT3_DIVIDE => 2,
+   CLKOUT4_DIVIDE => 4,
+   CLKOUT5_DIVIDE => 8,
+   CLKOUT6_DIVIDE => 8,
+   -- CLKOUT0_DUTY_CYCLE - CLKOUT6_DUTY_CYCLE: Duty cycle for CLKOUT outputs (0.01-0.99).
+   CLKOUT0_DUTY_CYCLE => 0.5,
+   CLKOUT1_DUTY_CYCLE => 0.5,
+   CLKOUT2_DUTY_CYCLE => 0.5,
+   CLKOUT3_DUTY_CYCLE => 0.5,
+   CLKOUT4_DUTY_CYCLE => 0.5,
+   CLKOUT5_DUTY_CYCLE => 0.5,
+   CLKOUT6_DUTY_CYCLE => 0.5,
+   -- CLKOUT0_PHASE - CLKOUT6_PHASE: Phase offset for CLKOUT outputs (-360.000-360.000).
+   CLKOUT0_PHASE => 0.0,
+   CLKOUT1_PHASE => 0.0,
+   CLKOUT2_PHASE => -90.0, 
+   CLKOUT3_PHASE => -45.0, 
+   CLKOUT4_PHASE => 0.0,
+   CLKOUT5_PHASE => 0.0,
+   CLKOUT6_PHASE => 90.0, -- 56.25, 67.5, 78.75, 90.0,
+   CLKOUT4_CASCADE => FALSE,      -- Cascade CLKOUT4 counter with CLKOUT6 (FALSE, TRUE)
+   COMPENSATION => "ZHOLD",       -- ZHOLD, BUF_IN, EXTERNAL, INTERNAL
+   DIVCLK_DIVIDE => 1,            -- Master division value (1-106)
+   -- REF_JITTER: Reference input jitter in UI (0.000-0.999).
+   REF_JITTER1 => 0.0,
+   REF_JITTER2 => 0.0,
+   STARTUP_WAIT => FALSE,         -- Delays DONE until MMCM is locked (FALSE, TRUE)
+   -- Spread Spectrum: Spread Spectrum Attributes
+   SS_EN => "FALSE",              -- Enables spread spectrum (FALSE, TRUE)
+   SS_MODE => "CENTER_HIGH",      -- CENTER_HIGH, CENTER_LOW, DOWN_HIGH, DOWN_LOW
+   SS_MOD_PERIOD => 10000,        -- Spread spectrum modulation period (ns) (VALUES)
+   -- USE_FINE_PS: Fine phase shift enable (TRUE/FALSE)
+   CLKFBOUT_USE_FINE_PS => FALSE,
+   CLKOUT0_USE_FINE_PS => FALSE,
+   CLKOUT1_USE_FINE_PS => FALSE,
+   CLKOUT2_USE_FINE_PS => FALSE,
+   CLKOUT3_USE_FINE_PS => FALSE,
+   CLKOUT4_USE_FINE_PS => FALSE,
+   CLKOUT5_USE_FINE_PS => FALSE,
+   CLKOUT6_USE_FINE_PS => FALSE 
+) 
+port map (
+   -- Clock Outputs: 1-bit (each) output: User configurable clock outputs
+   CLKOUT0 => clkAdc1b,           -- 1-bit output: CLKOUT0
+   CLKOUT0B => open,         -- 1-bit output: Inverted CLKOUT0
+   CLKOUT1 => clkAdc1xb,           -- 1-bit output: CLKOUT1
+   CLKOUT1B => open,         -- 1-bit output: Inverted CLKOUT1
+   CLKOUT2 => clkAdc2xb,           -- 1-bit output: CLKOUT2
+   CLKOUT2B => open,         -- 1-bit output: Inverted CLKOUT2
+   CLKOUT3 => clkAdc3xb,           -- 1-bit output: CLKOUT3
+   CLKOUT3B => open,         -- 1-bit output: Inverted CLKOUT3
+   CLKOUT4 => clkAdc200,           -- 1-bit output: CLKOUT4
+   CLKOUT5 => clkb,           -- 1-bit output: CLKOUT5
+   CLKOUT6 => clkDac,           -- 1-bit output: CLKOUT6
+   -- DRP Ports: 16-bit (each) output: Dynamic reconfiguration ports
+   DO => open,                     -- 16-bit output: DRP data
+   DRDY => open,                 -- 1-bit output: DRP ready
+   -- Dynamic Phase Shift Ports: 1-bit (each) output: Ports used for dynamic phase shifting of the outputs
+   PSDONE => open,             -- 1-bit output: Phase shift done
+   -- Feedback Clocks: 1-bit (each) output: Clock feedback ports
+   CLKFBOUT => clkAdcfb,         -- 1-bit output: Feedback clock
+   CLKFBOUTB => open,       -- 1-bit output: Inverted CLKFBOUT
+   -- Status Ports: 1-bit (each) output: MMCM status ports
+   CLKFBSTOPPED => open, -- 1-bit output: Feedback clock stopped
+   CLKINSTOPPED => open, -- 1-bit output: Input clock stopped
+   LOCKED => PllLock(0),             -- 1-bit output: LOCK
+   -- Clock Inputs: 1-bit (each) input: Clock inputs
+   CLKIN1 => clk2,             -- 1-bit input: Primary clock
+   CLKIN2 => '0',             -- 1-bit input: Secondary clock
+   -- Control Ports: 1-bit (each) input: MMCM control ports
+   CLKINSEL => '1',         -- 1-bit input: Clock select, High=CLKIN1 Low=CLKIN2
+   PWRDWN => '0',             -- 1-bit input: Power-down
+   RST => PllRst(0),                   -- 1-bit input: Reset
+   -- DRP Ports: 7-bit (each) input: Dynamic reconfiguration ports
+   DADDR => "0000000",               -- 7-bit input: DRP address
+   DCLK => '0',                 -- 1-bit input: DRP clock
+   DEN => '0',                   -- 1-bit input: DRP enable
+   DI => x"0000",                     -- 16-bit input: DRP data
+   DWE => '0',                   -- 1-bit input: DRP write enable
+   -- Dynamic Phase Shift Ports: 1-bit (each) input: Ports used for dynamic phase shifting of the outputs
+   PSCLK => clk2,               -- 1-bit input: Phase shift clock
+   PSEN => Test(3),                 -- 1-bit input: Phase shift enable
+   PSINCDEC => Test(2),         -- 1-bit input: Phase shift increment/decrement
+   -- Feedback Clocks: 1-bit (each) input: Clock feedback ports
+   CLKFBIN => clkAdcfb            -- 1-bit input: Feedback clock
+);
+
+BUFIO_ADC1x : BUFIO
+port map (
+   O => clkAdc1x,     -- 1-bit output: Clock output port
+   I => clkAdc1xb      -- 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
+);
+
+BUFIO_ADC2x : BUFIO
+port map (
+   O => clkAdc2x, -- 1-bit output: Clock output (connect to I/O clock loads).
+   I => clkAdc2xb  -- 1-bit input: Clock input (connect to an IBUF or BUFMR).
+);
+
+BUFIO_ADC3x : BUFIO
+port map (
+   O => clkAdc3x, -- 1-bit output: Clock output (connect to I/O clock loads).
+   I => clkAdc3xb  -- 1-bit input: Clock input (connect to an IBUF or BUFMR).
+);
+
+BUFR_ADC1 : BUFR
+generic map (
+   BUFR_DIVIDE => "BYPASS",   -- Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8" 
+   SIM_DEVICE => "7SERIES"  -- Must be set to "7SERIES" 
+)
+port map (
+   O => clkAdc1,     -- 1-bit output: Clock output port
+   CE => '1',   -- 1-bit input: Active high, clock enable (Divided modes only)
+   CLR => '0', -- 1-bit input: Active high, asynchronous clear (Divided modes only)
+   I => clkAdc1b      -- 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
+);
+
+BUFG_ADC : BUFG
+port map (
+   O => Clk, -- 1-bit output: Clock output (connect to I/O clock loads).
+   I => clkb  -- 1-bit input: Clock input (connect to an IBUF or BUFMR).
+);
+
+---- ADC CLKIN
+   ODDR_ADCIN : ODDR
+   generic map(
+      DDR_CLK_EDGE => "SAME_EDGE", -- "OPPOSITE_EDGE" or "SAME_EDGE" 
+      INIT => '0',   -- Initial value for Q port ('1' or '0')
+      SRTYPE => "ASYNC") -- Reset Type ("ASYNC" or "SYNC")
+   port map (
+      Q => ddrAdcIn,   -- 1-bit DDR output
+      C => clkAdc2x,    -- 1-bit clock input
+      CE => '1',  -- 1-bit clock enable input
+      D1 => '1',  -- 1-bit data input (positive edge)
+      D2 => '0',  -- 1-bit data input (negative edge)
+      R => '0',    -- 1-bit reset input
+      S => '0'     -- 1-bit set input
+   );
+   
+   ------ ADC SYNC
+   OSERDESE2_ADC_SYNC : OSERDESE2
+   generic map (
+      DATA_RATE_OQ => "SDR",   -- DDR, SDR
+      DATA_RATE_TQ => "BUF",   -- DDR, BUF, SDR
+      DATA_WIDTH => 4,         -- Parallel data width (2-8,10,14)
+      INIT_OQ => '0',          -- Initial value of OQ output (1'b0,1'b1)
+      INIT_TQ => '0',          -- Initial value of TQ output (1'b0,1'b1)
+      SERDES_MODE => "MASTER", -- MASTER, SLAVE
+      SRVAL_OQ => '0',         -- OQ output value when SR is used (1'b0,1'b1)
+      SRVAL_TQ => '0',         -- TQ output value when SR is used (1'b0,1'b1)
+      TBYTE_CTL => "FALSE",    -- Enable tristate byte operation (FALSE, TRUE)
+      TBYTE_SRC => "FALSE",    -- Tristate byte source (FALSE, TRUE)
+      TRISTATE_WIDTH => 1      -- 3-state converter width (1,4)
+   )
+   port map (
+      OFB => open,             -- 1-bit output: Feedback path for data
+      OQ => ADC_SYNC,               -- 1-bit output: Data path output
+      -- SHIFTOUT1 / SHIFTOUT2: 1-bit (each) output: Data output expansion (1-bit each)
+      SHIFTOUT1 => open,
+      SHIFTOUT2 => open,
+      TBYTEOUT => open,   -- 1-bit output: Byte group tristate
+      TFB => open,             -- 1-bit output: 3-state control
+      TQ => open,               -- 1-bit output: 3-state control
+      CLK => clkAdc1x,             -- 1-bit input: High speed clock
+      CLKDIV => clkAdc1,       -- 1-bit input: Divided clock
+      -- D1 - D8: 1-bit (each) input: Parallel data inputs (1-bit each)
+      D1 => '0',
+      D2 => '0',
+      D3 => '0',
+      D4 => '1',
+      D5 => '0',
+      D6 => '0',
+      D7 => '0',
+      D8 => '0',
+      OCE => '1',             -- 1-bit input: Output data clock enable
+      RST => rstAdc(0),             -- 1-bit input: Reset
+      -- SHIFTIN1 / SHIFTIN2: 1-bit (each) input: Data input expansion (1-bit each)
+      SHIFTIN1 => '0',
+      SHIFTIN2 => '0',
+      -- T1 - T4: 1-bit (each) input: Parallel 3-state inputs
+      T1 => '0',
+      T2 => '0',
+      T3 => '0',
+      T4 => '0',
+      TBYTEIN => '0',     -- 1-bit input: Byte group tristate
+      TCE => '0'              -- 1-bit input: 3-state clock enable
+   );
+
+   OBUFDS_CLKIN_ADC : OBUFDS
+   generic map (
+      IOSTANDARD => "DEFAULT", -- Specify the output I/O standard
+      SLEW => "SLOW")          -- Specify the output slew rate
+   port map (
+      O  => CLKIN_ADC_P,     -- Diff_p output (connect directly to top-level port)
+      OB => CLKIN_ADC_N,   -- Diff_n output (connect directly to top-level port)
+      I  => ddrAdcIn      -- Buffer input 
+   );
+
+IDELAYCTRL_inst : IDELAYCTRL
+port map (
+  RDY => open,       -- 1-bit output: Ready output
+  REFCLK => clkAdc200, -- 1-bit input: Reference clock input
+  RST => rstAdc2(7)        -- 1-bit input: Active high reset input
+);
+
+clkAdc1xi <= not clkAdc1x;
+   
+   IDELAYE2_ADC_DCO : IDELAYE2
+   generic map (
+      CINVCTRL_SEL => "FALSE",          -- Enable dynamic clock inversion (FALSE, TRUE)
+      DELAY_SRC => "IDATAIN",           -- Delay input (IDATAIN, DATAIN)
+      HIGH_PERFORMANCE_MODE => "FALSE",  -- Reduced jitter ("TRUE"), Reduced power ("FALSE")
+      IDELAY_TYPE => "VAR_LOAD_PIPE",        -- FIXED, VARIABLE, VAR_LOAD, VAR_LOAD_PIPE
+      IDELAY_VALUE => 0,                -- Input delay tap setting (0-31)
+      PIPE_SEL => "FALSE",              -- Select pipelined mode, FALSE, TRUE
+      REFCLK_FREQUENCY => 200.0,        -- IDELAYCTRL clock input frequency in MHz (190.0-210.0, 290.0-310.0).
+      SIGNAL_PATTERN => "DATA"         -- DATA, CLOCK input signal
+   )
+   port map (
+      CNTVALUEOUT => open, -- 5-bit output: Counter value output
+      DATAOUT => clkout_adc_dly,         -- 1-bit output: Delayed data output
+      C => clkAdc200,             -- 1-bit input: Clock input
+      CE => '0',                   -- 1-bit input: Active high enable increment/decrement input
+      CINVCTRL => '0',       -- 1-bit input: Dynamic clock inversion input
+      CNTVALUEIN => cntvaluein_dco,--reAdcClk(c*8+4 downto c*8),   -- 5-bit input: Counter value input
+      DATAIN => '0',           -- 1-bit input: Internal delay data input
+      IDATAIN => ADC_DCO,         -- 1-bit input: Data input from the I/O
+      INC => '0',                 -- 1-bit input: Increment / Decrement tap delay input
+      LD => '1',                   -- 1-bit input: Load IDELAY_VALUE input
+      LDPIPEEN => '1',       -- 1-bit input: Enable PIPELINE register to load data input
+      REGRST => '0'            -- 1-bit input: Active-high reset tap-delay input
+   );
+   
+  ISERDESE2_ADC_DCO : ISERDESE2
+   generic map (
+      DATA_RATE => "DDR",           -- DDR, SDR
+      DATA_WIDTH => 8,              -- Parallel data width (2-8,10,14)
+      DYN_CLKDIV_INV_EN => "FALSE", -- Enable DYNCLKDIVINVSEL inversion (FALSE, TRUE)
+      DYN_CLK_INV_EN => "FALSE",    -- Enable DYNCLKINVSEL inversion (FALSE, TRUE)
+      INIT_Q1 => '0',
+      INIT_Q2 => '0',
+      INIT_Q3 => '0',
+      INIT_Q4 => '0',
+      INTERFACE_TYPE => "NETWORKING",   -- MEMORY, MEMORY_DDR3, MEMORY_QDR, NETWORKING, OVERSAMPLE
+      IOBDELAY => "BOTH",           -- NONE, BOTH, IBUF, IFD
+      NUM_CE => 1,                  -- Number of clock enables (1,2)
+      OFB_USED => "FALSE",          -- Select OFB path (FALSE, TRUE)
+      SERDES_MODE => "MASTER",      -- MASTER, SLAVE
+      SRVAL_Q1 => '0',
+      SRVAL_Q2 => '0',
+      SRVAL_Q3 => '0',
+      SRVAL_Q4 => '0' 
+   )
+   port map (
+      O => open,                       -- 1-bit output: Combinatorial output
+      Q1 => shAdcClk(0),
+      Q2 => shAdcClk(1),
+      Q3 => shAdcClk(2),
+      Q4 => shAdcClk(3),
+      Q5 => shAdcClk(4),
+      Q6 => shAdcClk(5),
+      Q7 => shAdcClk(6),
+      Q8 => shAdcClk(7),
+
+      CLK => clkAdc1x,                   -- 1-bit input: High-speed clock
+      CLKB => clkAdc1xi,                 -- 1-bit input: High-speed secondary clock
+      CLKDIV => clkAdc1,             -- 1-bit input: Divided clock
+      D => ADC_DCO,                       -- 1-bit input: Data input
+      RST => rstAdc(0),                   -- 1-bit input: Active high asynchronous reset
+
+      SHIFTOUT1 => open,
+      SHIFTOUT2 => open,
+      BITSLIP => '0',           -- 1-bit input: The BITSLIP pin performs a Bitslip operation synchronous to
+      CE1 => '1',
+      CE2 => '1',
+      CLKDIVP => '0',           -- 1-bit input: TBD
+      OCLK => '0',                 -- 1-bit input: High speed output clock used when INTERFACE_TYPE="MEMORY" 
+      DYNCLKDIVSEL => '0', -- 1-bit input: Dynamic CLKDIV inversion
+      DYNCLKSEL => '0',       -- 1-bit input: Dynamic CLK/CLKB inversion
+      DDLY => clkout_adc_dly,                 -- 1-bit input: Serial data from IDELAYE2
+      OFB => '0',                   -- 1-bit input: Data feedback from OSERDESE2
+      OCLKB => '0',               -- 1-bit input: High speed negative edge output clock
+      SHIFTIN1 => '0',
+      SHIFTIN2 => '0' 
+   );
+   
+   forADCDAT: for i in 0 to 13 generate
+       IDELAYE2_ADC_DOUT : IDELAYE2
+       generic map (
+          CINVCTRL_SEL => "FALSE",          -- Enable dynamic clock inversion (FALSE, TRUE)
+          DELAY_SRC => "IDATAIN",           -- Delay input (IDATAIN, DATAIN)
+          HIGH_PERFORMANCE_MODE => "FALSE",  -- Reduced jitter ("TRUE"), Reduced power ("FALSE")
+          IDELAY_TYPE => "VAR_LOAD_PIPE",        -- FIXED, VARIABLE, VAR_LOAD, VAR_LOAD_PIPE
+          IDELAY_VALUE => 0,                -- Input delay tap setting (0-31)
+          PIPE_SEL => "FALSE",              -- Select pipelined mode, FALSE, TRUE
+          REFCLK_FREQUENCY => 200.0,        -- IDELAYCTRL clock input frequency in MHz (190.0-210.0, 290.0-310.0).
+          SIGNAL_PATTERN => "DATA"         -- DATA, CLOCK input signal
+       )
+       port map (
+          CNTVALUEOUT => open, -- 5-bit output: Counter value output
+          DATAOUT => dout_adc_dly(i),         -- 1-bit output: Delayed data output
+          C => clkAdc200,             -- 1-bit input: Clock input
+          CE => '0',                   -- 1-bit input: Active high enable increment/decrement input
+          CINVCTRL => '0',       -- 1-bit input: Dynamic clock inversion input
+          CNTVALUEIN => cntvaluein(i), --reAdcDat((c*14+i)*8+4 downto (c*14+i)*8),   -- 5-bit input: Counter value input
+          DATAIN => '0',           -- 1-bit input: Internal delay data input
+          IDATAIN => ADC_DATA(i),         -- 1-bit input: Data input from the I/O
+          INC => '0',                 -- 1-bit input: Increment / Decrement tap delay input
+          LD => '1',                   -- 1-bit input: Load IDELAY_VALUE input
+          LDPIPEEN => '1',       -- 1-bit input: Enable PIPELINE register to load data input
+          REGRST => '0'            -- 1-bit input: Active-high reset tap-delay input
+       );
+       ISERDESE2_ADC_DOUT : ISERDESE2
+       generic map (
+          DATA_RATE => "DDR",           -- DDR, SDR
+          DATA_WIDTH => 8,              -- Parallel data width (2-8,10,14)
+          DYN_CLKDIV_INV_EN => "FALSE", -- Enable DYNCLKDIVINVSEL inversion (FALSE, TRUE)
+          DYN_CLK_INV_EN => "FALSE",    -- Enable DYNCLKINVSEL inversion (FALSE, TRUE)
+          INIT_Q1 => '0',
+          INIT_Q2 => '0',
+          INIT_Q3 => '0',
+          INIT_Q4 => '0',
+          INTERFACE_TYPE => "NETWORKING",   -- MEMORY, MEMORY_DDR3, MEMORY_QDR, NETWORKING, OVERSAMPLE
+          IOBDELAY => "BOTH",           -- NONE, BOTH, IBUF, IFD
+          NUM_CE => 1,                  -- Number of clock enables (1,2)
+          OFB_USED => "FALSE",          -- Select OFB path (FALSE, TRUE)
+          SERDES_MODE => "MASTER",      -- MASTER, SLAVE
+          SRVAL_Q1 => '0',
+          SRVAL_Q2 => '0',
+          SRVAL_Q3 => '0',
+          SRVAL_Q4 => '0' 
+       )
+       port map (
+          O => open,                       -- 1-bit output: Combinatorial output
+          Q1 => shAdcDat((i)*8+0),
+          Q2 => shAdcDat((i)*8+1),
+          Q3 => shAdcDat((i)*8+2),
+          Q4 => shAdcDat((i)*8+3),
+          Q5 => shAdcDat((i)*8+4),
+          Q6 => shAdcDat((i)*8+5),
+          Q7 => shAdcDat((i)*8+6),
+          Q8 => shAdcDat((i)*8+7),
+
+          CLK => clkAdc1x,                   -- 1-bit input: High-speed clock
+          CLKB => clkAdc1xi,                 -- 1-bit input: High-speed secondary clock
+          CLKDIV => clkAdc1,             -- 1-bit input: Divided clock
+          D => ADC_DATA(i),                       -- 1-bit input: Data input
+          RST => rstAdc(0),                   -- 1-bit input: Active high asynchronous reset
+
+          SHIFTOUT1 => open,
+          SHIFTOUT2 => open,
+          BITSLIP => '0',           -- 1-bit input: The BITSLIP pin performs a Bitslip operation synchronous to
+          CE1 => '1',
+          CE2 => '1',
+          CLKDIVP => '0',           -- 1-bit input: TBD
+          OCLK => '0',                 -- 1-bit input: High speed output clock used when INTERFACE_TYPE="MEMORY" 
+          DYNCLKDIVSEL => '0', -- 1-bit input: Dynamic CLKDIV inversion
+          DYNCLKSEL => '0',       -- 1-bit input: Dynamic CLK/CLKB inversion
+          DDLY => dout_adc_dly(i),                 -- 1-bit input: Serial data from IDELAYE2
+          OFB => '0',                   -- 1-bit input: Data feedback from OSERDESE2
+          OCLKB => '0',               -- 1-bit input: High speed negative edge output clock
+          SHIFTIN1 => '0',
+          SHIFTIN2 => '0' 
+       );
+   end generate;
+
+
+end Behavioral;
