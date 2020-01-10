@@ -522,7 +522,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>00638bfe</spirit:value>
+            <spirit:value>18e17f73</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -544,7 +544,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>00638bfe</spirit:value>
+            <spirit:value>18e17f73</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -558,7 +558,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a4e28bcf</spirit:value>
+            <spirit:value>cc948f7d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1476,7 +1476,7 @@
       <spirit:file>
         <spirit:name>src/AXI_ZmodDAC1411_v1_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_bceef222</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_e6762f31</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1567,7 +1567,7 @@
       <spirit:file>
         <spirit:name>xgui/AXI_ZmodDAC1411_v1_0_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_a4e28bcf</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_cc948f7d</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1613,8 +1613,8 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>17</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-12-19T12:27:21Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>21</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-01-10T13:01:00Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@6bcfc864_ARCHIVE_LOCATION">c:/vivado_projects/ciprian_git_zmoddemo/repo/local/ip/axi_zmod_dac1411</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@2a45d51d_ARCHIVE_LOCATION">c:/vivado_projects/ciprian_git_zmoddemo/repo/local/ip/axi_zmod_dac1411</xilinx:tag>
@@ -1878,13 +1878,57 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@5797075e_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3e714cb5_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@18c4b53c_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21f12e26_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30cd79f0_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3402c3d8_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@45d8ec33_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4eef402e_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bad7ebd_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f28a397_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6330a5eb_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7903a8ad_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a2d5f63_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e1c0ae0_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cb08cc4_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@89619dc_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@cabe75d_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3bb253bb_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28abb17a_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1cc4d1fd_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3445ece5_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@502a6460_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1901897f_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12bcb642_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c45998c_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38a2ef63_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29fe4996_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b3f8519_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16d6a3b_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3dc4f1e9_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b3adc92_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52ea448c_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@586f999_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a246091_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ec090ba_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bfdfd95_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33f344bc_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1280ba6e_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c5c57e8_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11e8f913_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21db4253_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@c5e8c84_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@548a4f7e_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c419b5f_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e5576af_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@268aeb03_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39b6c956_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/AXI_Zmod_DAC1411</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="99c705be"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="de6eae12"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="289f37c2"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="f160ff92"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="b43f8218"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="9bbe8608"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="096b277c"/>

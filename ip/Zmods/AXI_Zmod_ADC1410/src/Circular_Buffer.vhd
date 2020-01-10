@@ -1,22 +1,47 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+
+-------------------------------------------------------------------------------
+--
+-- File: Circular_Buffer.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod ADC 1410 AXI Adapter
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
 -- 
--- Create Date: 08/13/2019 12:38:29 PM
--- Design Name: 
--- Module Name: Circular_Buffer - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module implements the circular buffer, the trigger mechanism and the 
+--AXI Stream to BRAM bridge.
+--  
+-------------------------------------------------------------------------------
 
 
 library IEEE;
@@ -24,45 +49,38 @@ use IEEE.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity Circular_Buffer is
     Generic 
     (
     kBufferSize: integer range 0 to 1024 := 14
     );
-    Port ( SysClk : in STD_LOGIC;
-           AxiStreamClk : in STD_LOGIC;
-           AxiLiteClk : in std_logic;
-           sRst_n : in STD_LOGIC;
-           xsRst_n : in STD_LOGIC;
-           sInitDone_n: in STD_LOGIC;
-           sCh1In : in STD_LOGIC_VECTOR (13 downto 0);
-           sCh2In : in STD_LOGIC_VECTOR (13 downto 0);
-           
+    Port ( SysClk : in STD_LOGIC; --100MHz input clock
+           AxiStreamClk : in STD_LOGIC; --AXI Stream input clock
+           AxiLiteClk : in std_logic; --AXI Lite input clock
+           sRst_n : in STD_LOGIC; --Active low synchronous reset signal synchronized with SysClk
+           xsRst_n : in STD_LOGIC; --Active low synchronous reset signal synchronized with AxiStreamClk 
+           sInitDone_n: in STD_LOGIC; --Input flag (active low) indicating that the Zmod DAC Low Level 
+                                      -- Controller has succesfully completed initialization 
+           sCh1In : in STD_LOGIC_VECTOR (13 downto 0); --Channel1 data input
+           sCh2In : in STD_LOGIC_VECTOR (13 downto 0); --Channel2 data input
+           --AXI Stream (MM2S)
            s_axis_s2mm_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
            s_axis_s2mm_tkeep : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
            s_axis_s2mm_tvalid : OUT STD_LOGIC;
            s_axis_s2mm_tready : IN STD_LOGIC;
            s_axis_s2mm_tlast : OUT STD_LOGIC;
            
-           sAqRunStop: in STD_LOGIC;
-           sTrigLevel : in STD_LOGIC_VECTOR (13 downto 0);
-           sTrigMode : in STD_LOGIC_VECTOR (1 downto 0); --AUTO, NONE, NORMAL
+           sAqRunStop: in STD_LOGIC; --Control bit triggering the start of a new aquisition when the buffer control FSM is in idle state
+           sTrigLevel : in STD_LOGIC_VECTOR (13 downto 0); --Trigger Level
+           sTrigMode : in STD_LOGIC_VECTOR (1 downto 0); --Trigger mode: AUTO, NONE, NORMAL
            sTrigRisingFalling : in STD_LOGIC; --0 -> rising; 1 -> falling
-           sTrigChSelect : in STD_LOGIC;
-           lWindowPosition : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0);
-           sTransferLength : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0);
-           xsTransferLength : in std_logic_vector (kBufferSize-1 downto 0); 
-           lSetStop : out STD_LOGIC;
-           lBufferFull : out STD_LOGIC
+           sTrigChSelect : in STD_LOGIC; -- 0 -> Channel1; 1 -> Channel2
+           lWindowPosition : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0); --Trigger position in window
+           sTransferLength : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0); --Circular buffer depth (ynchronized in SysClk clock domain)
+           xsTransferLength : in std_logic_vector (kBufferSize-1 downto 0); --Circular buffer depth (ynchronized in AxiStreamClk clock domain)
+           lSetStop : out STD_LOGIC; --Pulse that resets the Aquisition Run/Stop bit in the Control Register
+           lBufferFull : out STD_LOGIC--Flag indicating that the number of samples specified in the S2MM_Lenght registers
+                                       --have been loaded in the circular buffer
           );
 end Circular_Buffer;
 
@@ -154,156 +172,7 @@ signal sOutAddrCntStartPush, sOutAddrCntStartRdy, xsOutAddrCntStartValid : std_l
 signal sOutAddrCntEnRdy, sOutAddrCntEnPush, xsOutAddrCntEnValid, sOutAddrCntEnRstPush, sOutAddrCntEnSetPush : std_logic;
 signal xsOutAddrCntEnDout,sOutAddrCntEnDin : std_logic_vector(0 downto 0);
 signal xsOutAddrCntOdata : std_logic_vector (kBufferSize-1 downto 0); 
-    
-    attribute mark_debug : string;
-    attribute keep : string;
-    attribute mark_debug of fsmcfg_state_r : signal is "true";
-    attribute keep of fsmcfg_state_r : signal is "true";
-    
---        attribute mark_debug of lBufferFull : signal is "true";
---    attribute keep of lBufferFull : signal is "true";
---        attribute mark_debug of sBufFullPush : signal is "true";
---    attribute keep of sBufFullPush : signal is "true";
---        attribute mark_debug of sBufFullRdy : signal is "true";
---    attribute keep of sBufFullRdy : signal is "true";
---        attribute mark_debug of lBufFullValid : signal is "true";
---    attribute keep of lBufFullValid : signal is "true";
---        attribute mark_debug of sSetStopRdy : signal is "true";
---    attribute keep of sSetStopRdy : signal is "true";
---        attribute mark_debug of sSetStopPush : signal is "true";
---    attribute keep of sSetStopPush : signal is "true";
---        attribute mark_debug of sSetStop : signal is "true";
---    attribute keep of sSetStop : signal is "true";
---            attribute mark_debug of lSetStopValid : signal is "true";
---    attribute keep of lSetStopValid : signal is "true";
---    attribute mark_debug of xsBufEmptyR : signal is "true";
---    attribute keep of xsBufEmptyR : signal is "true";
---    attribute mark_debug of xsBufEmpty : signal is "true";
---    attribute keep of xsBufEmpty : signal is "true";
---    attribute mark_debug of xsBufEmptyRdy : signal is "true";
---    attribute keep of xsBufEmptyRdy : signal is "true";
---    attribute mark_debug of xsBufEmptyPush : signal is "true";
---    attribute keep of xsBufEmptyPush : signal is "true";
---    attribute mark_debug of sBufEmptyValid : signal is "true";
---    attribute keep of sBufEmptyValid : signal is "true";
---    attribute mark_debug of sBufEmpty : signal is "true";
---    attribute keep of sBufEmpty : signal is "true";
---        attribute mark_debug of sLoadOutCntPush : signal is "true";
---    attribute keep of sLoadOutCntPush : signal is "true";
---    attribute mark_debug of sLoadOutCntRdy : signal is "true";
---    attribute keep of sLoadOutCntRdy : signal is "true";
---    attribute mark_debug of xsLoadOutCntValid : signal is "true";
---    attribute keep of xsLoadOutCntValid : signal is "true";
-    
---    attribute mark_debug of sOutAddrCntStart : signal is "true";
---    attribute keep of sOutAddrCntStart : signal is "true";
---    attribute mark_debug of xsOutAddrCntOdata : signal is "true";
---    attribute keep of xsOutAddrCntOdata : signal is "true";
---    attribute mark_debug of sOutAddrCntStartPush : signal is "true";
---    attribute keep of sOutAddrCntStartPush : signal is "true";
---    attribute mark_debug of sOutAddrCntStartRdy : signal is "true";
---    attribute keep of sOutAddrCntStartRdy : signal is "true";
---    attribute mark_debug of xsOutAddrCntStartValid : signal is "true";
---    attribute keep of xsOutAddrCntStartValid : signal is "true";
-    
---        attribute mark_debug of sOutAddrCntEnR : signal is "true";
---    attribute keep of sOutAddrCntEnR : signal is "true";
---    attribute mark_debug of sOutAddrCntEn : signal is "true";
---    attribute keep of sOutAddrCntEn : signal is "true";
---    attribute mark_debug of sOutAddrCntEnSetPush : signal is "true";
---    attribute keep of sOutAddrCntEnSetPush : signal is "true";
---    attribute mark_debug of sOutAddrCntEnRstPush : signal is "true";
---    attribute keep of sOutAddrCntEnRstPush : signal is "true";
---    attribute mark_debug of sOutAddrCntEnRdy : signal is "true";
---    attribute keep of sOutAddrCntEnRdy : signal is "true";
---    attribute mark_debug of xsOutAddrCntEnValid : signal is "true";
---    attribute keep of xsOutAddrCntEnValid : signal is "true";
---    attribute mark_debug of xsOutAddrCntEn : signal is "true";
---    attribute keep of xsOutAddrCntEn : signal is "true";
---    attribute mark_debug of xsOutAddrCntEnDout : signal is "true";
---    attribute keep of xsOutAddrCntEnDout : signal is "true";
-
---    attribute mark_debug of sInAddrCounterR : signal is "true";
---    attribute keep of sInAddrCounterR : signal is "true";
---    attribute mark_debug of sInAddrCounter : signal is "true";
---    attribute keep of sInAddrCounter : signal is "true";
---    attribute mark_debug of sWeaBuffer : signal is "true";
---    attribute keep of sWeaBuffer : signal is "true";
---    attribute mark_debug of sInAddrCntEn : signal is "true";
---    attribute keep of sInAddrCntEn : signal is "true";
---    attribute mark_debug of sBufferInputData : signal is "true";
---    attribute keep of sBufferInputData : signal is "true";
---    attribute mark_debug of sAqRunStop : signal is "true";
---    attribute keep of sAqRunStop : signal is "true";
---    attribute mark_debug of sTrigLevel : signal is "true";
---    attribute keep of sTrigLevel : signal is "true";
---    attribute mark_debug of sTrigMode : signal is "true";
---    attribute keep of sTrigMode : signal is "true"; 
---    attribute mark_debug of sTrigRisingFalling : signal is "true";
---    attribute keep of sTrigRisingFalling : signal is "true";
---    attribute mark_debug of sTrigChSelect : signal is "true";
---    attribute keep of sTrigChSelect : signal is "true";
---    attribute mark_debug of sTransferLength : signal is "true";
---    attribute keep of sTransferLength : signal is "true";
---    attribute mark_debug of sTriggerCondition : signal is "true";
---    attribute keep of sTriggerCondition : signal is "true";
---    attribute mark_debug of lWindowPosition : signal is "true";
---    attribute keep of lWindowPosition : signal is "true";
---    attribute mark_debug of sAddrTrigger : signal is "true";
---    attribute keep of sAddrTrigger : signal is "true";
---    attribute mark_debug of xsTransferLength : signal is "true";
---    attribute keep of xsTransferLength : signal is "true";    
---    attribute mark_debug of xsBufEmpty : signal is "true";
---    attribute keep of xsBufEmpty : signal is "true"; 
---    attribute mark_debug of xsTvalidDisable : signal is "true";
---    attribute keep of xsTvalidDisable : signal is "true";
---    attribute mark_debug of xsOutAddrCntPulse : signal is "true";
---    attribute keep of xsOutAddrCntPulse : signal is "true";
---    attribute mark_debug of xsOutAddrCntEn : signal is "true";
---    attribute keep of xsOutAddrCntEn : signal is "true";
---    attribute mark_debug of xsOutAddrCntEnRR : signal is "true";
---    attribute keep of xsOutAddrCntEnRR : signal is "true";    
---    attribute mark_debug of xsOutAddrCntEnR : signal is "true";
---    attribute keep of xsOutAddrCntEnR : signal is "true";     
-     
---    attribute mark_debug of s_axis_s2mm_tkeep : signal is "true";
---    attribute keep of s_axis_s2mm_tkeep : signal is "true";
---    attribute mark_debug of s_axis_s2mm_tvalid : signal is "true";
---    attribute keep of s_axis_s2mm_tvalid : signal is "true";
---    attribute mark_debug of s_axis_s2mm_tlast : signal is "true";
---    attribute keep of s_axis_s2mm_tlast : signal is "true";
---    attribute mark_debug of s_axis_s2mm_tready : signal is "true";
---    attribute keep of s_axis_s2mm_tready : signal is "true";  
---    attribute mark_debug of s_axis_s2mm_tdata : signal is "true";
---    attribute keep of s_axis_s2mm_tdata : signal is "true";
---        attribute mark_debug of sLoadBufStart : signal is "true";
---    attribute keep of sLoadBufStart : signal is "true";
-    
---    attribute mark_debug of xsS2MM_TdataLoc : signal is "true";
---    attribute keep of xsS2MM_TdataLoc : signal is "true";   
-    
---    attribute mark_debug of xsEnbBuffer : signal is "true";
---    attribute keep of xsEnbBuffer : signal is "true";
---    attribute mark_debug of xsOutAddrCounter : signal is "true";
---    attribute keep of xsOutAddrCounter : signal is "true";
---    attribute mark_debug of xsBufferFullAddr : signal is "true";
---    attribute keep of xsBufferFullAddr : signal is "true";
---    attribute mark_debug of xsS2MM_TreadyR : signal is "true";
---    attribute keep of xsS2MM_TreadyR : signal is "true";
---    attribute mark_debug of xsTreadyRising : signal is "true";
---    attribute keep of xsTreadyRising : signal is "true";
---    attribute mark_debug of xsTreadyFalling : signal is "true";
---    attribute keep of xsTreadyFalling : signal is "true";
---    attribute mark_debug of sTrigMode : signal is "true";
---    attribute keep of sTrigMode : signal is "true";
---    attribute mark_debug of sTriggerCondition : signal is "true";
---    attribute keep of sTriggerCondition : signal is "true";
---    attribute mark_debug of sTriggerSource: signal is "true";
---    attribute keep of sTriggerSource : signal is "true";
---    attribute mark_debug of sCh1In : signal is "true";
---    attribute keep of sCh1In : signal is "true";
---    attribute mark_debug of sCh2In : signal is "true";
---    attribute keep of sCh2In : signal is "true";             
+       
 begin
 
 aRst_p <= not sRst_n;
@@ -525,7 +394,7 @@ begin
         fsmcfg_state <= "00011";
         sInAddrCntEn <= '1';
         sInAddrCntRst <= '1';
-        if ((sInAddrCounter = sAddrTrigger + sTransferLength - lWindowPosition) or (lWindowPosition = sTransferLength - '1')) then 
+        if ((sInAddrCounter = sAddrTrigger + sTransferLength - lWindowPosition) or (lWindowPosition = sTransferLength - '1')) then --correct condition
             sNextState <= StOutAddrCntPush;
         end if;
         

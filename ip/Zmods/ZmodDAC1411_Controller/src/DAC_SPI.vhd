@@ -1,22 +1,46 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+
+-------------------------------------------------------------------------------
+--
+-- File: DAC_SPI.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod DAC 1411 Low Level Controller
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
 -- 
--- Create Date: 01/14/2019 09:55:58 AM
--- Design Name: 
--- Module Name: AD9648_SPI - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module manages the SPI communication with the Zmod DAC 1411's AD9717.
+--  
+-------------------------------------------------------------------------------
 
 
 library IEEE;
@@ -26,15 +50,6 @@ use UNISIM.vcomponents.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
 USE IEEE.STD_LOGIC_ARITH.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity DAC_SPI is
     Port (
@@ -74,57 +89,9 @@ signal delay_cnt : std_logic_vector (5 downto 0);
 signal delay_inc, delay_rst : std_logic;
 
 signal read_en, write_en: std_logic;
-
---    attribute mark_debug : string;
---    attribute keep : string;
---    attribute mark_debug of fsm_state : signal is "true";
---    attribute keep of fsm_state : signal is "true";
---    attribute mark_debug of START_TRANSFER : signal is "true";
---    attribute keep of START_TRANSFER : signal is "true";
---    attribute mark_debug of Start_Transfer_pulse : signal is "true";
---    attribute keep of Start_Transfer_pulse : signal is "true";
---    attribute mark_debug of Start_Transfer_r : signal is "true";
---    attribute keep of Start_Transfer_r : signal is "true";
---    attribute mark_debug of rst_dir : signal is "true";
---    attribute keep of rst_dir : signal is "true";
---    attribute mark_debug of rd_data_r : signal is "true";
---    attribute keep of rd_data_r : signal is "true";
---    attribute mark_debug of tx_vector : signal is "true";
---    attribute keep of tx_vector : signal is "true";
---    attribute mark_debug of dir : signal is "true";
---    attribute keep of dir : signal is "true";
---    attribute mark_debug of CS : signal is "true";
---    attribute keep of CS : signal is "true";
---    attribute mark_debug of tx_count : signal is "true";
---    attribute keep of tx_count : signal is "true";
---    attribute mark_debug of rx_count : signal is "true";
---    attribute keep of rx_count : signal is "true";
---    attribute mark_debug of tx_shift : signal is "true";
---    attribute keep of tx_shift : signal is "true";
---    attribute mark_debug of rx_shift : signal is "true";
---    attribute keep of rx_shift : signal is "true";
---    attribute mark_debug of tx_data : signal is "true";
---    attribute keep of tx_data : signal is "true";
---    attribute mark_debug of rx_data : signal is "true";
---    attribute keep of rx_data : signal is "true";
---    attribute mark_debug of nr_bits_r : signal is "true";
---    attribute keep of nr_bits_r : signal is "true";
---    attribute mark_debug of RST : signal is "true";
---    attribute keep of RST : signal is "true";
---    attribute mark_debug of clk_counter : signal is "true";
---    attribute keep of clk_counter : signal is "true";
---    attribute mark_debug of SPI_CLK : signal is "true";
---    attribute keep of SPI_CLK : signal is "true";
---    attribute mark_debug of DONE : signal is "true";
---    attribute keep of DONE : signal is "true";
---    attribute mark_debug of RD_DATA : signal is "true";
---    attribute keep of RD_DATA : signal is "true";
---    attribute mark_debug of RD_WR : signal is "true";
---    attribute keep of RD_WR : signal is "true";
             
 begin
 
---TEST <= done_fsm;--Start_Transfer_pulse;
 read_en <= '1' when RD_WR = '1' else '0';
 write_en <= '0' when RD_WR = '1' else '1';
 

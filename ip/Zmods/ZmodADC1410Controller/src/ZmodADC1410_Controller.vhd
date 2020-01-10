@@ -1,36 +1,54 @@
-----------------------------------------------------------------------------------
--- Company: Digilent
--- Engineer: Tudor Gherman
+
+-------------------------------------------------------------------------------
+--
+-- File: ZmodADC1410_Controller.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod ADC 1410 Low Level Controller
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
 -- 
--- Create Date: 01/10/2019 11:43:00 AM
--- Design Name: 
--- Module Name: ZmodADC1410_Controller - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module interfaces directly with the Zmod ADC 1410. It configures the gain 
+--and coupling select relays, writes an initial configuration to the AD9648 on the 
+--Zmod via the SPI interface, demultiplexes the data received 
+--over the ADC's parallel interface and forwards it to the user logic. 
+--  
+-------------------------------------------------------------------------------
 
 
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
---use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -48,13 +66,13 @@ entity ZmodADC1410_Controller is
         kCh1GainStatic : std_logic := '0'; -- 0 -> Low Gain; 1 -> High Gain; 
         kCh2GainStatic : std_logic := '0'; -- 0 -> Low Gain; 1 -> High Gain;       
         
-        kCh1LgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 low gain gain compensation coefficient parameter
+        kCh1LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel1 low gain gain compensation coefficient parameter
         kCh1LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 low gain offset compensation coefficient parameter
-        kCh1HgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 high gain gain compensation coefficient parameter 
+        kCh1HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel1 high gain gain compensation coefficient parameter 
         kCh1HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 high gain offset compensation coefficient parameter
-        kCh2LgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 low gain gain compensation coefficient parameter 
+        kCh2LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel2 low gain gain compensation coefficient parameter 
         kCh2LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 low gain offset compensation coefficient parameter 
-        kCh2HgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 high gain gain compensation coefficient parameter 
+        kCh2HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel2 high gain gain compensation coefficient parameter 
         kCh2HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000" --Channel2 high gain offset compensation coefficient parameter
 
     );
@@ -63,17 +81,9 @@ entity ZmodADC1410_Controller is
          ADC_InClk : in  std_logic;    --400MHz input (ADC input clock and SYNC generation)
          sRst_n          : in std_logic;   --low level reset input
          sInitDone_n : out std_logic;  --initialization complete signaling
-         --DEBUG signals; to be removed
-         
---         Pattern_SelectA : in std_logic_vector(7 downto 0);
---         Pattern_SelectB : in std_logic_vector(7 downto 0); 
-         FIFO_EMPTY_CHA : out std_logic;
-         FIFO_EMPTY_CHB : out std_logic;
---         CH1_TEST : out std_logic_vector(13 downto 0);
---         CH2_TEST : out std_logic_vector(13 downto 0);
---         DCO_Delay : in std_logic_vector(7 downto 0);
-         -- 
-         
+         FIFO_EMPTY_CHA : out std_logic; --used for debug
+         FIFO_EMPTY_CHB : out std_logic; --used for debug
+
          sCh1Out : out std_logic_vector (15 downto 0);          --ADC Channel1 output
          sCh2Out : out std_logic_vector (15 downto 0);          --ADC Channel2 outut
          sExtCh1LgMultCoef : in std_logic_vector (17 downto 0); --Channel1 low gain gain compensation coefficient external port
@@ -259,163 +269,6 @@ signal sCh2CoefAddLg, sCh2CoefAddHg : std_logic_vector (17 downto 0);
 --Sync OSERDES input
 signal sADC_SyncOserdes : std_logic_vector(3 downto 0);
  
-    attribute mark_debug : string;
-    attribute keep : string;
-    --attribute mark_debug of sys_clk : signal is "true";
-    --attribute keep of sys_clk : signal is "true";
-    attribute mark_debug of fsmcfg_state_r : signal is "true";
-    attribute keep of fsmcfg_state_r : signal is "true";
---    attribute mark_debug of dChannelA : signal is "true";
---    attribute keep of dChannelA : signal is "true";
---    attribute mark_debug of dChannelB : signal is "true";
---    attribute keep of dChannelB : signal is "true";
---    attribute mark_debug of sFIFO_EmptyChB : signal is "true";
---    attribute keep of sFIFO_EmptyChB : signal is "true";
---    attribute mark_debug of sFIFO_EmptyChA : signal is "true";
---    attribute keep of sFIFO_EmptyChA : signal is "true";
---    attribute mark_debug of dFIFO_FullChB : signal is "true";
---    attribute keep of dFIFO_FullChB : signal is "true";
---    attribute mark_debug of dFIFO_FullChA : signal is "true";
---    attribute keep of dFIFO_FullChA : signal is "true";
---        attribute mark_debug of dFIFO_WrEnChB : signal is "true";
---    attribute keep of dFIFO_WrEnChB : signal is "true";
---        attribute mark_debug of dFIFO_WrEnChA : signal is "true";
---    attribute keep of dFIFO_WrEnChA : signal is "true";
---            attribute mark_debug of dFIFO_AlmostFullChA : signal is "true";
---    attribute keep of dFIFO_AlmostFullChA : signal is "true";
---                attribute mark_debug of dFIFO_AlmostFullChB : signal is "true";
---    attribute keep of dFIFO_AlmostFullChB : signal is "true";
-
-    --attribute mark_debug of sExtSPI_Idle : signal is "true";
-    --attribute keep of sExtSPI_Idle : signal is "true"; 
-    --attribute mark_debug of sExtSPI_CmdDone : signal is "true";
-    --attribute keep of sExtSPI_CmdDone : signal is "true"; 
-    --attribute mark_debug of sExtSPI_TxRdEn : signal is "true";
-    --attribute keep of sExtSPI_TxRdEn : signal is "true"; 
---    attribute mark_debug of sExtSPI_TxDout : signal is "true";
---    attribute keep of sExtSPI_TxDout : signal is "true";  
---    attribute mark_debug of sExtSPI_TxValid : signal is "true";
---    attribute keep of sExtSPI_TxValid : signal is "true"; 
---    attribute mark_debug of sExtSPI_EnTx : signal is "true";
---    attribute keep of sExtSPI_EnTx : signal is "true"; 
---    attribute mark_debug of sExtSPI_EnRx : signal is "true";
---    attribute keep of sExtSPI_EnRx : signal is "true";
---    attribute mark_debug of sExtSPI_RxWrEn : signal is "true";
---    attribute keep of sExtSPI_RxWrEn : signal is "true";
---    attribute mark_debug of sExtSPI_RxDin : signal is "true";
---    attribute keep of sExtSPI_RxDin : signal is "true";
-    
---    attribute mark_debug of sInitDone_n : signal is "true";
---    attribute keep of sInitDone_n : signal is "true";
---    attribute mark_debug of sCmdCnt : signal is "true";
---    attribute keep of sCmdCnt : signal is "true";
---    attribute mark_debug of sIncCmdCnt : signal is "true";
---    attribute keep of sIncCmdCnt : signal is "true";
---        attribute mark_debug of sRstCmdCnt : signal is "true";
---    attribute keep of sRstCmdCnt : signal is "true";
---    attribute mark_debug of sADC_SPI_WrData : signal is "true";
---    attribute keep of sADC_SPI_WrData : signal is "true";
---    attribute mark_debug of sADC_SPI_Addr : signal is "true";
---    attribute keep of sADC_SPI_Addr : signal is "true";
---    attribute mark_debug of sADC_SPI_Width : signal is "true";
---    attribute keep of sADC_SPI_Width : signal is "true";
---    attribute mark_debug of sADC_SPI_RdEn : signal is "true";
---    attribute keep of sADC_SPI_RdEn : signal is "true";
---    attribute mark_debug of sADC_SPI_WrEn : signal is "true";
---    attribute keep of sADC_SPI_WrEn : signal is "true";  
-
---    attribute mark_debug of SC1_AC_DC : signal is "true";
---    attribute keep of SC1_AC_DC : signal is "true";
---    attribute mark_debug of SC2_AC_DC : signal is "true";
---    attribute keep of SC2_AC_DC : signal is "true";
---    attribute mark_debug of SC1_HG_LG : signal is "true";
---    attribute keep of SC1_HG_LG : signal is "true";
---    attribute mark_debug of SC2_HG_LG : signal is "true";
---    attribute keep of SC2_HG_LG : signal is "true";
-     
---    attribute mark_debug of sCh1CouplingChangeSet : signal is "true";
---    attribute keep of sCh1CouplingChangeSet : signal is "true";
---    attribute mark_debug of sCh2CouplingChangeSet : signal is "true";
---    attribute keep of sCh2CouplingChangeSet : signal is "true";
---    attribute mark_debug of sCh1GainChangeSet : signal is "true";
---    attribute keep of sCh1GainChangeSet : signal is "true";
---    attribute mark_debug of sCh2GainChangeSet : signal is "true";
---    attribute keep of sCh2GainChangeSet : signal is "true";
-    
---    attribute mark_debug of sCh1CouplingChangeRst : signal is "true";
---    attribute keep of sCh1CouplingChangeRst : signal is "true";
---    attribute mark_debug of sCh2CouplingChangeRst : signal is "true";
---    attribute keep of sCh2CouplingChangeRst : signal is "true";
---    attribute mark_debug of sCh1GainChangeRst : signal is "true";
---    attribute keep of sCh1GainChangeRst : signal is "true";
---    attribute mark_debug of sCh2GainChangeRst : signal is "true";
---    attribute keep of sCh2GainChangeRst : signal is "true";
-    
---    attribute mark_debug of sCh1GainConfigFsm : signal is "true";
---    attribute keep of sCh1GainConfigFsm : signal is "true";
---    attribute mark_debug of sCh2GainConfigFsm : signal is "true";
---    attribute keep of sCh2GainConfigFsm : signal is "true";
---    attribute mark_debug of sCh1CouplingConfigFsm : signal is "true";
---    attribute keep of sCh1CouplingConfigFsm : signal is "true";
---    attribute mark_debug of sCh2CouplingConfigFsm : signal is "true";
---    attribute keep of sCh2CouplingConfigFsm : signal is "true";
-    
---    attribute mark_debug of sADC_SPI_RdData : signal is "true";
---    attribute keep of sADC_SPI_RdData : signal is "true";    
---    attribute mark_debug of sCh1CouplingH : signal is "true";
---    attribute keep of sCh1CouplingH : signal is "true";
---    attribute mark_debug of sCh1CouplingL : signal is "true";
---    attribute keep of sCh1CouplingL : signal is "true";
---    attribute mark_debug of sCh2CouplingH : signal is "true";
---    attribute keep of sCh2CouplingH : signal is "true";
---    attribute mark_debug of sCh2CouplingL : signal is "true";
---    attribute keep of sCh2CouplingL : signal is "true";
---    attribute mark_debug of sCh1GainH : signal is "true";
---    attribute keep of sCh1GainH : signal is "true";
---    attribute mark_debug of sCh1GainL : signal is "true";
---    attribute keep of sCh1GainL : signal is "true";
---    attribute mark_debug of sCh2GainH : signal is "true";
---    attribute keep of sCh2GainH : signal is "true";
---    attribute mark_debug of sCh2GainL : signal is "true";
---    attribute keep of sCh2GainL : signal is "true";
---    attribute mark_debug of sRelayComH : signal is "true";
---    attribute keep of sRelayComH : signal is "true";
---    attribute mark_debug of sRelayComL : signal is "true";
---    attribute keep of sRelayComL : signal is "true";
-    
---        attribute mark_debug of sRelayTimer : signal is "true";
---    attribute keep of sRelayTimer : signal is "true";
---        attribute mark_debug of sRelayCntEn : signal is "true";
---    attribute keep of sRelayCntEn : signal is "true";
---        attribute mark_debug of sRelayPrescaler : signal is "true";
---    attribute keep of sRelayPrescaler : signal is "true";
---            attribute mark_debug of sRelayRst : signal is "true";
---    attribute keep of sRelayRst : signal is "true";
-
---    attribute mark_debug of sCh1CoefMultHg : signal is "true";
---    attribute keep of sCh1CoefMultHg : signal is "true";
---    attribute mark_debug of sCh1CoefAddHg : signal is "true";
---    attribute keep of sCh1CoefAddHg : signal is "true";
---    attribute mark_debug of sCh1CoefAdd : signal is "true";
---    attribute keep of sCh1CoefAdd : signal is "true";
---    attribute mark_debug of sCh1CoefMult : signal is "true";
---    attribute keep of sCh1CoefMult : signal is "true";
---    attribute mark_debug of sCh1CalibMult : signal is "true";
---    attribute keep of sCh1CalibMult : signal is "true";
---    attribute mark_debug of sCh1CalibAdd : signal is "true";
---    attribute keep of sCh1CalibAdd : signal is "true";
---    attribute mark_debug of sCh1Calib : signal is "true";
---    attribute keep of sCh1Calib : signal is "true";
---    attribute mark_debug of sCh1Out : signal is "true";
---    attribute keep of sCh1Out : signal is "true";
---        attribute mark_debug of sCh1CalibMultInv : signal is "true";
---    attribute keep of sCh1CalibMultInv : signal is "true";
-    
---    attribute mark_debug of sChannelA : signal is "true";
---    attribute keep of sChannelA : signal is "true"; 
---    attribute mark_debug of sChannelB : signal is "true";
---    attribute keep of sChannelB : signal is "true"; 
-
 begin
 
 
@@ -686,72 +539,6 @@ begin
 end process;
 
 ------------------------------------------------------ADC SPI configuration-----------------------------------------------------------------
-
-----SPI transmit command sequence
---kADC_SPI_Cmd(0) <= x"000503";  -- Device index A|B
---kADC_SPI_Cmd(1) <= x"000803";  -- Power modes: digital reset
---kADC_SPI_Cmd(2) <= x"000501";  -- Device index: A
---kADC_SPI_Cmd(3) <= x"001431";  -- Output mode: CMOS | interleave | disable A | output not invert | Gray code
---kADC_SPI_Cmd(4) <= x"000502";  -- Device index: B
---kADC_SPI_Cmd(5) <= x"001421";  -- Output mode: CMOS | interleave | enable B | output not invert | Gray code
---kADC_SPI_Cmd(6) <= x"000500";  -- Device index: none
---kADC_SPI_Cmd(7) <= x"000B03";  -- Clck Divide: 4
---kADC_SPI_Cmd(8) <= x"001600";  -- Clock Phase control: DCO not inverted, Input clock divider phase adjust 0
---kADC_SPI_Cmd(9) <= x"002A00";  -- Overrange control: output disable
---kADC_SPI_Cmd(10) <= x"001511"; -- Output adjust: CMOS drive strength 01 - 2X [DCO | DOUT]
---kADC_SPI_Cmd(11) <= x"0017" & DCO_Delay;                -- Output Delay; DCO delay enabled; 0.56ns
---kADC_SPI_Cmd(12) <= x"003A02"; -- Sync control : continuous | sync enable | 0
---kADC_SPI_Cmd(13) <= x"000503"; -- Device index: A|B
---kADC_SPI_Cmd(14) <= x"000800"; -- Power modes: Normal operation
---kADC_SPI_Cmd(15) <= x"000500";
-----TO BE REMOVED
-----Remove open
---kADC_SPI_Cmd(16) <= x"000503"; --Device index: none
---kADC_SPI_Cmd(17) <= x"0019AA";--Pattern1 LSB
---kADC_SPI_Cmd(18) <= x"001ABB";--Pattern1 MSB
---kADC_SPI_Cmd(19) <= x"001BCC";--Pattern2 LSB
---kADC_SPI_Cmd(20) <= x"001CDD";--Pattern2 MSB
---kADC_SPI_Cmd(21) <= x"000501";
---kADC_SPI_Cmd(22) <= x"001431";--x"001431"; --x"001430"; --Output Mode CH A
---kADC_SPI_Cmd(23) <= x"000D" & Pattern_SelectA;--x"000D00"; --x"000D03";
---kADC_SPI_Cmd(24) <= x"000502";
---kADC_SPI_Cmd(25) <= x"001421";--x"001421"; --x"001420"; --Output Mode CH B
---kADC_SPI_Cmd(26) <= x"000D" & Pattern_SelectB;--x"000D00"; --x"000D02";
-----remove close
---kADC_SPI_Cmd(27) <= x"000500";
-
---SPI readback sequence
---kADC_SPI_Rdbck(0) <= x"03";
---kADC_SPI_Rdbck(1) <= x"03";
---kADC_SPI_Rdbck(2) <= x"01"; 
---kADC_SPI_Rdbck(3) <= x"31";
---kADC_SPI_Rdbck(4) <= x"02"; 
---kADC_SPI_Rdbck(5) <= x"21";
---kADC_SPI_Rdbck(6) <= x"00"; 
---kADC_SPI_Rdbck(7) <= x"03"; 
---kADC_SPI_Rdbck(8) <= x"00";
---kADC_SPI_Rdbck(9) <= x"00"; 
---kADC_SPI_Rdbck(10) <= x"11"; 
---kADC_SPI_Rdbck(11) <= DCO_Delay; 
---kADC_SPI_Rdbck(12) <= x"02"; 
---kADC_SPI_Rdbck(13) <= x"03"; 
---kADC_SPI_Rdbck(14) <= x"00"; 
---kADC_SPI_Rdbck(15) <= x"00"; 
-----remove open
---kADC_SPI_Rdbck(16) <= x"03"; 
---kADC_SPI_Rdbck(17) <= x"AA";
---kADC_SPI_Rdbck(18) <= x"BB";
---kADC_SPI_Rdbck(19) <= x"CC";
---kADC_SPI_Rdbck(20) <= x"DD";
---kADC_SPI_Rdbck(21) <= x"01";
---kADC_SPI_Rdbck(22) <= x"31";
---kADC_SPI_Rdbck(23) <= Pattern_SelectA; 
---kADC_SPI_Rdbck(24) <= x"02";
---kADC_SPI_Rdbck(25) <= x"21";
---kADC_SPI_Rdbck(26) <= Pattern_SelectB; 
-----remove closed
---kADC_SPI_Rdbck(27) <= x"00";
-
 ProcCmdCounter: process (SysClk) --sent command counter 
 begin
     if (SysClk' event and SysClk = '1') then
@@ -1532,4 +1319,3 @@ InstSyncOserdes : OSERDESE2
              
 end Behavioral;
 
---https://www.xilinx.com/support/answers/65277.html

@@ -1,3 +1,53 @@
+
+-------------------------------------------------------------------------------
+--
+-- File: AXI_ZmodADC1410_v1_0.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod ADC 1410 AXI Adapter
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
+-- 
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module provides the means to interface the Zmod ADC 1410 Low Level 
+--Controller with an AXI based processing system. It includes a set of control
+--and status registers that can be accessed over the AXI Lite interface, a module
+--that managages the indirect access of the AD9648 SPI interface over the SPI 
+--indirect access port (IAP), a circular buffer implememnted in BRAM, a basic trigger
+--mechanism and a bridge between the circular buffer and the AXI Stream interface. 
+--Sample data is expected to be moved from the circular buffer to system memory  
+--through  a DMA engine.
+--  
+-------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -194,11 +244,11 @@ architecture arch_imp of AXI_ZmodADC1410_v1_0 is
            lSPI_CmdRxCount : out STD_LOGIC_VECTOR(6 downto 0);
            lSPI_CmdTxRxError : out STD_LOGIC_VECTOR(3 downto 0);
            lTxFifoWrEn : in STD_LOGIC;
-           sTxFifoRdEn : in STD_LOGIC; --
+           lRxFifoRdEn : in STD_LOGIC;
            sTxFifoRdEnRdy : out STD_LOGIC;
            sTxFifoDout : out STD_LOGIC_VECTOR(23 downto 0); --
            sSPI_TxValid : out STD_LOGIC;
-           lRxFifoRdEn : in STD_LOGIC;
+           sTxFifoRdEn : in STD_LOGIC; --
            sRxFifoWrEn : in STD_LOGIC; --
            sRxFifoDin : in STD_LOGIC_VECTOR (7 downto 0) --
           
@@ -283,65 +333,8 @@ signal lRegisters, lRegistersDin, sRegHanshakeOut, sRegisters, lRegistersR : Reg
 signal lIpushReg, lSetIpushReg, lIrdyReg, sValidReg, lRstIpushReg: std_logic_vector (kCrossRegCnt downto 0);
 signal sAdcSPI_IdleR, sAdcSPI_IdleRdy, sAdcSPI_IdleSetPush, sAdcSPI_IdlePush, sAdcSPI_IdleRstPush, lAdcSPI_IdleValid : std_logic;
 signal sAdcSPI_IdleDin, lAdcSPI_IdleDout : std_logic_vector (0 downto 0);
-
-    attribute mark_debug : string;
-    attribute keep : string;
---    attribute mark_debug of lExtRegRst_n : signal is "true";
---    attribute keep of lExtRegRst_n : signal is "true";
---    attribute mark_debug of lRst_n : signal is "true";
---    attribute keep of lRst_n : signal is "true";
---    attribute mark_debug of xsRst_n : signal is "true";
---    attribute keep of xsRst_n : signal is "true";
-    
-    
---    attribute mark_debug of lRstIpushReg : signal is "true";
---    attribute keep of lRstIpushReg : signal is "true";
---    attribute mark_debug of lRegistersR : signal is "true";
---    attribute keep of lRegistersR : signal is "true";
---        attribute mark_debug of lRegisters : signal is "true";
---    attribute keep of lRegisters : signal is "true";
---    attribute mark_debug of lSetIpushReg : signal is "true";
---    attribute keep of lSetIpushReg : signal is "true";
---        attribute mark_debug of lIpushReg : signal is "true";
---    attribute keep of lIpushReg : signal is "true";
---    attribute mark_debug of lRegRst : signal is "true";
---    attribute keep of lRegRst : signal is "true";
---    attribute mark_debug of sRst_n : signal is "true";
---    attribute keep of sRst_n : signal is "true";
---    attribute mark_debug of lReg7Rd : signal is "true";
---    attribute keep of lReg7Rd : signal is "true";
---    attribute mark_debug of lSPI_CmdTx : signal is "true";
---    attribute keep of lSPI_CmdTx : signal is "true";
---    attribute mark_debug of lReg1Rd : signal is "true";
---    attribute keep of lReg1Rd : signal is "true";
---    attribute mark_debug of lIrqOut : signal is "true";
---    attribute keep of lIrqOut : signal is "true";
---    attribute mark_debug of lRegisters : signal is "true";
---    attribute keep of lRegisters : signal is "true";
---    attribute mark_debug of sRegisters : signal is "true";
---    attribute keep of sRegisters : signal is "true";
---    attribute mark_debug of lIpushReg : signal is "true";
---    attribute keep of lIpushReg : signal is "true";
---    attribute mark_debug of lSetIpushReg : signal is "true";
---    attribute keep of lSetIpushReg : signal is "true";
---    attribute mark_debug of lIrdyReg : signal is "true";
---    attribute keep of lIrdyReg : signal is "true";
---    attribute mark_debug of sValidReg : signal is "true";
---    attribute keep of sValidReg : signal is "true";
---    attribute mark_debug of lRstIpushReg : signal is "true";
---    attribute keep of lRstIpushReg : signal is "true";  
---        attribute mark_debug of lSetIpushTL : signal is "true";
---    attribute keep of lSetIpushTL : signal is "true"; 
---     attribute mark_debug of lRstIpushTL : signal is "true";
---    attribute keep of lRstIpushTL : signal is "true";
---         attribute mark_debug of xsDoutTL : signal is "true";
---    attribute keep of xsDoutTL : signal is "true";
---         attribute mark_debug of lIpushTL : signal is "true";
---    attribute keep of lIpushTL : signal is "true";
---          attribute mark_debug of lIrdyTL : signal is "true";
---    attribute keep of lIrdyTL : signal is "true";  
-        
-	begin
+   
+begin
 
 sSPI_EnTx <= SYS_SPI_CMD_R_S;
 sSPI_EnRx <= SYS_SPI_CMD_READ_EN;
@@ -495,11 +488,11 @@ Circular_Buffer_inst : Circular_Buffer
         lSPI_CmdRxCount => lSPI_CmdRxCount,
         lSPI_CmdTxRxError => lSPI_CmdTxRxError,
         lTxFifoWrEn => lSPI_TxFifoWrEn,
-        sTxFifoRdEn => sSPI_TxRdEn,
+        lRxFifoRdEn => lSPI_RxFifoRdEn,        
         sTxFifoRdEnRdy => sSPI_TxRdEnRdy,
         sTxFifoDout => sSPI_TxDout,
         sSPI_TxValid => sSPI_TxValid,
-        lRxFifoRdEn => lSPI_RxFifoRdEn,
+        sTxFifoRdEn => sSPI_TxRdEn,
         sRxFifoWrEn => sSPI_RxWrEn,
         sRxFifoDin => sSPI_RxDin 
         );

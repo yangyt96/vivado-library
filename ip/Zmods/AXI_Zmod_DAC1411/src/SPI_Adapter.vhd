@@ -1,61 +1,83 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+
+-------------------------------------------------------------------------------
+--
+-- File: SPI_Adapter.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod DAC 1411 AXI Adapter
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
 -- 
--- Create Date: 09/23/2019 05:17:57 PM
--- Design Name: 
--- Module Name: SPI_Adapter - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module implements the SPI indirect access port (IAP). The physical SPI interface of the AD9717 is managed 
+--by the Zmod DAC 1411 low level controller, this module representing a bridge between the AXI Lite interface and 
+--the Zmod ADC 1411 Low Level Controller. CMD_TX register  write accesses will trigger SPI commands to be loaded in 
+--the transmit FIFO. The CMD_R/S bit in the Control Register will instruct the Zmod ADC 1411 Low Level Controller to
+--fetch SPI commands from the transmit FIFO, process them and store the requested data bytes (in case of a read command)
+--in the receive FIFO. The CMD_DONE bit in the Status Register will be set on the successful completion of the last 
+--command in the transmit FIFO.  
+--  
+-------------------------------------------------------------------------------
 
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity SPI_Adapter is
-    Port ( SysClk : in STD_LOGIC;
-           AxiLiteClk : in STD_LOGIC;
-           sRst_n : in std_logic;
-           lRst_n : in STD_LOGIC;
-           sADC_SPI_CmdDone : in std_logic;
-           sSPI_CmdRunStop  : in STD_LOGIC;
-           sSPI_CmdReadEn : in STD_LOGIC;
-           lSPI_CmdTx : in STD_LOGIC_VECTOR(23 downto 0);
-           lSPI_CmdRx : out STD_LOGIC_VECTOR(7 downto 0);
-           lSPI_CmdTxDone : out STD_LOGIC;
+    Port ( SysClk : in STD_LOGIC; --100MHz input clock
+           AxiLiteClk : in STD_LOGIC; --AXI Lite input clock
+           sRst_n : in std_logic; --Active low synchronous reset signal synchronized with SysClk 
+           lRst_n : in STD_LOGIC; --Active low synchronous reset signal synchronized with AxiLiteClk 
+           --Control/Status register interface
+           sADC_SPI_CmdDone : in std_logic; -- Flag indicating that the low level controller has succesfully completed the requested SPI command
+           sSPI_CmdRunStop  : in STD_LOGIC; -- Control bit that enables the low level controller to start processing SPI commands
+           sSPI_CmdReadEn : in STD_LOGIC; 
+           lSPI_CmdTx : in STD_LOGIC_VECTOR(23 downto 0); --SPI command input (CMD_TX register)
+           lSPI_CmdRx : out STD_LOGIC_VECTOR(7 downto 0); --SPI returned data byte
+           lSPI_CmdTxDone : out STD_LOGIC; --Flag indicating that the command queue has been successfully processed
            lSPI_CmdRxDone : out STD_LOGIC;
-           lSPI_CmdTxCount : out STD_LOGIC_VECTOR(6 downto 0);
-           lSPI_CmdRxCount : out STD_LOGIC_VECTOR(6 downto 0);
-           lSPI_CmdTxRxError : out STD_LOGIC_VECTOR(3 downto 0);
-           lTxFifoWrEn : in STD_LOGIC;
-           sTxFifoRdEn : in STD_LOGIC; --
+           lSPI_CmdTxCount : out STD_LOGIC_VECTOR(6 downto 0); --Transmit FIFO command count 
+           lSPI_CmdRxCount : out STD_LOGIC_VECTOR(6 downto 0); --Receive FIFO command count
+           lSPI_CmdTxRxError : out STD_LOGIC_VECTOR(3 downto 0); 
+           lTxFifoWrEn : in STD_LOGIC; --Transmit FIFO write enable input
+           lRxFifoRdEn : in STD_LOGIC; --Receive data FIFO read enable input
+           --Low Level Controller Interface
            sTxFifoRdEnRdy : out STD_LOGIC; --the lower level IP should first assign sTxFifoRdEn and than wait sTxFifoRdEnRdy to be asserted before signaling command completion
-           sTxFifoDout : out STD_LOGIC_VECTOR(23 downto 0); --
-           sSPI_TxValid : out STD_LOGIC;
-           lRxFifoRdEn : in STD_LOGIC;
-           sRxFifoWrEn : in STD_LOGIC; --
-           sRxFifoDin : in STD_LOGIC_VECTOR (7 downto 0) --
-          
+           sTxFifoDout : out STD_LOGIC_VECTOR(23 downto 0); --Command output data
+           sSPI_TxValid : out STD_LOGIC; --Command output data valid signal
+           sTxFifoRdEn : in STD_LOGIC; --Transmit FIFO read enable input 
+           sRxFifoWrEn : in STD_LOGIC; --Receive data FIFO write enable input 
+           sRxFifoDin : in STD_LOGIC_VECTOR (7 downto 0) --Receive data input 
            );
 end SPI_Adapter;
 
@@ -145,70 +167,6 @@ signal sPushSPI_CmdDone, sRdySPI_CmdDone, lValidSPI_CmdDone : std_logic;
 signal sDinSPI_CmdDone, lDoutSPI_CmdDone : std_logic_vector(0 downto 0);
 
 signal lRst_p : std_logic;
-
-    attribute mark_debug : string;
-    attribute keep : string;
-    
---    attribute mark_debug of lTxFifoEmpty : signal is "true";
---    attribute keep of lTxFifoEmpty : signal is "true";
---    attribute mark_debug of lTxFifoEmptyPulse : signal is "true";
---    attribute keep of lTxFifoEmptyPulse : signal is "true";
---    attribute mark_debug of lADC_CmdDone : signal is "true";
---    attribute keep of lADC_CmdDone : signal is "true";
---    attribute mark_debug of lTxDoneSet : signal is "true";
---    attribute keep of lTxDoneSet : signal is "true";
---    attribute mark_debug of lTxDonePulse : signal is "true";
---    attribute keep of lTxDonePulse : signal is "true";
-    
---    attribute mark_debug of lTxFifoWrEn : signal is "true";
---    attribute keep of lTxFifoWrEn : signal is "true";
---    attribute mark_debug of lRxFifoRdEn : signal is "true";
---    attribute keep of lRxFifoRdEn : signal is "true";
---    attribute mark_debug of lSPI_CmdTxCount : signal is "true";
---    attribute keep of lSPI_CmdTxCount : signal is "true";
---    attribute mark_debug of lSPI_CmdRxCount : signal is "true";
---    attribute keep of lSPI_CmdRxCount : signal is "true";
---    attribute mark_debug of lSPI_CmdTx : signal is "true";
---    attribute keep of lSPI_CmdTx : signal is "true";
---    attribute mark_debug of sTxFifoDout : signal is "true";
---    attribute keep of sTxFifoDout : signal is "true";
---    attribute mark_debug of sRxFifoDin : signal is "true";
---    attribute keep of sRxFifoDin : signal is "true";
---    attribute mark_debug of sRxFifoWrEn : signal is "true";
---    attribute keep of sRxFifoWrEn : signal is "true";
---    attribute mark_debug of lSPI_CmdTxDone : signal is "true";
---    attribute keep of lSPI_CmdTxDone : signal is "true";
-    
---    attribute mark_debug of lRxFifoValid : signal is "true";
---    attribute keep of lRxFifoValid : signal is "true";
---    attribute mark_debug of lRst_p : signal is "true";
---    attribute keep of lRst_p : signal is "true";
---    attribute mark_debug of lRst_n : signal is "true";
---    attribute keep of lRst_n : signal is "true";    
---    attribute mark_debug of lSPI_CmdRx : signal is "true";
---    attribute keep of lSPI_CmdRx : signal is "true";
---    attribute mark_debug of lRxFifoEmpty : signal is "true";
---    attribute keep of lRxFifoEmpty : signal is "true";
---    attribute mark_debug of sRxFifoWrRstBusy : signal is "true";
---    attribute keep of sRxFifoWrRstBusy : signal is "true";        
---    attribute mark_debug of lRxFifoRdRstBusy : signal is "true";
---    attribute keep of lRxFifoRdRstBusy : signal is "true";     
-       
---    attribute mark_debug of sTxFifoRdEn : signal is "true";
---    attribute keep of sTxFifoRdEn : signal is "true";
---    attribute mark_debug of sSPI_TxValid : signal is "true";
---    attribute keep of sSPI_TxValid : signal is "true"; 
-    
---    attribute mark_debug of sADC_SPI_CmdDone : signal is "true";
---    attribute keep of sADC_SPI_CmdDone : signal is "true";
---    attribute mark_debug of sRdySPI_CmdDone : signal is "true";
---    attribute keep of sRdySPI_CmdDone : signal is "true";
---    attribute mark_debug of lValidSPI_CmdDone : signal is "true";
---    attribute keep of lValidSPI_CmdDone : signal is "true";
---    attribute mark_debug of lDoutSPI_CmdDone : signal is "true";
---    attribute keep of lDoutSPI_CmdDone : signal is "true"; 
---    attribute mark_debug of sDinSPI_CmdDone : signal is "true";
---    attribute keep of sDinSPI_CmdDone : signal is "true";  
 
 begin
 
@@ -352,18 +310,6 @@ generic map (
         );
 
 lADC_CmdDone <= lValidSPI_CmdDone;        
---ProcSPI_CmdDoneOdata: process (AxiLiteClk) 
---begin
---    if (AxiLiteClk' event and AxiLiteClk = '1') then
---        if (lRst_n = '0') then
---            lADC_CmdDone <=  '0'; 
---        else
---            if (lValidSPI_CmdDone = '1') then
---                lADC_CmdDone <= lDoutSPI_CmdDone(0);
---            end if;
---        end if;
---    end if;
---end process;
 
 InstTxFifoRdEnHandshake : HandshakeData -- synchronization module for AXI LITE LENGTH register crossing to PROG_CLK clock domain 
 generic map (
@@ -381,8 +327,6 @@ generic map (
         aReset => lRst_p
         );
         
---lTxFifoRdEn <= sTxFifoRdEn;
-
 InstRxFifoWrEnHandshake : HandshakeData -- synchronization module for AXI LITE LENGTH register crossing to PROG_CLK clock domain 
 generic map (
     kDataWidth	=> 1
@@ -398,8 +342,6 @@ generic map (
         oValid => lRxFifoWrEn,   -- indicates valid synchronized data
         aReset => lRst_p
         );
-        
---lRxFifoWrEn <= sRxFifoWrEn;
 
 TX_FIFO_COUNTER_PROC: process (AxiLiteClk)  
 begin
@@ -436,16 +378,13 @@ begin
     if (AxiLiteClk' event and AxiLiteClk = '1') then
         if (lRst_n = '0') then
             lTxFifoEmptyR <= '0';
---            lADC_CmdDone_r <= '0';
         else
             lTxFifoEmptyR <= lTxFifoEmpty;
---            lADC_CmdDone_r <= lADC_CmdDone;
         end if;
     end if;
 end process;
 
 lTxFifoEmptyPulse <= lTxFifoEmpty and (not lTxFifoEmptyR);
---lADC_CmdDone_Pulse <= lADC_CmdDone and (not lADC_CmdDone_r);
 
 SYS_TXDONE_PROC: process (AxiLiteClk)  
 begin
@@ -462,7 +401,7 @@ begin
     end if;
 end process;
 
-FIFO_TXDONE_R_PROC: process (AxiLiteClk)  -- SysClk = 100MHz => AP_START=1MHz
+FIFO_TXDONE_R_PROC: process (AxiLiteClk) 
 begin
     if (AxiLiteClk' event and AxiLiteClk = '1') then
         if (lRst_n = '0') then
@@ -474,7 +413,6 @@ begin
 end process;
 
 lTxDonePulse <= lTxDoneSet and (not lTxDoneSetR);
-lSPI_CmdTxDone <= lTxDonePulse;--lTxFifoEmptyPulse;
-
+lSPI_CmdTxDone <= lTxDonePulse;
 
 end Behavioral;

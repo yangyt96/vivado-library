@@ -1,3 +1,47 @@
+
+-------------------------------------------------------------------------------
+--
+-- File: AXI_ZmodADC1410_v1_0_S00_AXI.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod ADC 1410 AXI Adapter
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
+-- 
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module manages the AXI Lite interface, implements the control and
+--status registers and manages the registers' access policies. 
+--  
+-------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -157,32 +201,10 @@ architecture arch_imp of AXI_ZmodADC1410_v1_0_S00_AXI is
 	signal lSlvRegWrEn	: std_logic;
 	signal lRegDataOut	:std_logic_vector(kAxiLiteDataWidth-1 downto 0);
 	signal lByteIndex	: integer;
-	signal lAwEn	: std_logic;
-	
+	signal lAwEn	: std_logic;	
 	signal lSlvReg4RdEn : std_logic;
-
-    attribute mark_debug : string;
-    attribute keep : string;
-    
---    attribute mark_debug of lSlvReg1 : signal is "true";
---    attribute keep of lSlvReg1 : signal is "true";
---    attribute mark_debug of lSPI_RxFifoRdEn : signal is "true";
---    attribute keep of lSPI_RxFifoRdEn : signal is "true";
---    attribute mark_debug of lSlvRegRdEn : signal is "true";
---    attribute keep of lSlvRegRdEn : signal is "true";
---    attribute mark_debug of lAxiAraddrLoc : signal is "true";
---    attribute keep of lAxiAraddrLoc : signal is "true";
---    attribute mark_debug of lSPI_TxFifoWrEn : signal is "true";
---    attribute keep of lSPI_TxFifoWrEn : signal is "true";
---    attribute mark_debug of lSlvRegWrEn : signal is "true";
---    attribute keep of lSlvRegWrEn : signal is "true";
---    attribute mark_debug of lSPI_CmdRx : signal is "true";
---    attribute keep of lSPI_CmdRx : signal is "true";
-    
-    
             
 begin
-	-- I/O Connections assignments
 	
 	lReg0Rd <= lSlvReg0;
 	lReg1Rd <= lSlvReg1;

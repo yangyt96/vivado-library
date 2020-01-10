@@ -1,35 +1,54 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 01/10/2019 11:43:00 AM
--- Design Name: 
--- Module Name: AD9648_DAC9717 - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------
+--
+-- File: ZmodDAC1411_controller.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod DAC 1411 Low Level Controller
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
+-- 
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module interfaces directly with the Zmod ADC 1410. It configures the Zmod's 
+--DAC gain based on user options, writes an initial configuration to the AD9717
+--(also performing a self calibration sequence), manages the DAC's SPI interface 
+--and multiplexes the samples recieved on the two input data channels in the format
+--requested by AD9717.
+--  
+-------------------------------------------------------------------------------
 
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
-
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -39,13 +58,13 @@ entity ZmodDAC1411_Controller is
        kExtScaleConfigEn : boolean := false;
        kExtCmdInterfaceEn : boolean := false;
     
-	   kCh1LgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 low gain gain compensation coefficient parameter
+	   kCh1LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel1 low gain gain compensation coefficient parameter
 	   kCh1LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 low gain offset compensation coefficient parameter
-       kCh1HgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 high gain gain compensation coefficient parameter 
+       kCh1HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel1 high gain gain compensation coefficient parameter 
        kCh1HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel1 high gain offset compensation coefficient parameter
-       kCh2LgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 low gain gain compensation coefficient parameter 
+       kCh2LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel2 low gain gain compensation coefficient parameter 
        kCh2LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 low gain offset compensation coefficient parameter 
-       kCh2HgMultCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 high gain gain compensation coefficient parameter 
+       kCh2HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; --Channel2 high gain gain compensation coefficient parameter 
        kCh2HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; --Channel2 high gain offset compensation coefficient parameter
     
        kCh1ScaleStatic : std_logic := '0'; -- 0 -> Low Gain; 1 -> High Gain; 
@@ -179,38 +198,6 @@ component DAC_SPI
            DONE : out STD_LOGIC );
 end component;
 
-    attribute mark_debug : string;
-    attribute keep : string;
-    attribute mark_debug of DAC_FSM_STATE_R : signal is "true";
-    attribute keep of DAC_FSM_STATE_R : signal is "true";
-    attribute mark_debug of sCmdCnt : signal is "true";
-    attribute keep of sCmdCnt : signal is "true";
-    attribute mark_debug of sDAC_SPI_StartTransfer : signal is "true";
-    attribute keep of sDAC_SPI_StartTransfer : signal is "true";
-    attribute mark_debug of sDAC_SPI_Width : signal is "true";
-    attribute keep of sDAC_SPI_Width : signal is "true";
-    attribute mark_debug of sDAC_SPI_WrData : signal is "true";
-    attribute keep of sDAC_SPI_WrData : signal is "true";
-    attribute mark_debug of sDAC_SPI_Addr : signal is "true";
-    attribute keep of sDAC_SPI_Addr : signal is "true";
-    attribute mark_debug of sExtSPI_CmdDone : signal is "true";
-    attribute keep of sExtSPI_CmdDone : signal is "true";
-  
-      attribute mark_debug of sCh1In : signal is "true";
-    attribute keep of sCh1In : signal is "true";  
-    attribute mark_debug of sSCh1CoefMult : signal is "true";
-    attribute keep of sSCh1CoefMult : signal is "true";
-    attribute mark_debug of sCh1CalibMult : signal is "true";
-    attribute keep of sCh1CalibMult : signal is "true";
-    attribute mark_debug of sCh1CalibAdd : signal is "true";
-    attribute keep of sCh1CalibAdd : signal is "true";
-    attribute mark_debug of sSCh1CoefAdd : signal is "true";
-    attribute keep of sSCh1CoefAdd : signal is "true";
-    attribute mark_debug of sCh1Calib : signal is "true";
-    attribute keep of sCh1Calib : signal is "true";
-        attribute mark_debug of sODDR_D1 : signal is "true";
-    attribute keep of sODDR_D1 : signal is "true";
-      
 begin
 
 ----------------------------Zmod Configuration-----------------------------------------------------------------------------------------

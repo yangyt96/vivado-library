@@ -270,7 +270,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e2b39eaa</spirit:value>
+            <spirit:value>b5086b54</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -286,7 +286,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e2b39eaa</spirit:value>
+            <spirit:value>b5086b54</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -300,7 +300,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>16aef986</spirit:value>
+            <spirit:value>a3960beb</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1044,7 +1044,7 @@
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh1LgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch1lgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh1LgAddCoefStatic</spirit:name>
@@ -1054,7 +1054,7 @@
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh1HgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch1hgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh1HgAddCoefStatic</spirit:name>
@@ -1064,7 +1064,7 @@
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh2LgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch2lgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh2LgAddCoefStatic</spirit:name>
@@ -1074,7 +1074,7 @@
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh2HgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch2hgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
         <spirit:name>kCh2HgAddCoefStatic</spirit:name>
@@ -1125,7 +1125,7 @@
       <spirit:file>
         <spirit:name>src/ZmodDAC1411_Controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_c3daeff2</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_7484f2ad</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1144,7 +1144,7 @@
       <spirit:file>
         <spirit:name>xgui/ZmodDAC1411_Controller_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_16aef986</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_a3960beb</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1157,67 +1157,67 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1LgMultCoefStatic</spirit:name>
-      <spirit:displayName>Kch1lgmultcoefstatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:displayName>Ch1LgMultCoefStatic</spirit:displayName>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1LgAddCoefStatic</spirit:name>
-      <spirit:displayName>Kch1lgaddcoefstatic</spirit:displayName>
+      <spirit:displayName>Ch1LgAddCoefStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1HgMultCoefStatic</spirit:name>
-      <spirit:displayName>Kch1hgmultcoefstatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:displayName>Ch1HgMultCoefStatic</spirit:displayName>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1HgAddCoefStatic</spirit:name>
-      <spirit:displayName>Kch1hgaddcoefstatic</spirit:displayName>
+      <spirit:displayName>Ch1HgAddCoefStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2LgMultCoefStatic</spirit:name>
-      <spirit:displayName>Kch2lgmultcoefstatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:displayName>Ch2LgMultCoefStatic</spirit:displayName>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2LgAddCoefStatic</spirit:name>
-      <spirit:displayName>Kch2lgaddcoefstatic</spirit:displayName>
+      <spirit:displayName>Ch2LgAddCoefStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2HgMultCoefStatic</spirit:name>
-      <spirit:displayName>Kch2hgmultcoefstatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:displayName>Ch2HgMultCoefStatic</spirit:displayName>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2HgAddCoefStatic</spirit:name>
-      <spirit:displayName>Kch2hgaddcoefstatic</spirit:displayName>
+      <spirit:displayName>Ch2HgAddCoefStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1ScaleStatic</spirit:name>
-      <spirit:displayName>Kch1scalestatic</spirit:displayName>
+      <spirit:displayName>Ch1ScaleStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1ScaleStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2ScaleStatic</spirit:name>
-      <spirit:displayName>Kch2scalestatic</spirit:displayName>
+      <spirit:displayName>Ch2ScaleStatic</spirit:displayName>
       <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2ScaleStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kExtCalibEn</spirit:name>
-      <spirit:displayName>Kextcaliben</spirit:displayName>
+      <spirit:displayName>ExtCalibEn</spirit:displayName>
       <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.kExtCalibEn">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kExtScaleConfigEn</spirit:name>
-      <spirit:displayName>Kextscaleconfigen</spirit:displayName>
+      <spirit:displayName>ExtScaleConfigEn</spirit:displayName>
       <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.kExtScaleConfigEn">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kExtCmdInterfaceEn</spirit:name>
-      <spirit:displayName>Kextcmdinterfaceen</spirit:displayName>
+      <spirit:displayName>ExtCmdInterfaceEn</spirit:displayName>
       <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.kExtCmdInterfaceEn">false</spirit:value>
     </spirit:parameter>
   </spirit:parameters>
@@ -1252,8 +1252,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>ZmodDAC1411_Controller_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>38</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-12-19T12:32:53Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>42</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-01-10T12:55:01Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@4d4d981c_ARCHIVE_LOCATION">c:/Vivado_Projects/Git_ZmodADC_LowLevel/repo/local/ip/Zmod_LowLevel_IP/ZmodDAC1411_Controller</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@37e93cea_ARCHIVE_LOCATION">c:/Vivado_Projects/Git_ZmodADC_LowLevel/repo/local/ip/Zmod_LowLevel_IP/ZmodDAC1411_Controller</xilinx:tag>
@@ -1932,15 +1932,79 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3246a30b_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@9a3a763_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@14db1816_ARCHIVE_LOCATION">/home/cipi/Documents/Eclypse/eclypse_z7/hw/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33ccf307_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35d5c2c6_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@81298ce_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48091da5_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f818f5c_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62541975_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b9c2510_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26f862db_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7459ef2d_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36aef124_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@272ac630_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44728532_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ae23238_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@434d8a95_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43093ac6_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64f634b0_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4192c312_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4e836935_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5d83a4b9_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42dfbd14_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41ec8729_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f5f444a_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@512f44a8_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27110ba4_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6fa3f2f_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@256d8ca9_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12324f4b_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@750bf2a5_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53b56bf3_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68620df9_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79d16f47_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@386ba9be_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69df2279_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@73c5380_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30cfa7ca_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7f08bda7_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51e7f9fa_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28054abb_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cd52063_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2adc5abd_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28279684_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1175c34e_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f91e210_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f57b44d_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13f0a351_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@555509f4_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@272a934a_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37c26266_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32e7c948_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@752543fc_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a0b6318_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c2fc812_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52a2afa7_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46cb5b87_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bf9a0a2_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@613599cc_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77b24f9b_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e1632d5_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@266449d2_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29c9a934_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16e8cf4f_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70883bbe_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3620f5ac_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1233f2b8_ARCHIVE_LOCATION">c:/Vivado_Projects/Ciprian_Git_ZmodDemo/repo/local/ip/ZmodDAC1411_Controller</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="a61a05d2"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="cfbad22d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="0580205e"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="365a2a75"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="4d38b950"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="83ca9d9d"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="d8cbcbe3"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="c14856da"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

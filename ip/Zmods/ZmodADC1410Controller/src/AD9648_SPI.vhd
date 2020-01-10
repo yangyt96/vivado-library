@@ -1,23 +1,46 @@
-----------------------------------------------------------------------------------
--- Company: Digilent
--- Engineer: Tudor Gherman
--- 
--- Create Date: 01/14/2019 09:55:58 AM
--- Design Name: 
--- Module Name: AD9648_SPI - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------
+--
+-- File: AD9648_SPI.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod ADC 1410 Low Level Controller
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
+-- 
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module manages the SPI communication with the Zmod ADC 1410's AD9848.
+--  
+-------------------------------------------------------------------------------
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -26,15 +49,6 @@ use UNISIM.vcomponents.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
 USE IEEE.STD_LOGIC_ARITH.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity AD9648_SPI is
     Port (
@@ -72,49 +86,6 @@ signal sDoneFsm : std_logic;
 type FsmStates_t is (StIdle, StWrite, StRead1, StRead2, StRead3, StDone); 
 signal sCurrentState, sNextState : FsmStates_t;
 signal fsm_state, fsm_state_r : std_logic_vector(3 downto 0);
-
---    attribute mark_debug : string;
---    attribute keep : string;
---    attribute mark_debug of fsm_state : signal is "true";
---    attribute keep of fsm_state : signal is "true";
---    attribute mark_debug of sLdTx : signal is "true";
---    attribute keep of sLdTx : signal is "true";
---    attribute mark_debug of sRdDataR : signal is "true";
---    attribute keep of sRdDataR : signal is "true";
---    attribute mark_debug of sTxVector : signal is "true";
---    attribute keep of sTxVector : signal is "true";
---    attribute mark_debug of sDir : signal is "true";
---    attribute keep of sDir : signal is "true";
---    attribute mark_debug of sCS : signal is "true";
---    attribute keep of sCS : signal is "true";
---    attribute mark_debug of sTxCount : signal is "true";
---    attribute keep of sTxCount : signal is "true";
---    attribute mark_debug of sRxCount : signal is "true";
---    attribute keep of sRxCount : signal is "true";
---    attribute mark_debug of sTxShift : signal is "true";
---    attribute keep of sTxShift : signal is "true";
---    attribute mark_debug of sRxShift : signal is "true";
---    attribute keep of sRxShift : signal is "true";
---    attribute mark_debug of sTxData : signal is "true";
---    attribute keep of sTxData : signal is "true";
---    attribute mark_debug of sRxData : signal is "true";
---    attribute keep of sRxData : signal is "true";
---    attribute mark_debug of sBitCountR : signal is "true";
---    attribute keep of sBitCountR : signal is "true";
---    attribute mark_debug of sRst_n : signal is "true";
---    attribute keep of sRst_n : signal is "true";
---    attribute mark_debug of sClkCounter : signal is "true";
---    attribute keep of sClkCounter : signal is "true";
---    attribute mark_debug of sSPI_Clk : signal is "true";
---    attribute keep of sSPI_Clk : signal is "true";
---    attribute mark_debug of sDone : signal is "true";
---    attribute keep of sDone : signal is "true";
---    attribute mark_debug of sRdData : signal is "true";
---    attribute keep of sRdData : signal is "true";
---        attribute mark_debug of sRdEn : signal is "true";
---    attribute keep of sRdEn : signal is "true";
---        attribute mark_debug of sWrEn : signal is "true";
---    attribute keep of sWrEn : signal is "true";
 
 begin
 

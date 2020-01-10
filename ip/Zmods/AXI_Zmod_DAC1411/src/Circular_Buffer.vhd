@@ -1,22 +1,46 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+
+-------------------------------------------------------------------------------
+--
+-- File: Circular_Buffer.vhd
+-- Author: Tudor Gherman
+-- Original Project: Zmod DAC 1411 AXI Adapter
+-- Date: 15 January 2020
+--
+-------------------------------------------------------------------------------
+-- (c) 2020 Copyright Digilent Incorporated
+-- All Rights Reserved
 -- 
--- Create Date: 08/13/2019 12:38:29 PM
--- Design Name: 
--- Module Name: Circular_Buffer - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+-- This program is free software; distributed under the terms of BSD 3-clause 
+-- license ("Revised BSD License", "New BSD License", or "Modified BSD License")
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- 1. Redistributions of source code must retain the above copyright notice, this
+--    list of conditions and the following disclaimer.
+-- 2. Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+-- 3. Neither the name(s) of the above-listed copyright holder(s) nor the names
+--    of its contributors may be used to endorse or promote products derived
+--    from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+-- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+-- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+-- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+-- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-------------------------------------------------------------------------------
+--
+--This module implements the circular buffer and the AXI Stream to BRAM bridge.
+--  
+-------------------------------------------------------------------------------
 
 
 library IEEE;
@@ -24,41 +48,37 @@ use IEEE.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity Circular_Buffer is
     Generic 
     (
     kBufferSize: integer range 0 to 1024 := 14
     );
-    Port ( SysClk : in STD_LOGIC;
-           AxiStreamClk : in STD_LOGIC;
-           AxiLiteClk : in std_logic;
-           sRst_n : in STD_LOGIC;
-           xsRst_n : in STD_LOGIC;
-           sInitDone_n: in STD_LOGIC;
-           sCh1Out : out STD_LOGIC_VECTOR (13 downto 0);
-           sCh2Out : out STD_LOGIC_VECTOR (13 downto 0);
+    Port ( SysClk : in STD_LOGIC; --100MHz input clock
+           AxiStreamClk : in STD_LOGIC; --AXI Stream input clock
+           AxiLiteClk : in std_logic; --AXI Lite input clock
+           sRst_n : in STD_LOGIC; --Active low synchronous reset signal synchronized with SysClk 
+           xsRst_n : in STD_LOGIC; --Active low synchronous reset signal synchronized with AxiStreamClk 
+           sInitDone_n: in STD_LOGIC; --Input flag (active low) indicating that the Zmod DAC Low Level 
+                                      -- Controller has succesfully completed initialization 
+           sCh1Out : out STD_LOGIC_VECTOR (13 downto 0); --Channel1 data output
+           sCh2Out : out STD_LOGIC_VECTOR (13 downto 0); --Channel2 data output
            
+           --AXI Stream (MM2S)
            s_axis_mm2s_tdata : in STD_LOGIC_VECTOR(31 DOWNTO 0);
            s_axis_mm2s_tkeep : in STD_LOGIC_VECTOR(3 DOWNTO 0);
            s_axis_mm2s_tvalid : in STD_LOGIC;
            s_axis_mm2s_tready : out STD_LOGIC;
            s_axis_mm2s_tlast : in STD_LOGIC;
            
-           sDacEn: in STD_LOGIC;
-           sTransferLength : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0);
-           xsTransferLength : in std_logic_vector (kBufferSize-1 downto 0); 
-           sOutAddrCntRst : in std_logic;
-           sDivRate : in std_logic_vector(13 downto 0);
-           lBufferFull : out STD_LOGIC
+           sDacEn: in STD_LOGIC; -- Control signal that enables the circular buffer's output address
+                                 -- counter and closes the Zmod DAC 1411 output relay contacts
+           sTransferLength : in STD_LOGIC_VECTOR (kBufferSize-1 downto 0); -- Buffer's length synchronised in the SysClk domain
+           xsTransferLength : in std_logic_vector (kBufferSize-1 downto 0); -- Buffer's length synchronised in the AxiStreamClk domain 
+           sOutAddrCntRst : in std_logic; -- Control bit that resets the circular buffer's output address counter
+           sDivRate : in std_logic_vector(13 downto 0); -- Factor by which the default 100MHz increment rate of the circular's buffer 
+                                                        -- output address counter is divided
+           lBufferFull : out STD_LOGIC --Flag indicating that the number of samples specified in the MM2S_Lenght registers
+                                       --have been loaded in the circular buffer
           );
 end Circular_Buffer;
 
@@ -127,69 +147,12 @@ signal fsmcfg_state, fsmcfg_state_r : std_logic_vector(4 downto 0);
 signal sBufferFull : std_logic_vector(0 downto 0); --pulse indicating the buffer has aquired the requested amount of data
 --Clock domain crossing related signals
 signal sBufFullRdy, sBufFullPush, lBufFullValid : std_logic;
-    
-    attribute mark_debug : string;
-    attribute keep : string;
-    
---    attribute mark_debug of lBufferFull : signal is "true";
---    attribute keep of lBufferFull : signal is "true";
---    attribute mark_debug of sBufferOutputData : signal is "true";
---    attribute keep of sBufferOutputData : signal is "true";
---    attribute mark_debug of xsBufferInputData : signal is "true";
---    attribute keep of xsBufferInputData : signal is "true";
-    attribute mark_debug of s_axis_mm2s_tdata : signal is "true";
-    attribute keep of s_axis_mm2s_tdata : signal is "true";
-    attribute mark_debug of s_axis_mm2s_tkeep : signal is "true";
-    attribute keep of s_axis_mm2s_tkeep : signal is "true";
-    attribute mark_debug of s_axis_mm2s_tlast : signal is "true";
-    attribute keep of s_axis_mm2s_tlast : signal is "true";    
-    attribute mark_debug of s_axis_mm2s_tvalid : signal is "true";
-    attribute keep of s_axis_mm2s_tvalid : signal is "true"; 
-    attribute mark_debug of xsInAddrCounter : signal is "true";
-    attribute keep of xsInAddrCounter : signal is "true";
-    attribute mark_debug of sOutAddrCounter : signal is "true";
-    attribute keep of sOutAddrCounter : signal is "true";
-    attribute mark_debug of sDacEn : signal is "true";
-    attribute keep of sDacEn : signal is "true";
---    attribute mark_debug of sTransferLength : signal is "true";
---    attribute keep of sTransferLength : signal is "true";
-    attribute mark_debug of sOutAddrCntEn : signal is "true";
-    attribute keep of sOutAddrCntEn : signal is "true";
-    attribute mark_debug of sOutAddrCntAux : signal is "true";
-    attribute keep of sOutAddrCntAux : signal is "true";
-    attribute mark_debug of sDivRate : signal is "true";
-    attribute keep of sDivRate : signal is "true";
-    attribute mark_debug of sOutAddrCntRst : signal is "true";
-    attribute keep of sOutAddrCntRst : signal is "true";
-    attribute mark_debug of sCh1Out : signal is "true";
-    attribute keep of sCh1Out : signal is "true";
-    attribute mark_debug of sCh2Out : signal is "true";
-    attribute keep of sCh2Out : signal is "true";
-                
+                   
 begin
 
 aRst_p <= not sRst_n;
 s_axis_mm2s_tready <= '1';
 xsBufferInputData <= s_axis_mm2s_tdata(31 downto 18) & s_axis_mm2s_tdata(15 downto 2);
-
---Tkeep: Null bytes are only used for signaling packet remainders.
---Leading or intermediate Null bytes are generally not
---supported.
-
---ProcBitValidAssign : process (s_axis_mm2s_tkeep, s_axis_mm2s_tvalid)
---begin
---    for IndexTkeep in 0 to 3 loop
---	    for Index in 0 to 7 loop
---            if ((s_axis_mm2s_tvalid = '1') and (s_axis_mm2s_tkeep(IndexTkeep) = '1')) then
---                xsBitValid(IndexTkeep*4 + Index) <= '1';
---            else
---                xsBitValid(IndexTkeep*4 + Index) <= '0';
---            end if;
---        end loop;    
---    end loop;
---end process;
-
---xsWeaBuffer <= xsBitValid(31 downto 18) & xsBitValid(17 downto 2);
 
 ProcBufferPortAssign : process (xsWeaBuffer)
 begin
@@ -290,36 +253,6 @@ begin
         end if;
     end if;
 end process;
- 
---ProcSyncFSM: process (SysClk, sRst_n)
---      begin
---         if (SysClk'event and SysClk = '1') then
---            if ((sInitDone_n = '1') or (sRst_n = '0'))then
---               sCurrentState <= StIdle;
---               fsmcfg_state_r <= fsmcfg_state;
---            else
---               sCurrentState <= sNextState;
---               fsmcfg_state_r <= fsmcfg_state;
---            end if;        
---         end if;
---      end process;
-      
---ProcNextStateAndOutputDecode: process (sCurrentState)
---begin 
---    sNextState <= sCurrentState;  
---    fsmcfg_state <= "00000";  
---    sBufferFull <= "0";
---    sBufFullPush <= '0';
---    sLoadOutCnt <= "0";
-    
---    case (sCurrentState) is
---        when StIdle =>
---        fsmcfg_state <= "00000";
-               
---        when others =>
---            sNextState <= StIdle;
---        end case;      
---end process;      
 
 ----------------------------------------CLOCK DOMAIN CROSSING----------------------------------------------------------
 
