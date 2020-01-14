@@ -3,19 +3,19 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "Component_Name"
   #Adding Page
   set Page_0 [ipgui::add_page $IPINST -name "Page 0"]
-  ipgui::add_param $IPINST -name "kCh1LgMultCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh1LgAddCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh1HgMultCoefStatic" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kExtCmdInterfaceEn" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kExtScaleConfigEn" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kExtCalibEn" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh1HgMultCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh1HgAddCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh1LgMultCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh1LgAddCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh2HgMultCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh2HgAddCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh2LgMultCoefStatic" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "kCh2LgAddCoefStatic" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kCh2ScaleStatic" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kCh1ScaleStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh2HgAddCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh2HgMultCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh2LgAddCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh2LgMultCoefStatic" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "kCh1HgAddCoefStatic" -parent ${Page_0}
 
 
 }
