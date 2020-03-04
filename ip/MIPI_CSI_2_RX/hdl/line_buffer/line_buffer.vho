@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2019 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2020 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -46,8 +46,8 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: xilinx.com:ip:axis_data_fifo:1.1
--- IP Revision: 18
+-- IP VLNV: xilinx.com:ip:axis_data_fifo:2.0
+-- IP Revision: 1
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -66,7 +66,6 @@ COMPONENT line_buffer
     m_axis_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0);
     m_axis_tlast : OUT STD_LOGIC;
     m_axis_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    axis_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     axis_wr_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     axis_rd_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
@@ -91,7 +90,6 @@ your_instance_name : line_buffer
     m_axis_tdata => m_axis_tdata,
     m_axis_tlast => m_axis_tlast,
     m_axis_tuser => m_axis_tuser,
-    axis_data_count => axis_data_count,
     axis_wr_data_count => axis_wr_data_count,
     axis_rd_data_count => axis_rd_data_count
   );

@@ -108,7 +108,6 @@ architecture Behavioral of LLP is
        m_axis_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0);
        m_axis_tlast : OUT STD_LOGIC;
        m_axis_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-       axis_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
        axis_wr_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
        axis_rd_data_count : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
      );
@@ -589,8 +588,7 @@ LineBufferFIFO: line_buffer
       m_axis_tdata => mAxisTdata,
       m_axis_tlast => mAxisTlast,
       m_axis_tuser => mAxisTuser,
-      axis_data_count => mBufDataCnt,
-      axis_wr_data_count => open,
+      axis_wr_data_count => mBufDataCnt,
       axis_rd_data_count => open
    );
 
