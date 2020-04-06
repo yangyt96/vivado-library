@@ -2001,31 +2001,31 @@
         <spirit:fileType>cSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi.c</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi.c</spirit:name>
         <spirit:fileType>cSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi.h</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi.h</spirit:name>
         <spirit:userFileType>cHeader</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi_i.h</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi_i.h</spirit:name>
         <spirit:userFileType>cHeader</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi_l.h</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi_l.h</spirit:name>
         <spirit:userFileType>cHeader</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi_options.c</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi_options.c</spirit:name>
         <spirit:fileType>cSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi_selftest.c</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi_selftest.c</spirit:name>
         <spirit:fileType>cSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>drivers/pmodOLEDrgb_v1_0/src/xspi_stats.c</spirit:name>
+        <spirit:name>drivers/PmodOLEDrgb_v1_0/src/xspi_stats.c</spirit:name>
         <spirit:fileType>cSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
