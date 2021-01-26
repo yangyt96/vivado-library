@@ -17,7 +17,7 @@ INCLUDEFILES:=*.h
 
 OBJECTS =	$(addsuffix .o, $(basename $(wildcard *.c)))
 
-IPNAME=MIPI_D_PHY_RX
+IPNAME=ddynclk
 
 libs: banner ${IPNAME}_libs clean
 
