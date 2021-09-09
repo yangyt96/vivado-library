@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>natinst.com</spirit:vendor>
+  <spirit:vendor>digilent.com</spirit:vendor>
   <spirit:library>user</spirit:library>
   <spirit:name>ZmodScopeController</spirit:name>
   <spirit:version>1.0</spirit:version>
@@ -355,7 +355,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>89826df2</spirit:value>
+            <spirit:value>77f535ec</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -374,7 +374,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>ed1aa285</spirit:value>
+            <spirit:value>c9f44118</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -403,6 +403,20 @@
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
             <spirit:value>809df5d8</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_productguide</spirit:name>
+        <spirit:displayName>Product Guide</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:docs.productguide</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_productguide_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>e34a40e8</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1599,6 +1613,13 @@
         <spirit:userFileType>GTCL</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_productguide_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>docs/ZmodScopeController.pdf</spirit:name>
+        <spirit:userFileType>pdf</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
   </spirit:fileSets>
   <spirit:description>ZmodScopeController_v1_0</spirit:description>
   <spirit:parameters>
@@ -1750,12 +1771,13 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>2</xilinx:coreRevision>
+      <xilinx:coreRevision>1</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC1410_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC_Controller:1.0</xilinx:canUpgradeFrom>
+        <xilinx:canUpgradeFrom>natinst.com:user:ZmodScopeController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2021-07-22T09:00:27Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2021-09-09T15:54:23Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@fe99ea0_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7ecb3ff9_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
@@ -3678,12 +3700,29 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@21389424_ARCHIVE_LOCATION">c:/Vivado_Projects/ZmodADC1410_Gitlab/repo/ZmodADC</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3fbd9c84_ARCHIVE_LOCATION">c:/Vivado_Projects/ZmodADC1410_Gitlab/repo/ZmodADC</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@1f4b0a11_ARCHIVE_LOCATION">c:/Vivado_Projects/ZmodADC1410_Gitlab/repo/ZmodADC</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@498ed5c2_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a55607f_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38c18b90_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@330e6e1_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5de3a3f8_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69a08131_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c615917_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f63cd9f_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10f90a10_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1fa55be3_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51d3422b_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@236d95e0_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b1b71a4_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b552f94_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e45bff6_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6544edf7_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@34c3a584_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="28b5194d"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bf4c7bec"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="c03bf7d3"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="8ddf32dd"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="431dd8e0"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="c4b649fd"/>
