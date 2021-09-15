@@ -181,8 +181,8 @@
     </spirit:busInterface>
     <spirit:busInterface>
       <spirit:name>ExtCh1Calib</spirit:name>
-      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration" spirit:version="1.0"/>
-      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration_rtl" spirit:version="1.0"/>
+      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodScope_Calibration" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodScope_Calibration_rtl" spirit:version="1.0"/>
       <spirit:slave/>
       <spirit:portMaps>
         <spirit:portMap>
@@ -228,8 +228,8 @@
     </spirit:busInterface>
     <spirit:busInterface>
       <spirit:name>ExtCh2Calib</spirit:name>
-      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration" spirit:version="1.0"/>
-      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration_rtl" spirit:version="1.0"/>
+      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodScope_Calibration" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodScope_Calibration_rtl" spirit:version="1.0"/>
       <spirit:slave/>
       <spirit:portMaps>
         <spirit:portMap>
