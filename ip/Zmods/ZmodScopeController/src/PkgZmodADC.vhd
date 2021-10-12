@@ -96,7 +96,7 @@ constant kAD96xx_SPI_Cmd : ADC_SPI_Commands_t := (x"000500",  --19 Device index:
                                                x"000B03", --10 Clck Divide: 4
                                                x"001680", --9 Clock Phase control: DCO inverted, Input clock divider phase adjust 0
                                                x"000500", --8 Device index: none
-                                               x"001421", --7 Output mode: CMOS | interleave | enable B | output not invert | Gray code
+                                               x"001421", --7 Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
                                                x"000803", --6 Power modes: digital reset
                                                x"000502", --5 Device index: B
                                                x"001431", --4 Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
