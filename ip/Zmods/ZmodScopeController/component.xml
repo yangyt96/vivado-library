@@ -355,7 +355,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>77f535ec</spirit:value>
+            <spirit:value>2eb7257c</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -374,7 +374,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>c9f44118</spirit:value>
+            <spirit:value>a9f7bca0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1446,6 +1446,28 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
+        <spirit:name>src/ConstrZmodADC_ooc.xdc</spirit:name>
+        <spirit:userFileType>xdc</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/ConstrsZmodADC.xdc</spirit:name>
+        <spirit:userFileType>xdc</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/ZmodADC_SynchonizationFIFO/ZmodADC_SynchonizationFIFO.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_InstDataPath/InstADC_FIFO</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/PkgZmodADC.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/ADI_SPI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
@@ -1466,7 +1488,17 @@
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>src/ResetBridge.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/DataPath.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/GainOffsetCalib.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
@@ -1481,49 +1513,17 @@
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>constr/ConstrsZmodADC.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-        <spirit:define>
-          <spirit:name>processing_order</spirit:name>
-          <spirit:value>late</spirit:value>
-        </spirit:define>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>constr/ConstrZmodADC_ooc.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
-        <spirit:define>
-          <spirit:name>processing_order</spirit:name>
-          <spirit:value>early</spirit:value>
-        </spirit:define>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/ZmodADC_SynchonizationFIFO.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/PkgZmodADC.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/ResetBridge.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/GainOffsetCalib.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>src/ZmodScopeController.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>CHECKSUM_c00de688</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:name>
       <spirit:vendorExtensions>
         <xilinx:subCoreRef>
-          <xilinx:componentRef xsi:type="xilinx:componentRefType" xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
             <xilinx:mode xilinx:name="create_mode"/>
           </xilinx:componentRef>
         </xilinx:subCoreRef>
@@ -1532,6 +1532,17 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
+        <spirit:name>src/ZmodADC_SynchonizationFIFO/ZmodADC_SynchonizationFIFO.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_InstDataPath/InstADC_FIFO</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/PkgZmodADC.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/ADI_SPI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
@@ -1552,7 +1563,17 @@
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>src/ResetBridge.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/DataPath.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/GainOffsetCalib.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
@@ -1567,24 +1588,9 @@
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>src/ZmodADC_SynchonizationFIFO.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/PkgZmodADC.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/ResetBridge.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/GainOffsetCalib.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>src/ZmodScopeController.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1771,13 +1777,13 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>1</xilinx:coreRevision>
+      <xilinx:coreRevision>2</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC1410_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodScopeController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2021-09-09T15:54:23Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-01-20T14:50:20Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@fe99ea0_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7ecb3ff9_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
@@ -3717,12 +3723,184 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3e45bff6_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@6544edf7_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@34c3a584_ARCHIVE_LOCATION">d:/Github/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7f6964ff_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@214a9e2f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@995708d_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@298535d9_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d38ac31_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@9a61462_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2c46c17d_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38fd3ae8_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5e806d11_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@145259af_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28c48f38_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6b8682d8_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16290f37_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@40da4cf2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1603597e_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6af882f1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@79db82_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@74aba3e2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@21349375_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a20b91f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@23de7bb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a344b37_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a08f4a6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@531e0f30_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60a807ad_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@59777af1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3f33ad54_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@42629b59_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ed81c8b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7471c345_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@759cd692_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3fa42996_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@76d8ccf1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4d3c611a_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73f70c66_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10c7df12_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c3a29b4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@32505886_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@499016d7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d5a570b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@70e8d3e6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5fa56ba3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6f7cf5d9_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2326aba4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3dca9c52_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@522d9b22_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@576c2b6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56832fa7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a8e10ed_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@143e95c5_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@63ca5f7f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5ef87d3b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3fcab4ea_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@488acbb1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f89d066_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c852a34_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@161e1578_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c4fc69a_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@14455863_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@391d0482_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@13c4ee4f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@21605c26_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3f97068e_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@116755a6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f0c7996_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ac7f9c4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3cb5b3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@570a6866_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e1f91b7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@af43c03_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ef86bf1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@12dfa98f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2dd831c5_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e42af18_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@11599d79_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@32b8f9f2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c025660_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7398aad4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64c02111_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@11bfc3f9_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@731d4d96_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@774088eb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72bdc12_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b30464_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@691679e1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10eca2de_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5084d206_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@371105f8_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@717785f8_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@236c1817_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5476d7ca_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ab0a31d_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@14842a85_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@680d9f35_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@424cd88e_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@68705eff_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f0450a2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@47b9d458_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26645cd3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4592deb5_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6660c2c7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@574d0f53_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3792e507_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d967875_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e3c8bd3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36c2583_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@71e61ebf_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c5914b7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@71212ba6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@177a0a89_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5b847b5c_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ac8a0b3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fb80300_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@80b91a_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75d77e0a_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e0c2196_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@626dea90_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@430dba4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2ed3503b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b6d96e3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@59741c18_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ae924d6_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29924091_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2b6f7afd_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@645b5399_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75c77333_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@86c1c5f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b9b071f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@59c805d9_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7e4ee3fb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c4cc3fb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2493f025_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@143374a_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@631ee4c8_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@554348e9_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6b2f0766_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1870b035_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@767e1c2d_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16369ed3_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5418ebb4_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a8c5dfa_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a374842_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6d5863eb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7b4fdc22_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6e07a1d0_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@675988b2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ad0e32b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7240593c_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@133ad285_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4024e405_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@96612d7_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@678ef801_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17394421_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@231c6b43_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@527c55c5_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2dffd9cb_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6eb3652d_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3622d55_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@521aded1_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49aaac74_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d012bc2_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@34a33a8c_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5dd83d90_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@59277d61_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ba2d84b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7668c788_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2740637b_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5440c64f_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@32d4669_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@664445ba_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7bfbfa03_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@62d77f2c_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2019.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="28b5194d"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="c03bf7d3"/>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="1522777d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="82c172b7"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="8ddf32dd"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="431dd8e0"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="c4b649fd"/>

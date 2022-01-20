@@ -113,7 +113,7 @@ signal sIncCmdCnt, sRstCmdCnt : std_logic;
 signal sInitDoneADC_Fsm : std_logic := '0';
 signal sConfigErrorFsm : std_logic;
 --Timers
-signal sCfgTimer : unsigned (23 downto 0);
+signal sCfgTimer : unsigned (24 downto 0);
 signal sCfgTimerRst_n : std_logic;
 --SPI Interface
 signal sADC_SPI_RdData : std_logic_vector(kDataWidth-1 downto 0);
@@ -438,7 +438,7 @@ begin
          when StWaitRecover =>  
             --fsmcfg_state <= "001010";
             sCfgTimerRst_n <= '1';
-            if (sCfgTimer = kCount20us) then
+            if (sCfgTimer = kCountResetResume) then
                sNextState <= StInitDone;
             end if;
          

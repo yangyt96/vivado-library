@@ -117,7 +117,7 @@ constant kAD96xx_SPI_Rdbck : ADC_SPI_Readback_t:= (x"00",  --19 Device index: no
                                                 x"03", --10 Clck Divide: 4
                                                 x"80", --9 Clock Phase control: DCO inverted, Input clock divider phase adjust 0
                                                 x"00", --8 Device index: none
-                                                x"21", --7 Output mode: CMOS | interleave | enable B | output not invert | Gray code
+                                                x"21", --7 Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
                                                 x"03", --6 Power modes: digital reset
                                                 x"02", --5 Device index: B
                                                 x"31", --4 Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
@@ -132,13 +132,13 @@ constant kAD92xx_SPI_Cmd : ADC_SPI_Commands_t := (x"000500",  --19 Device index:
                                                x"000800", --16 Power modes: Normal operation
                                                x"000501", --15 Device index: A
                                                x"010002", --14 Sync control : continuous | sync enable | 0
-                                               x"001781", --13 Output Delay; DCO delay enabled; 0.56ns
+                                               x"001781", --13 Output Delay; DCO delay enabled; 1.12ns
                                                x"001511", --12 Output adjust: CMOS drive strength 01 - 2X [DCO | DOUT]
                                                x"002A00", --11 Overrange control: output disable
                                                x"000B03", --10 Clck Divide: 4
                                                x"000500", --9 Device index: none
                                                x"001680", --8 Clock Phase control: DCO inverted, Input clock divider phase adjust 0
-                                               x"001421", --7 Output mode: CMOS | interleave | enable B | output not invert | Gray code
+                                               x"001421", --7 Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
                                                x"000803", --6 Power modes: digital reset
                                                x"000502", --5 Device index: B
                                                x"001431", --4 Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
@@ -153,13 +153,13 @@ constant kAD92xx_SPI_Rdbck : ADC_SPI_Readback_t:= (x"00",  --19 Device index: no
                                                 x"00", --16 Power modes: Normal operation
                                                 x"01", --15 Device index: A
                                                 x"02", --14 Sync control : continuous | sync enable | 0
-                                                x"81", --13 Output Delay; DCO delay enabled; 0.56ns
+                                                x"81", --13 Output Delay; DCO delay enabled; 1.12ns
                                                 x"11", --12 Output adjust: CMOS drive strength 01 - 2X [DCO | DOUT]
                                                 x"00", --11 Overrange control: output disable
                                                 x"03", --10 Clck Divide: 4
                                                 x"00", --9 Device index: none
                                                 x"80", --8 Clock Phase control: DCO inverted, Input clock divider phase adjust 0
-                                                x"21", --7 Output mode: CMOS | interleave | enable B | output not invert | Gray code
+                                                x"21", --7 Output mode: CMOS | interleave | enable B | output not invert | 2's Complement
                                                 x"03", --6 Power modes: digital reset
                                                 x"02", --5 Device index: B
                                                 x"31", --4 Output mode: CMOS | interleave | disable A | output not invert | 2's Complement
@@ -236,9 +236,11 @@ constant kCmdWrTotal_AD9251 : integer := 19;
 constant kCmdReadID_Index : integer := 1;       --Read ID command index in kADC_SPI_Cmd and kADC_SPI_Rdbck arrays
 constant kCmdClkDivIndex : integer := 10;       --Clock Divide command index in kADC_SPI_Cmd and kADC_SPI_Rdbck arrays
 
--- Constant used to measure 20us (with a clock frequency of 100MHz) to allow the ADC's
--- transition from power down to normal operation (ConfigADC.vhd)     
-constant kCount20us : unsigned := to_unsigned (1999, 24);
+-- 290ms value is computed from:
+-- https://www.analog.com/media/en/technical-documentation/data-sheets/ad9648.pdf page 40, 
+-- "The pseudo code sequence for a digital reset":
+-- 2.9e6 sample clock cycles @ 10MHz minimum sampling clock frequency (for ZmodScope) = 290ms     
+constant kCountResetResume : unsigned := to_unsigned (28999999, 25);
 -- Constant used to measure 4ms (with a clock frequency of 100MHz) that allows to
 -- determine the timin intervals for the relay drive signals (ConfigRelays.vhd)       
 constant kCount4ms : unsigned := to_unsigned (399999, 24); 
