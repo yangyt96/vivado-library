@@ -236,10 +236,12 @@ constant kCmdWrTotal_AD9251 : integer := 19;
 constant kCmdReadID_Index : integer := 1;       --Read ID command index in kADC_SPI_Cmd and kADC_SPI_Rdbck arrays
 constant kCmdClkDivIndex : integer := 10;       --Clock Divide command index in kADC_SPI_Cmd and kADC_SPI_Rdbck arrays
 
+-- Constant used to measure 290ms (with a clock frequency of 100MHz) to allow the ADC's
+-- transition from power down to normal operation (ConfigADC.vhd).
 -- 290ms value is computed from:
 -- https://www.analog.com/media/en/technical-documentation/data-sheets/ad9648.pdf page 40, 
 -- "The pseudo code sequence for a digital reset":
--- 2.9e6 sample clock cycles @ 10MHz minimum sampling clock frequency (for ZmodScope) = 290ms     
+-- 2.9e6 sample clock cycles @ 10MHz minimum sampling clock frequency (for ZmodScope) = 290ms  
 constant kCountResetResume : unsigned := to_unsigned (28999999, 25);
 -- Constant used to measure 4ms (with a clock frequency of 100MHz) that allows to
 -- determine the timin intervals for the relay drive signals (ConfigRelays.vhd)       

@@ -148,7 +148,7 @@ COMPONENT ZmodADC_SynchonizationFIFO
 END COMPONENT;
 
 signal acRstFIFO, adRstFIFO : std_logic;
-signal DcoBufgClk, FboutDcoClk, FbinDcoClk, DcoPLL_Clk : std_logic;
+signal DcoBufgClk, FboutDcoClk, FbinDcoClk, DcoPLL_Clk, DcoPLL_Clk2, DcoBufioClk : std_logic;
 signal dFIFO_WrEn: std_logic := '0';
 signal asFIFO_Empty, dFIFO_Full : std_logic;
 signal dFIFO_In : std_logic_vector(31 downto 0); 
@@ -196,7 +196,7 @@ GenerateIDDR : for i in 0 to (kADC_Width-1) generate
       port map (
          Q1 => dChannelA(i), -- 1-bit output for positive edge of clock  
          Q2 => dChannelB(i), -- 1-bit output for negative edge of clock
-         C => DcoClkIn,   -- 1-bit clock input
+         C => DcoBufioClk,   -- 1-bit clock input
          CE => '1', -- 1-bit clock enable input
          D => dADC_Data(i),   -- 1-bit DDR data input
          R => '0',   -- 1-bit reset
@@ -224,13 +224,25 @@ InstDcoBufg : BUFG
    );
    
 --FIFO write clock de-skew.
-
-InstBufgFeedbackPLL : BUFG  
+  
+InstBufrFeedbackPLL : BUFR
+   generic map (
+	  BUFR_DIVIDE => "1",   -- Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8" 
+	  SIM_DEVICE => "7SERIES"  -- Must be set to "7SERIES" 
+   )
    port map (
-      O => FbinDcoClk, -- 1-bit output: Clock output (connect to I/O clock loads).
-      I => FboutDcoClk --CLK_DCO_Delay  -- 1-bit input: Clock input (connect to an IBUF or BUFMR).
+	  O => FbinDcoClk,     -- 1-bit output: Clock output port
+	  CE => '1',   -- 1-bit input: Active high, clock enable (Divided modes only)
+	  CLR => '0', -- 1-bit input: Active high, asynchronous clear (Divided modes only)
+	  I => FboutDcoClk      -- 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
    );
-      
+
+InstDcoBufio : BUFIO
+	port map (
+		O => DcoBufioClk,
+		I => DcoPLL_Clk2
+	);
+  
    MMCME2_ADV_inst : MMCME2_ADV
    generic map (
       BANDWIDTH => "OPTIMIZED",  -- Jitter programming (OPTIMIZED, HIGH, LOW)
@@ -238,10 +250,10 @@ InstBufgFeedbackPLL : BUFG
       CLKFBOUT_PHASE => 0.0,     -- Phase offset in degrees of CLKFB (-360.000-360.000).
       CLKIN1_PERIOD => kSamplingPeriod,      -- Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
 
-      CLKIN2_PERIOD => 0.0,
+      CLKIN2_PERIOD => kSamplingPeriod,
             -- CLKOUT0_DIVIDE - CLKOUT6_DIVIDE: Divide amount for each CLKOUT (1-128)
       CLKOUT1_DIVIDE => kClk1Divide,
-      CLKOUT2_DIVIDE => 1,
+      CLKOUT2_DIVIDE => kClk1Divide,
       CLKOUT3_DIVIDE => 1,
       CLKOUT4_DIVIDE => 1,
       CLKOUT5_DIVIDE => 1,
@@ -258,7 +270,7 @@ InstBufgFeedbackPLL : BUFG
       -- CLKOUT0_PHASE - CLKOUT6_PHASE: Phase offset for each CLKOUT (-360.000-360.000).
       CLKOUT0_PHASE => 0.0,
       CLKOUT1_PHASE => 0.0,
-      CLKOUT2_PHASE => 0.0,
+      CLKOUT2_PHASE => 127.0,
       CLKOUT3_PHASE => 0.0,
       CLKOUT4_PHASE => 0.0,
       CLKOUT5_PHASE => 0.0,
@@ -291,7 +303,7 @@ InstBufgFeedbackPLL : BUFG
       CLKOUT0B => open,   -- 1-bit output: Inverted CLKOUT0
       CLKOUT1 => DcoPLL_Clk,     -- 1-bit output: CLKOUT1
       CLKOUT1B => open,   -- 1-bit output: Inverted CLKOUT1
-      CLKOUT2 => open,     -- 1-bit output: CLKOUT2
+      CLKOUT2 => DcoPLL_Clk2,     -- 1-bit output: CLKOUT2
       CLKOUT2B => open,   -- 1-bit output: Inverted CLKOUT2
       CLKOUT3 => open,     -- 1-bit output: CLKOUT3
       CLKOUT3B => open,   -- 1-bit output: Inverted CLKOUT3
