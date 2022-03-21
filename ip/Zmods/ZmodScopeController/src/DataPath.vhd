@@ -67,6 +67,10 @@ entity DataPath is
       DcoClkIn         : in std_logic;
       -- AD92xx/AD96xx DCO output clock forwarded to the IP's upper levels.
       DcoClkOut        : out std_logic;
+	  -- When logic '1', this signal enables data acquisition from the ADC. This signal
+	  -- should be kept in logic '0' until the downstream IP (e.g. DMA controller) is
+	  -- ready to receive the ADC data.
+	  dEnableAcquisition : in std_logic;
       -- ADC parallel interleaved output data signals.
       dADC_Data        : in std_logic_vector(kADC_Width-1 downto 0);
       -- AD92xx/AD96xx demutiplexed Channel A data output (synchronized in
@@ -512,7 +516,7 @@ begin
    if (adRstFIFO = '1') then 
       dFIFO_WrEn <= '0';
    elsif (rising_edge(DcoBufgClk)) then
-      if (dFIFO_Full = '1' or dInitDone = '0') then
+      if (dFIFO_Full = '1' or dInitDone = '0' or dEnableAcquisition = '0') then
          dFIFO_WrEn <= '0';
       else   
          dFIFO_WrEn <= '1';

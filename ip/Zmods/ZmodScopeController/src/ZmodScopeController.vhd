@@ -131,6 +131,10 @@ entity ZmodScopeController is
       sConfigError : out std_logic; 
       -- Relay initialization complete signaling. 
       sInitDoneRelay : out std_logic; 
+	  -- When logic '1', this signal enables data acquisition from the ADC. This signal
+	  -- should be kept in logic '0' until the downstream IP (e.g. DMA controller) is
+	  -- ready to receive the ADC data.
+	  sEnableAcquisition : in std_logic;
       -- sDataOverflow indicates that the shallow synchronization FIFO in the DataPath 
       -- module is full. There are two cases in which this signal is asserted:
       -- 1. The ratio between the ADC_InClk and ADC_SamplingClk clock frequencies is
@@ -249,6 +253,7 @@ signal cDataValid, cDataCalibValid : std_logic;
 signal dFIFO_WrRstBusy, sFIFO_WrRstBusy, sFIFO_WrRstBusyDly: std_logic;
 signal cFIFO_RdEn: std_logic;
 signal dDataOverflow: std_logic;
+signal dEnableAcquisition: std_logic := '0';
 --Calibration
 signal cChannelA, cChannelB : std_logic_vector(kADC_Width-1 downto 0);
 signal cCh1Calib, cCh2Calib : std_logic_vector(15 downto 0);
@@ -444,7 +449,7 @@ cInitDone <= cInitDoneRelay and cInitDoneADC;
 
 sInitDone <= sInitDoneRelayLoc and sInitDoneADC_Loc;
 
--- Since the reset value of the InitDoneDcoClkSync module is known,
+-- Since the reset value of the InstSyncAsyncInitDoneDco module is known,
 -- the reset can be safely left permanently de-asserted
 InstSyncAsyncInitDoneDco: entity work.SyncAsync
    generic map (
@@ -455,7 +460,19 @@ InstSyncAsyncInitDoneDco: entity work.SyncAsync
       aIn => sInitDone,
       OutClk => DcoClkOut,
       oOut => dInitDone);    
-      
+
+-- Since the reset value of the InstSyncAsyncEnableAcquisitionDco module is known,
+-- the reset can be safely left permanently de-asserted
+InstSyncAsyncEnableAcquisitionDco: entity work.SyncAsync
+   generic map (
+      kResetTo => '0',
+      kStages => 2)
+   port map (
+      aoReset => '0',
+      aIn => sEnableAcquisition,
+      OutClk => DcoClkOut,
+      oOut => dEnableAcquisition); 
+ 
 InstDataPath : entity work.DataPath
 Generic Map(
    kSamplingPeriod => kSamplingPeriodReal,
@@ -466,6 +483,7 @@ Port Map(
     acRst_n => acRst_n,
     DcoClkIn => ZmodDcoClk,
     DcoClkOut => DcoClkOut,
+	dEnableAcquisition => dEnableAcquisition,
     dADC_Data => dZmodADC_Data,
     cChannelA => cChannelA,
     cChannelB => cChannelB,
