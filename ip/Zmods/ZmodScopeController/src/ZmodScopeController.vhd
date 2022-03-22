@@ -96,21 +96,21 @@ entity ZmodScopeController is
       kCh2GainStatic : std_logic := '0';        
         
       -- Channel1 low gain multiplicative (gain) compensation coefficient parameter.
-      kCh1LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000"; 
+      kCh1LgMultCoefStatic : std_logic_vector (19 downto 0) := "00010000000000000000"; 
       -- Channel1 low gain additive (offset) compensation coefficient parameter.
-      kCh1LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; 
+      kCh1LgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000"; 
       -- Channel1 high gain multiplicative (gain) compensation coefficient parameter.
-      kCh1HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000";  
+      kCh1HgMultCoefStatic : std_logic_vector (19 downto 0) := "00010000000000000000";  
       -- Channel1 high gain additive (offset) compensation coefficient parameter.
-      kCh1HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000"; 
+      kCh1HgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000"; 
       -- Channel2 low gain multiplicative (gain) compensation coefficient parameter.
-      kCh2LgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000";  
+      kCh2LgMultCoefStatic : std_logic_vector (19 downto 0) := "00010000000000000000";  
       -- Channel2 low gain additive (offset) compensation coefficient parameter.
-      kCh2LgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000";  
+      kCh2LgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000";  
       -- Channel2 high gain multiplicative (gain) compensation coefficient parameter.
-      kCh2HgMultCoefStatic : std_logic_vector (17 downto 0) := "010000000000000000";  
+      kCh2HgMultCoefStatic : std_logic_vector (19 downto 0) := "00010000000000000000";  
       -- Channel2 high gain additive (offset) compensation coefficient parameter.
-      kCh2HgAddCoefStatic : std_logic_vector (17 downto 0) := "000000000000000000" 
+      kCh2HgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000" 
    );
    Port (
       -- 100MHZ clock input.
@@ -262,7 +262,32 @@ signal cTestMode : std_logic;
 signal cADC_SyncOserdes : std_logic_vector(7 downto 0);
 constant kDummy : std_logic_vector(8 downto 0) := (others => '0');
 constant kSamplingPeriodReal : real := (real(kSamplingPeriod)*0.001);
- 
+
+-- Channel1 low gain multiplicative (gain) compensation coefficient parameter.
+kCh1LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh1LgMultCoefStatic(17 downto 0); 
+-- Channel1 low gain additive (offset) compensation coefficient parameter.
+kCh1LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh1LgAddCoefStatic(17 downto 0); 
+-- Channel1 high gain multiplicative (gain) compensation coefficient parameter.
+kCh1HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh1HgMultCoefStatic(17 downto 0);  
+-- Channel1 high gain additive (offset) compensation coefficient parameter.
+kCh1HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh1HgAddCoefStatic(17 downto 0); 
+-- Channel2 low gain multiplicative (gain) compensation coefficient parameter.
+kCh2LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh2LgMultCoefStatic(17 downto 0);  
+-- Channel2 low gain additive (offset) compensation coefficient parameter.
+kCh2LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh2LgAddCoefStatic(17 downto 0);  
+-- Channel2 high gain multiplicative (gain) compensation coefficient parameter.
+kCh2HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh2HgMultCoefStatic(17 downto 0);  
+-- Channel2 high gain additive (offset) compensation coefficient parameter.
+kCh2HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+  kCh2HgAddCoefStatic(17 downto 0);
+
 begin
 
 ------------------------------------------------------------------------------------------
@@ -620,10 +645,10 @@ InstCh1ADC_Calibration : entity work.GainOffsetCalib
       kWidth => kADC_Width,
       kExtCalibEn => kExtCalibEn,
       kInvert => true,
-      kLgMultCoefStatic => kCh1LgMultCoefStatic,
-      kLgAddCoefStatic  => kCh1LgAddCoefStatic,
-      kHgMultCoefStatic => kCh1HgMultCoefStatic,
-      kHgAddCoefStatic  => kCh1HgAddCoefStatic
+      kLgMultCoefStatic => kCh1LgMultCoefStaticNoPad,
+      kLgAddCoefStatic  => kCh1LgAddCoefStaticNoPad,
+      kHgMultCoefStatic => kCh1HgMultCoefStaticNoPad,
+      kHgAddCoefStatic  => kCh1HgAddCoefStaticNoPad
    )
    Port Map
    (
@@ -646,10 +671,10 @@ InstCh2ADC_Calibration : entity work.GainOffsetCalib
       kWidth => kADC_Width,
       kExtCalibEn => kExtCalibEn,
       kInvert => false,
-      kLgMultCoefStatic => kCh2LgMultCoefStatic,
-      kLgAddCoefStatic  => kCh2LgAddCoefStatic,
-      kHgMultCoefStatic => kCh2HgMultCoefStatic,
-      kHgAddCoefStatic  => kCh2HgAddCoefStatic
+      kLgMultCoefStatic => kCh2LgMultCoefStaticNoPad,
+      kLgAddCoefStatic  => kCh2LgAddCoefStaticNoPad,
+      kHgMultCoefStatic => kCh2HgMultCoefStaticNoPad,
+      kHgAddCoefStatic  => kCh2HgAddCoefStaticNoPad
    )
    Port Map
    (
