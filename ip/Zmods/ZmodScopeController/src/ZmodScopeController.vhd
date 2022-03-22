@@ -264,28 +264,28 @@ constant kDummy : std_logic_vector(8 downto 0) := (others => '0');
 constant kSamplingPeriodReal : real := (real(kSamplingPeriod)*0.001);
 
 -- Channel1 low gain multiplicative (gain) compensation coefficient parameter.
-kCh1LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh1LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh1LgMultCoefStatic(17 downto 0); 
 -- Channel1 low gain additive (offset) compensation coefficient parameter.
-kCh1LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh1LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh1LgAddCoefStatic(17 downto 0); 
 -- Channel1 high gain multiplicative (gain) compensation coefficient parameter.
-kCh1HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh1HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh1HgMultCoefStatic(17 downto 0);  
 -- Channel1 high gain additive (offset) compensation coefficient parameter.
-kCh1HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh1HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh1HgAddCoefStatic(17 downto 0); 
 -- Channel2 low gain multiplicative (gain) compensation coefficient parameter.
-kCh2LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh2LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh2LgMultCoefStatic(17 downto 0);  
 -- Channel2 low gain additive (offset) compensation coefficient parameter.
-kCh2LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh2LgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh2LgAddCoefStatic(17 downto 0);  
 -- Channel2 high gain multiplicative (gain) compensation coefficient parameter.
-kCh2HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh2HgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh2HgMultCoefStatic(17 downto 0);  
 -- Channel2 high gain additive (offset) compensation coefficient parameter.
-kCh2HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
+constant kCh2HgAddCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh2HgAddCoefStatic(17 downto 0);
 
 begin
