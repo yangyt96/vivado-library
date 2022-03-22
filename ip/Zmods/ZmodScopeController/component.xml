@@ -355,7 +355,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>2eb7257c</spirit:value>
+            <spirit:value>321410ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -374,7 +374,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a9f7bca0</spirit:value>
+            <spirit:value>8dc0206f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -388,7 +388,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>f5615cb4</spirit:value>
+            <spirit:value>4fdd2f19</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -416,7 +416,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e34a40e8</spirit:value>
+            <spirit:value>c07e457f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -517,6 +517,19 @@
         <spirit:name>sInitDoneRelay</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>sEnableAcquisition</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
@@ -1319,7 +1332,7 @@
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
         <spirit:name>kSamplingPeriod</spirit:name>
         <spirit:displayName>Ksamplingperiod</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kSamplingPeriod" spirit:minimum="2500" spirit:maximum="100000" spirit:rangeType="long">10000</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kSamplingPeriod" spirit:minimum="8000" spirit:maximum="100000" spirit:rangeType="long">10000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>kADC_ClkDiv</spirit:name>
@@ -1378,45 +1391,45 @@
         <spirit:displayName>Kch2gainstatic</spirit:displayName>
         <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2GainStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh1LgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch1lgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh1LgAddCoefStatic</spirit:name>
         <spirit:displayName>Kch1lgaddcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1LgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh1HgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch1hgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh1HgAddCoefStatic</spirit:name>
         <spirit:displayName>Kch1hgaddcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh1HgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh2LgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch2lgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh2LgAddCoefStatic</spirit:name>
         <spirit:displayName>Kch2lgaddcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2LgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh2HgMultCoefStatic</spirit:name>
         <spirit:displayName>Kch2hgmultcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
       </spirit:modelParameter>
-      <spirit:modelParameter spirit:dataType="std_logic_vector(17 downto 0)">
+      <spirit:modelParameter spirit:dataType="std_logic_vector(19 downto 0)">
         <spirit:name>kCh2HgAddCoefStatic</spirit:name>
         <spirit:displayName>Kch2hgaddcoefstatic</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.kCh2HgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>kZmodID</spirit:name>
@@ -1430,6 +1443,16 @@
       <spirit:name>choice_list_9d8b0d81</spirit:name>
       <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
       <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+    <spirit:choice>
+      <spirit:name>choice_pairs_2b5ae671</spirit:name>
+      <spirit:enumeration spirit:text="DC Coupling">&quot;1&quot;</spirit:enumeration>
+      <spirit:enumeration spirit:text="AC Coupling">&quot;0&quot;</spirit:enumeration>
+    </spirit:choice>
+    <spirit:choice>
+      <spirit:name>choice_pairs_64207406</spirit:name>
+      <spirit:enumeration spirit:text="High Gain">&quot;1&quot;</spirit:enumeration>
+      <spirit:enumeration spirit:text="Low Gain">&quot;0&quot;</spirit:enumeration>
     </spirit:choice>
     <spirit:choice>
       <spirit:name>choice_pairs_e077264c</spirit:name>
@@ -1449,7 +1472,6 @@
         <spirit:name>src/ConstrZmodADC_ooc.xdc</spirit:name>
         <spirit:userFileType>xdc</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/ConstrsZmodADC.xdc</spirit:name>
@@ -1515,7 +1537,7 @@
       <spirit:file>
         <spirit:name>src/ZmodScopeController.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_c00de688</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_a335c7ce</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1608,7 +1630,7 @@
       <spirit:file>
         <spirit:name>xgui/ZmodScopeController_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_f5615cb4</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_4fdd2f19</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1632,7 +1654,7 @@
     <spirit:parameter>
       <spirit:name>kSamplingPeriod</spirit:name>
       <spirit:displayName>Sampling Clock Period [ps]</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.kSamplingPeriod" spirit:minimum="2500" spirit:maximum="100000" spirit:rangeType="long">10000</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.kSamplingPeriod" spirit:minimum="8000" spirit:maximum="100000" spirit:rangeType="long">10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kADC_ClkDiv</spirit:name>
@@ -1641,7 +1663,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kADC_Width</spirit:name>
-      <spirit:displayName>ADC Data width</spirit:displayName>
+      <spirit:displayName>ADC Data Width</spirit:displayName>
       <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.kADC_Width">14</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
@@ -1674,62 +1696,62 @@
     <spirit:parameter>
       <spirit:name>kCh1CouplingStatic</spirit:name>
       <spirit:displayName>Ch1 Coupling Static Configuration</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1CouplingStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1CouplingStatic" spirit:choiceRef="choice_pairs_2b5ae671" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2CouplingStatic</spirit:name>
       <spirit:displayName>Ch2 Coupling Static Configuration</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2CouplingStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2CouplingStatic" spirit:choiceRef="choice_pairs_2b5ae671" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1GainStatic</spirit:name>
       <spirit:displayName>Ch1 Gain Static Configuration</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1GainStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1GainStatic" spirit:choiceRef="choice_pairs_64207406" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2GainStatic</spirit:name>
       <spirit:displayName>Ch2 Gain Static Configuration</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2GainStatic" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2GainStatic" spirit:choiceRef="choice_pairs_64207406" spirit:bitStringLength="1">&quot;0&quot;</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1LgMultCoefStatic</spirit:name>
       <spirit:displayName>Ch1LgMultCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1LgAddCoefStatic</spirit:name>
       <spirit:displayName>Ch1LgAddCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1LgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1HgMultCoefStatic</spirit:name>
       <spirit:displayName>Ch1HgMultCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh1HgAddCoefStatic</spirit:name>
       <spirit:displayName>Ch1HgAddCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh1HgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2LgMultCoefStatic</spirit:name>
       <spirit:displayName>Ch2LgMultCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2LgAddCoefStatic</spirit:name>
       <spirit:displayName>Ch2LgAddCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2LgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2HgMultCoefStatic</spirit:name>
       <spirit:displayName>Ch2HgMultCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="18">&quot;010000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgMultCoefStatic" spirit:bitStringLength="20">0x10000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>kCh2HgAddCoefStatic</spirit:name>
       <spirit:displayName>Ch2HgAddCoefStatic</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgAddCoefStatic" spirit:bitStringLength="18">&quot;000000000000000000&quot;</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.kCh2HgAddCoefStatic" spirit:bitStringLength="20">0x00000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>
@@ -1777,13 +1799,13 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>2</xilinx:coreRevision>
+      <xilinx:coreRevision>8</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC1410_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodScopeController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2022-01-20T14:50:20Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-03-22T15:30:48Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@fe99ea0_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7ecb3ff9_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
@@ -3895,15 +3917,133 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@664445ba_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7bfbfa03_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@62d77f2c_ARCHIVE_LOCATION">d:/Workspace/Vivado/eclypse_z7/hw/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@435ab11a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a11292f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b3f18af_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d781209_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@634b0ef3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58b507ec_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@24dcb119_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6512abeb_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@bfd90c6_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@53819a6a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ecea2e3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@66968109_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@512de86f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5592f101_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5add1921_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@12288712_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c68c580_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@285fb96d_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@76f44e60_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73a5875f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45fb398b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ed74bfc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17b847b5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@23f5903c_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4094c1fc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@107947a4_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@77c242c9_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fc1eb8b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ca4a10_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5402d69e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7da4557f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4696138c_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5b67d950_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44d83d43_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6a822ef2_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d6dfe01_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16c7205b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6e73b7b6_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f3b98bd_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56a6488f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36c324f9_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6bd50127_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@66e2700f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@66b1bfef_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17caf773_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3816b1ca_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a95ae19_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@371b2cc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6baec506_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2d9f5615_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6a7c3bdd_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7367e2a9_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67806414_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@46455154_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ece2c66_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@584452f5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@288afd90_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@421ddbd1_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@70481d4f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@48630376_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@547288b8_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@387a05c2_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@684e8a43_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@42dcb981_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e9c5dd4_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@263dbdfc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5728a54d_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@20f3a580_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@b4e34a3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@689111c4_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c0eea9e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4932b1fa_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e07fcce_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@410e016b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49257082_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ff3957b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@37c33cb0_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@644bb8a1_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@557a6059_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@218a4ce5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@62e5f255_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@11e413b0_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@653871ab_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@138a08e5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4525309b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4cfcf8f3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@137b7f3c_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2446cbea_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5e670670_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e78f083_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ad4710b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@621a0f70_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ae0284f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5aa97199_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6640afee_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@620d4994_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73f0b9ed_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44599e8_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64199da9_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e5fc2a5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@22783c26_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a2e1c9a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d4a4820_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3aba550a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c385cba_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@554cfd8f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@129a4f6a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@632243bb_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d65110f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e56c03e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c1c9940_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1932b44b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7cada349_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1f132ad4_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1be4b541_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d3675cd_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a1cbb31_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f1b812b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="1522777d"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="82c172b7"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="8ddf32dd"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="431dd8e0"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="c4b649fd"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="1699fb24"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="550f0532"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="6c07c843"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="d626a7f0"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

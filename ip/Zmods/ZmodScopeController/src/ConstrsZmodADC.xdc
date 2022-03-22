@@ -19,8 +19,14 @@ set tDCO_half [expr $tDCO/2];
 create_clock -period $tDCO -name ZmodDcoClk -waveform "0.000 $tDCO_half" [get_ports ZmodDcoClk -prop_thru_buffers]
 
 #Specify timing parameters for AD9648 in CMOS mode
-set tskew_max 1.000;      
-set tskew_min  -1.200;  
+set tskew_max 1.000;
+#For kSamplingPeriod values smaller than 10000 ps, use:
+#set tskew_max 0.750;     
+
+set tskew_min  -1.200;
+#For kSamplingPeriod values smaller than 10000 ps, use:
+#set tskew_min  -0.900;
+
 #Reg 0x17 setting 
 set OutputDelay  1.12;     
 

@@ -68,7 +68,7 @@ entity ZmodScopeController is
       -- 6 -> Zmod Scope 1410 - 125 (AD9648)
       kZmodID : integer range 0 to 6 := 0;
       -- Sampling Clock Period in ps. 
-      kSamplingPeriod : integer range 2500 to 100000:= 10000;
+      kSamplingPeriod : integer range 8000 to 100000:= 10000;
       -- ADC Clock divider ratio (Register 0x0B of AD96xx and AD92xx).
       kADC_ClkDiv : integer range 1 to 8 := 4;
       -- ADC number of bits.

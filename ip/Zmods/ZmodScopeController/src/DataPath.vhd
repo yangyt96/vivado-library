@@ -53,7 +53,7 @@ use work.PkgZmodADC.all;
 entity DataPath is
    Generic (
       -- sampling clock frequency (in ns).
-      kSamplingPeriod : real range 2.5 to 100.0:= 10.0;
+      kSamplingPeriod : real range 8.0 to 100.0:= 10.0;
       -- ADC number of bits.
       kADC_Width : integer range 10 to 16 := 14
    );
