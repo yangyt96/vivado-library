@@ -119,7 +119,7 @@ constant kADC_Width : integer := SelADC_Width(kZmodID);
 signal SysClk100: std_logic := '1';   
 signal ADC_SamplingClk: std_logic := '1';    
 signal ADC_InClk: std_logic := '1';    
-signal aRst_n: std_logic; 
+signal aRst_n: std_logic := '0'; 
 signal sRstBusy: std_logic;
 signal sInitDoneADC: std_logic;  
 signal sConfigError: std_logic;  
@@ -718,9 +718,9 @@ begin
    wait until rising_edge(aRst_n);
    
    -- Check that until sample acquisition is enabled, no data is being sent by the IP
- assert ((sEnableAcquisition = '0') and (cDataAxisTvalid='1'))
-   report "Data sent by the IP before acquisition is enabled" & LF & HT & HT 
-   severity ERROR;
+   assert ((sEnableAcquisition = '1') or (cDataAxisTvalid='0'))
+     report "Data sent by the IP before acquisition is enabled" & LF & HT & HT 
+     severity ERROR;
    
 end process;
 	  
