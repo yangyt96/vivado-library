@@ -174,7 +174,8 @@ signal cChannel1_Test, cChannel2_Test : std_logic_vector(kADC_Width-1 downto 0);
 signal cCh1OutInt, cCh2OutInt : integer;
 signal cCh1TestInt, cCh2TestInt : integer;
 signal cCh1Diff, cCh2Diff : integer;
-signal aEnOverflowTest : std_logic; 
+signal aEnOverflowTest : std_logic;
+signal sEnableAcquisition : std_logic;
 
 constant kSysClkPeriod : time := 10ns;
 constant kADC_SamplingClkPeriod : time := 17ns;     -- System Clock Period
@@ -211,7 +212,36 @@ constant kCh2LgMultCoefDynamic : std_logic_vector (17 downto 0) := "010000101001
 constant kCh2LgAddCoefDynamic : std_logic_vector (17 downto 0) := "000000000000010000"; 
 constant kCh2HgMultCoefDynamic : std_logic_vector (17 downto 0) := "010001011010101111"; 
 constant kCh2HgAddCoefDynamic : std_logic_vector (17 downto 0) := "000000001000000111";
-  
+
+-- Adding padding (i.e. 2 bits on the most significant positions) to the static
+-- calibration constants.
+-- The padding is necessary only to be able to enter hexadecimal calibration constants
+-- from the GUI.
+-- Channel1 low gain multiplicative (gain) compensation coefficient parameter
+constant kCh1LgMultCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh1LgMultCoefStatic;
+-- Channel1 low gain additive (offset) compensation coefficient parameter 
+constant kCh1LgAddCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh1LgAddCoefStatic;
+-- Channel1 high gain multiplicative (gain) compensation coefficient parameter
+constant kCh1HgMultCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh1HgMultCoefStatic;
+-- Channel1 high gain additive (offset) compensation coefficient parameter  
+constant kCh1HgAddCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh1HgAddCoefStatic;
+-- Channel2 low gain multiplicative (gain) compensation coefficient parameter 
+constant kCh2LgMultCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh2LgMultCoefStatic; 
+-- Channel2 low gain additive (offset) compensation coefficient parameter
+constant kCh2LgAddCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh2LgAddCoefStatic;
+-- Channel2 high gain multiplicative (gain) compensation coefficient parameter 
+constant kCh2HgMultCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh2HgMultCoefStatic; 
+-- Channel2 high gain additive (offset) compensation coefficient parameter 
+constant kCh2HgAddCoefStaticPad : std_logic_vector(19 downto 0) :=
+  "00"&kCh2HgAddCoefStatic;
+
 begin
 
 ------------------------------------------------------------------------------------------
@@ -232,14 +262,14 @@ InstZmodADC_Cotroller: entity work.ZmodScopeController
       kCh2CouplingStatic => kCh2CouplingStatic,
       kCh1GainStatic => kCh1GainStatic,
       kCh2GainStatic => kCh2GainStatic,     
-      kCh1LgMultCoefStatic => kCh1LgMultCoefStatic,
-      kCh1LgAddCoefStatic => kCh1LgAddCoefStatic,
-      kCh1HgMultCoefStatic => kCh1HgMultCoefStatic,
-      kCh1HgAddCoefStatic => kCh1HgAddCoefStatic,
-      kCh2LgMultCoefStatic => kCh2LgMultCoefStatic,
-      kCh2LgAddCoefStatic => kCh2LgAddCoefStatic,
-      kCh2HgMultCoefStatic => kCh2HgMultCoefStatic,
-      kCh2HgAddCoefStatic => kCh2HgAddCoefStatic
+      kCh1LgMultCoefStatic => kCh1LgMultCoefStaticPad,
+      kCh1LgAddCoefStatic => kCh1LgAddCoefStaticPad,
+      kCh1HgMultCoefStatic => kCh1HgMultCoefStaticPad,
+      kCh1HgAddCoefStatic => kCh1HgAddCoefStaticPad,
+      kCh2LgMultCoefStatic => kCh2LgMultCoefStaticPad,
+      kCh2LgAddCoefStatic => kCh2LgAddCoefStaticPad,
+      kCh2HgMultCoefStatic => kCh2HgMultCoefStaticPad,
+      kCh2HgAddCoefStatic => kCh2HgAddCoefStaticPad
    )
    Port Map(
       SysClk100 => SysClk100,
@@ -250,6 +280,7 @@ InstZmodADC_Cotroller: entity work.ZmodScopeController
       sInitDoneADC => sInitDoneADC,
       sConfigError => sConfigError,
       sInitDoneRelay => sInitDoneRelay,
+	  sEnableAcquisition => sEnableAcquisition,
       sDataOverflow => sDataOverflow,
       cDataAxisTvalid => cDataAxisTvalid,
       cDataAxisTready => cDataAxisTready,
@@ -530,6 +561,7 @@ begin
    -- hold time for the reset signal) 
    aRst_n <= '0';
    aEnOverflowTest <= '0';
+   sEnableAcquisition <= '0';
 
    sCh1CouplingConfig <= kCh1CouplingStatic; 
    sCh2CouplingConfig <= kCh2CouplingStatic;
@@ -545,6 +577,11 @@ begin
    
    -- Wait for initialization to complete. 
    wait until sInitDoneRelay = '1';
+   
+   -- Wait for 100 clock cycles before enabling actual sample acquisition from the ADC
+   -- (this number has no specific relevance).
+   wait for 100 * kSysClkPeriod;
+   sEnableAcquisition <= '1';
    
    -- Process 2 * 2^14 samples to make sure all possible inputs are tested after calibration.
    wait for (2**kADC_Width) * kADC_SamplingClkPeriod;
@@ -674,5 +711,17 @@ begin
       severity ERROR;
 end process;
 
+ProcCheckNoDataBeforeEnableAcquisition: process
+begin
+   
+   -- Wait for the reset signal to be de-asserted   
+   wait until rising_edge(aRst_n);
+   
+   -- Check that until sample acquisition is enabled, no data is being sent by the IP
+ assert ((sEnableAcquisition = '0') and (cDataAxisTvalid='1'))
+   report "Data sent by the IP before acquisition is enabled" & LF & HT & HT 
+   severity ERROR;
+   
+end process;
 	  
 end Behavioral;

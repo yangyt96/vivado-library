@@ -122,7 +122,7 @@ signal sReg102 : std_logic_vector(7 downto 0) := x"00";
 
 signal sReg00_TimerRst_n : std_logic;
 signal sResetReg00 : std_logic;
-signal sReg00_Timer : unsigned (23 downto 0);
+signal sReg00_Timer : unsigned (24 downto 0);
 signal sAddrAux : integer range 0 to 511;
 
 begin
@@ -165,7 +165,7 @@ begin
    if (asRst_n = '0') then
       sResetReg00 <= '0';
    elsif (rising_edge(SysClk100)) then
-      if (sReg00_Timer = kCount20us) then
+      if (sReg00_Timer = kCountResetResume) then
          sResetReg00 <= '1';
       else
          sResetReg00 <= '0';     

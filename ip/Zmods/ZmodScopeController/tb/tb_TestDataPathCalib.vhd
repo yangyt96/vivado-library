@@ -56,7 +56,7 @@ entity tb_TestDataPathCalib is
       -- ADC number of bits
       kADC_Width : integer range 10 to 16 := 14;
       -- Sampling Clock Period in ps; 
-      kSamplingPeriod : real range 2.5 to 100.0:= 10.0;
+      kSamplingPeriod : real range 8.0 to 100.0:= 10.0;
       -- kSimTestMode generic allows the test bench to instantiate the
       -- ADC_Calibration modules to be instantiated either in test mode
       -- or in normal operation.
@@ -116,6 +116,7 @@ signal cCh2GainState : std_logic;
 signal cInitDone, dInitDone : std_logic := '0';
 
 signal dDataGenCntEn, dDataGenRst_n : std_logic;
+signal dEnableAcquisition : std_logic;
 
 constant kADC_SamplingClkPeriod : time := 10ns;
 constant kVal1 : std_logic_vector (15 downto 0) := x"AAAA";
@@ -144,6 +145,7 @@ Port Map(
     acRst_n => acRst_n,
     DcoClkIn => ZmodDcoClk,
     DcoClkOut => open,
+	dEnableAcquisition => dEnableAcquisition,
     dADC_Data => dZmodADC_DataDly,
     cChannelA => cChannelA,
     cChannelB => cChannelB,
@@ -358,6 +360,7 @@ begin
    cExtCh2LgAddCoef <= kCh2LgAddCoefDynamic;
    cExtCh2HgMultCoef <= kCh2HgMultCoefDynamic; 
    cExtCh2HgAddCoef <= kCh2HgAddCoefDynamic;
+   dEnableAcquisition <= '0';
    
    -- Keep the acRst_n reset asserted for 10 clock cycles.
    wait for 10 * kADC_SamplingClkPeriod;
@@ -366,6 +369,11 @@ begin
    
    acRst_n <= '1';
    cInitDone <= '1';
+   
+   -- Wait for 100 clock cycles before enabling actual sample acquisition from the ADC
+   -- (this number has no specific relevance).
+   wait for 100 * kADC_SamplingClkPeriod;
+   dEnableAcquisition <= '1';
    
    -- Optionally the cInitDone signal can be disabled to observe the system behavior.
    -- No sort of automatic testing is carried out for this optional test.

@@ -263,6 +263,9 @@ signal cADC_SyncOserdes : std_logic_vector(7 downto 0);
 constant kDummy : std_logic_vector(8 downto 0) := (others => '0');
 constant kSamplingPeriodReal : real := (real(kSamplingPeriod)*0.001);
 
+-- Removing padding (i.e. most significant 2 bits) from the static calibration constants.
+-- The padding is necessary only to be able to enter hexadecimal calibration constants
+-- from the GUI.
 -- Channel1 low gain multiplicative (gain) compensation coefficient parameter.
 constant kCh1LgMultCoefStaticNoPad : std_logic_vector(17 downto 0) :=
   kCh1LgMultCoefStatic(17 downto 0); 
