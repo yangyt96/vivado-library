@@ -65,7 +65,8 @@ entity ConfigADC is
       --only 8 data bits currently supported.
       kDataWidth : integer range 8 to 8 := 8;
       --The number of bits of the command phase of the SPI transaction.
-      kCommandWidth : integer range 16 to 16 := 16
+      kCommandWidth : integer range 16 to 16 := 16;
+	  kSimulation : boolean := false
    );
    Port (
       -- 100MHZ clock input. 
@@ -124,6 +125,7 @@ signal sADC_SPI_Width, sADC_SPI_WidthR : std_logic_vector(1 downto 0);
 signal sADC_SPI_RdWr, sADC_SPI_RdWrR : std_logic;
 signal sADC_SPI_Busy : std_logic;
 signal sADC_ApStart, sADC_ApStartR : std_logic;
+signal kCountResetResumeVal : unsigned(kCountResetResume'range);
 
 constant kCmdTotal : integer := SelCmdWrListLength(kZmodID);
 constant kADC_SPI_CmdDef : ADC_SPI_Commands_t := SelCmdList(kZmodID);
@@ -132,6 +134,9 @@ constant kADC_SPI_Cmd : ADC_SPI_Commands_t := OverwriteClkDiv(kADC_SPI_CmdDef, k
 constant kADC_SPI_Rdbck : ADC_SPI_Readback_t := OverWriteID_ClkDiv(kZmodID, kADC_SPI_RdbckDef, kADC_ClkDiv);
 
 begin
+
+kCountResetResumeVal <= kCountResetResumeSim when kSimulation else
+						kCountResetResume;
 
 -- Instantiate the SPI controller.
 ADC_SPI_inst: entity work.ADI_SPI
@@ -438,7 +443,7 @@ begin
          when StWaitRecover =>  
             --fsmcfg_state <= "001010";
             sCfgTimerRst_n <= '1';
-            if (sCfgTimer = kCountResetResume) then
+            if (sCfgTimer = kCountResetResumeVal) then
                sNextState <= StInitDone;
             end if;
          

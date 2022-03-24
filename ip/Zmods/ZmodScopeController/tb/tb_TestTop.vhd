@@ -248,7 +248,7 @@ begin
 --Top level component instantiation
 ------------------------------------------------------------------------------------------ 
 
-InstZmodADC_Cotroller: entity work.ZmodScopeController
+InstZmodADC_Controller: entity work.ZmodScopeController
    Generic Map(
       kZmodID => kZmodID,
       kSamplingPeriod => kSamplingPeriod,
@@ -269,7 +269,8 @@ InstZmodADC_Cotroller: entity work.ZmodScopeController
       kCh2LgMultCoefStatic => kCh2LgMultCoefStaticPad,
       kCh2LgAddCoefStatic => kCh2LgAddCoefStaticPad,
       kCh2HgMultCoefStatic => kCh2HgMultCoefStaticPad,
-      kCh2HgAddCoefStatic => kCh2HgAddCoefStaticPad
+      kCh2HgAddCoefStatic => kCh2HgAddCoefStaticPad,
+	  kSimulation => true
    )
    Port Map(
       SysClk100 => SysClk100,

@@ -110,7 +110,8 @@ entity ZmodScopeController is
       -- Channel2 high gain multiplicative (gain) compensation coefficient parameter.
       kCh2HgMultCoefStatic : std_logic_vector (19 downto 0) := "00010000000000000000";  
       -- Channel2 high gain additive (offset) compensation coefficient parameter.
-      kCh2HgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000" 
+      kCh2HgAddCoefStatic : std_logic_vector (19 downto 0) := "00000000000000000000";
+	  kSimulation : boolean := false
    );
    Port (
       -- 100MHZ clock input.
@@ -417,7 +418,8 @@ Generic Map(
      kZmodID => kZmodID,
      kADC_ClkDiv => kADC_ClkDiv,
      kDataWidth => kSPI_DataWidth,
-     kCommandWidth => kSPI_CommandWidth
+     kCommandWidth => kSPI_CommandWidth,
+	 kSimulation => kSimulation
     ) 
 Port Map( 
     --

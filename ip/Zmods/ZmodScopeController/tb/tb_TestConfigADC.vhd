@@ -92,7 +92,8 @@ Generic Map(
      kZmodID => kZmodID,
      kADC_ClkDiv => kADC_ClkDiv,
      kDataWidth => kSPI_DataWidth,
-     kCommandWidth => kSPI_CommandWidth
+     kCommandWidth => kSPI_CommandWidth,
+	 kSimulation => true
     ) 
 Port Map( 
     --

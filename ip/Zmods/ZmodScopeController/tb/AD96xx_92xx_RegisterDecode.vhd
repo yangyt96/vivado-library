@@ -158,14 +158,15 @@ begin
    end if;
 end process;
 
--- If the soft reset bit of Reg00 is set over the command interface, it is reset by the AD96xx when the
--- reset operation completes. The amount of time required not specified (20us considered for this model).
+-- If the soft reset bit of Reg00 is set over the command interface, it is reset by the
+-- AD96xx when the reset operation completes. The maximum amount of time in reality is
+-- 290ms, but for the purposes of this simulation model it is only 1us.
 ProcResetReg00: process (SysClk100, asRst_n)   
 begin
    if (asRst_n = '0') then
       sResetReg00 <= '0';
    elsif (rising_edge(SysClk100)) then
-      if (sReg00_Timer = kCountResetResume) then
+      if (sReg00_Timer = kCountResetResumeSim) then
          sResetReg00 <= '1';
       else
          sResetReg00 <= '0';     

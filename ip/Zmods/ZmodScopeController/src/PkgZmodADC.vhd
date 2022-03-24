@@ -243,15 +243,20 @@ constant kCmdClkDivIndex : integer := 10;       --Clock Divide command index in 
 -- "The pseudo code sequence for a digital reset":
 -- 2.9e6 sample clock cycles @ 10MHz minimum sampling clock frequency (for ZmodScope) = 290ms  
 constant kCountResetResume : unsigned := to_unsigned (28999999, 25);
+-- Smaller version of the kCountResetResume, used only for simulation purposes.
+-- (999 + 1) clock cycles @ 100MHz frequency means 10us.
+constant kCountResetResumeSim : unsigned := to_unsigned (999, 25);
 -- Constant used to measure 4ms (with a clock frequency of 100MHz) that allows to
 -- determine the timin intervals for the relay drive signals (ConfigRelays.vhd)       
 constant kCount4ms : unsigned := to_unsigned (399999, 24); 
 -- Constant used to measure 5ms with a clock frequency of 100MHz
 -- Used to determine the ADC calibration timeout condition (tb_TestConfigADC.vhd and tb_TestTop.vhd)       
 constant kCount5ms : integer := 500000;    
--- Constant used to measure 150us (with a clock frequency of 100MHz) that determines a timeout
--- condition on the ADC's SPI interface (ConfigADC.vhd)
-constant kCfgTimeout : unsigned := to_unsigned (14999, 24);    
+-- Constant used to measure 291ms (with a clock frequency of 100MHz) that determines a
+-- timeout condition on the ADC's SPI interface (ConfigADC.vhd)
+-- This value has to be larger than kCountResetResume, otherwise false timeouts on the ADC
+-- SPI interface will occur (i.e. after an ADC soft reset is performed).
+constant kCfgTimeout : unsigned := to_unsigned (29099999, 25);    
                                                  
 type FsmStatesADC_t is (StStart, StCheckCmdCnt, StWriteSoftReset, StWaitDoneRst, StReadPortConfig, 
                         StCheckResetDone, StReadID, StWaitDoneID, StWriteControlReg, StWaitDoneWriteReg, 
