@@ -102,7 +102,8 @@ Generic Map(
     kCh1CouplingStatic => kCh1CouplingConfigInit,
     kCh2CouplingStatic => kCh2CouplingConfigInit,
     kCh1GainStatic => kCh1GainConfigInit,
-    kCh2GainStatic => kCh2GainConfigInit
+    kCh2GainStatic => kCh2GainConfigInit,
+	kSimulation => true
 )  
 Port Map( 
     SysClk100 => SysClk100,

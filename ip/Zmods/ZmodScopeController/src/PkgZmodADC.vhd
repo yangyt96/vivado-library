@@ -70,7 +70,8 @@ constant kSclkLow : time := 10 ns;                  -- SCLK pulse width low (min
 --constant kSclkT_Max : time := 10 ns;              -- SCLK pulse width low (min)
 constant kSclkT_Min : time := 50 ns;                -- SCLK pulse width low (min)
 constant kTdcoMax : time := 4.4 ns;
-constant kRelayConfigTime : time := 3ms;            -- relay set and reset signals
+--constant kRelayConfigTime : time := 3ms;            -- relay set and reset signals
+constant kRelayConfigTime : time := 3us;            -- relay set and reset signals
 --ADC Model Registers
 constant aReg00_Mask : std_logic_vector(7 downto 0) := "01100110";
 
@@ -249,6 +250,9 @@ constant kCountResetResumeSim : unsigned := to_unsigned (999, 25);
 -- Constant used to measure 4ms (with a clock frequency of 100MHz) that allows to
 -- determine the timin intervals for the relay drive signals (ConfigRelays.vhd)       
 constant kCount4ms : unsigned := to_unsigned (399999, 24); 
+-- Smaller version of the kCount4ms, used only for simulation purposes.
+-- (399 + 1) clock cycles @ 100MHz frequency means 4us.
+constant kCount4msSim : unsigned := to_unsigned (399, 24); 
 -- Constant used to measure 5ms with a clock frequency of 100MHz
 -- Used to determine the ADC calibration timeout condition (tb_TestConfigADC.vhd and tb_TestTop.vhd)       
 constant kCount5ms : integer := 500000;    

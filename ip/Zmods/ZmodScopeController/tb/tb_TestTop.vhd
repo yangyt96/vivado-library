@@ -579,6 +579,8 @@ begin
    -- Wait for initialization to complete. 
    wait until sInitDoneRelay = '1';
    
+   wait until sInitDoneADC = '1';
+   
    -- Wait for 100 clock cycles before enabling actual sample acquisition from the ADC
    -- (this number has no specific relevance).
    wait for 100 * kSysClkPeriod;
