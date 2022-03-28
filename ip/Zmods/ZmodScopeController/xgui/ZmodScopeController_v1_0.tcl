@@ -218,6 +218,15 @@ proc validate_PARAM_VALUE.kSamplingPeriod { PARAM_VALUE.kSamplingPeriod } {
 	return true
 }
 
+proc update_PARAM_VALUE.kSimulation { PARAM_VALUE.kSimulation } {
+	# Procedure called to update kSimulation when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.kSimulation { PARAM_VALUE.kSimulation } {
+	# Procedure called to validate kSimulation
+	return true
+}
+
 proc update_PARAM_VALUE.kZmodID { PARAM_VALUE.kZmodID } {
 	# Procedure called to update kZmodID when any of the dependent parameters in the arguments change
 }
@@ -326,5 +335,10 @@ proc update_MODELPARAM_VALUE.kCh2HgAddCoefStatic { MODELPARAM_VALUE.kCh2HgAddCoe
 proc update_MODELPARAM_VALUE.kZmodID { MODELPARAM_VALUE.kZmodID PARAM_VALUE.kZmodID } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.kZmodID}] ${MODELPARAM_VALUE.kZmodID}
+}
+
+proc update_MODELPARAM_VALUE.kSimulation { MODELPARAM_VALUE.kSimulation PARAM_VALUE.kSimulation } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.kSimulation}] ${MODELPARAM_VALUE.kSimulation}
 }
 
