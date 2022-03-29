@@ -537,7 +537,7 @@ begin
    wait;
 end process;  
 
-ZmodDcoClkDly <= ZmodDcoClk after (kIDDR_ClockPhase/360.0)*8ns;
+ZmodDcoClkDly <= ZmodDcoClk after (kIDDR_ClockPhase/360.0)*kADC_SamplingClkPeriod;
 
  ------------------------------------------------------------------------------------------
 -- Stimuli generation
