@@ -151,7 +151,7 @@ signal sCmdRxAxisTdata: STD_LOGIC_VECTOR(31 DOWNTO 0);
 signal ZmodAdcClkIn_p: std_logic;
 signal ZmodAdcClkIn_n: std_logic;
 signal iZmodSync: std_logic;
-signal ZmodDcoClk: std_logic := '1';
+signal ZmodDcoClk, ZmodDcoClkDly: std_logic := '1';
 signal dZmodADC_Data: std_logic_vector(kADC_Width-1 downto 0);
 signal sZmodADC_SDIO: std_logic;
 signal sZmodADC_CS: std_logic;
@@ -536,6 +536,8 @@ begin
    end loop;
    wait;
 end process;  
+
+ZmodDcoClkDly <= ZmodDcoClk after (kIDDR_ClockPhase/360.0)*8ns;
 
  ------------------------------------------------------------------------------------------
 -- Stimuli generation

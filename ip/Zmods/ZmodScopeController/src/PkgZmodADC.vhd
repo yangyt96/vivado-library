@@ -71,9 +71,10 @@ constant kSclkLow : time := 10 ns;                  -- SCLK pulse width low (min
 constant kSclkT_Min : time := 50 ns;                -- SCLK pulse width low (min)
 constant kTdcoMax : time := 4.4 ns;
 --constant kRelayConfigTime : time := 3ms;            -- relay set and reset signals
-constant kRelayConfigTime : time := 3us;            -- relay set and reset signals
+constant kRelayConfigTime : time := 3us;            -- relay set and reset signals in simulation
 --ADC Model Registers
 constant aReg00_Mask : std_logic_vector(7 downto 0) := "01100110";
+constant kIDDR_ClockPhase : real := 127.0;
 
 --Implementation constants
 constant kCS_PulseWidthHigh : integer := 31;   --CS pulse width high not specified in AD9648

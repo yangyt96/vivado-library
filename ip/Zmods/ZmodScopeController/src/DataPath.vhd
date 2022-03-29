@@ -274,7 +274,7 @@ InstDcoBufio : BUFIO
       -- CLKOUT0_PHASE - CLKOUT6_PHASE: Phase offset for each CLKOUT (-360.000-360.000).
       CLKOUT0_PHASE => 0.0,
       CLKOUT1_PHASE => 0.0,
-      CLKOUT2_PHASE => 127.0,
+      CLKOUT2_PHASE => kIDDR_ClockPhase,
       CLKOUT3_PHASE => 0.0,
       CLKOUT4_PHASE => 0.0,
       CLKOUT5_PHASE => 0.0,
