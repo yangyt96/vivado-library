@@ -430,7 +430,7 @@ InstDataPathDlyCh1 : entity work.DataPathLatency
     )
     Port Map(
         ADC_SamplingClk => ADC_SamplingClk,
-        ZmodDcoClk => ZmodDcoClk,
+        ZmodDcoClk => ZmodDcoClkDly,
         dDataIn => dZmodADC_Data, 
         cChA_DataOut => cChA_DataPathTest,
 		cChB_DataOut => cChB_DataPathTest);

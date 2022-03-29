@@ -88,7 +88,7 @@ constant kNumClockCycles : integer := 3*(2**14);
 
 signal ADC_SamplingClk : std_logic := '0';
 signal acRst_n : std_logic := '0';
-signal ZmodDcoClk : std_logic := '0';
+signal ZmodDcoClk, ZmodDcoClkDly : std_logic := '0';
 signal dZmodADC_Data, dZmodADC_DataDly : std_logic_vector(kADC_Width-1 downto 0) := (others => '0');
 signal ZmodDataSel : std_logic_vector (2 downto 0);
 signal dZmodADC_DataCnt : unsigned (kADC_Width-1 downto 0);
@@ -164,7 +164,7 @@ InstDataPathDlyCh1 : entity work.DataPathLatency
     )
     Port Map(
         ADC_SamplingClk => ADC_SamplingClk,
-        ZmodDcoClk => ZmodDcoClk,
+        ZmodDcoClk => ZmodDcoClkDly,
         dDataIn => dZmodADC_DataDly,
         cChA_DataOut => cChA_TestDly, 		
         cChB_DataOut => cChB_TestDly);
@@ -309,6 +309,8 @@ begin
     end loop;
     wait;
   end process; 
+
+ZmodDcoClkDly <= ZmodDcoClk after (kIDDR_ClockPhase/360.0)*8ns;
 
 -- Ramp signal generator
 ProcDataGen: process (ZmodDcoClk)  
