@@ -179,7 +179,7 @@ begin
         
         -- Check sSPI_Clk frequency (measure between two consecutive rising edges) is smaller than the max allowed
         assert ((sSPI_Clk'delayed'last_event + sSclkHigh)  >= kSclkT_Min)
-        report "sSPI_Clk period is smaller than the minimum allowedfor command bit" & integer'image(i+1) & LF & HT & HT &
+        report "sSPI_Clk period is smaller than the minimum allowed for command bit" & integer'image(i+1) & LF & HT & HT &
                "Expected: " & time'image(kSclkT_Min) & LF & HT & HT &
                "Actual: " & time'image(sSPI_Clk'delayed'last_event + sSclkHigh)
         severity ERROR;
