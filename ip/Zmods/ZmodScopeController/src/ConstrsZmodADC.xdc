@@ -30,17 +30,17 @@ set tskew_min  -1.200;
 #Reg 0x17 setting 
 set OutputDelay  1.12;     
 
+# Zmod Scope + Eclypse Z7 (SYZYGY Port A) Net Delays
 set net_delay_dcoclk 0.623;
-
 set net_delay_d0 0.558;
-set net_delay_d1 0.586;
+set net_delay_d1 0.585;
 set net_delay_d2 0.595;
 set net_delay_d3 0.592;
 set net_delay_d4 0.599;
 set net_delay_d5 0.608;
 set net_delay_d6 0.623;
 set net_delay_d7 0.577;
-set net_delay_d8 0.620;
+set net_delay_d8 0.619;
 set net_delay_d9 0.617;
 set net_delay_d10 0.617;
 set net_delay_d11 0.554;
