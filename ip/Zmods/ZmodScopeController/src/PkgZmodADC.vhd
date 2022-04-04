@@ -74,7 +74,7 @@ constant kTdcoMax : time := 4.4 ns;
 constant kRelayConfigTime : time := 3us;
 --ADC Model Registers
 constant aReg00_Mask : std_logic_vector(7 downto 0) := "01100110";
-constant kIDDR_ClockPhase : real := 125.625;
+constant kIDDR_ClockPhase : real := 126.0;
 
 --Implementation constants
 constant kCS_PulseWidthHigh : integer := 31;   --CS pulse width high not specified in AD9648
