@@ -1477,11 +1477,16 @@
         <spirit:name>src/ConstrZmodADC_ooc.xdc</spirit:name>
         <spirit:userFileType>xdc</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/ConstrsZmodADC.xdc</spirit:name>
         <spirit:userFileType>xdc</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:define>
+          <spirit:name>processing_order</spirit:name>
+          <spirit:value>late</spirit:value>
+        </spirit:define>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/ZmodADC_SynchonizationFIFO.xci</spirit:name>
@@ -1550,7 +1555,7 @@
       <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:name>
       <spirit:vendorExtensions>
         <xilinx:subCoreRef>
-          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
+          <xilinx:componentRef xsi:type="xilinx:componentRefType" xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
             <xilinx:mode xilinx:name="create_mode"/>
           </xilinx:componentRef>
         </xilinx:subCoreRef>
@@ -1809,13 +1814,13 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>24</xilinx:coreRevision>
+      <xilinx:coreRevision>25</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC1410_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodScopeController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2022-04-04T15:44:17Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-04-04T16:51:33Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@fe99ea0_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7ecb3ff9_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
@@ -4293,6 +4298,20 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@53a62fcf_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@2aaf806e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@408cc976_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@565379dc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7dce5420_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a4150b3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6e1133a6_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4156c6c5_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@33af8b5a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b85f74b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@225295da_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@718319dc_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ed5d804_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5fd0c41d_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2f8a0742_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5cb7604a_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7628a40f_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
