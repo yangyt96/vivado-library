@@ -158,11 +158,11 @@ signal sCurrentState : FsmStatesRelays_t := StStart;
 signal sNextState : FsmStatesRelays_t;
 -- signals used for debug purposes
 -- signal fsmcfg_state, fsmcfg_state_r : std_logic_vector(5 downto 0); 
-signal kCount4msVal : unsigned(kCount4ms'range);
+signal sCount4msVal : unsigned(kCount4ms'range);
 
 begin
 
-kCount4msVal <= kCount4msSim when kSimulation else
+sCount4msVal <= kCount4msSim when kSimulation else
                 kCount4ms;
 
 sCh1CouplingState <= sCh1CouplingStateLoc;
@@ -216,7 +216,7 @@ begin
             sCh1CouplingL <= '0';
             sRelayComH <= '0';
             sRelayComL <= '1';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh1CouplingStateLoc <= '1';
             end if;                    
          else                      
@@ -225,7 +225,7 @@ begin
             sCh1CouplingL <= '1';
             sRelayComH <= '1';
             sRelayComL <= '0';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh1CouplingStateLoc <= '0';
             end if;                    
          end if;
@@ -236,7 +236,7 @@ begin
             sCh2CouplingL <= '0';
             sRelayComH <= '0';
             sRelayComL <= '1';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh2CouplingStateLoc <= '1';
             end if;                    
          else                      
@@ -245,7 +245,7 @@ begin
             sCh2CouplingL <= '1';
             sRelayComH <= '1';
             sRelayComL <= '0';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh2CouplingStateLoc <= '0';
             end if;                     
          end if;
@@ -256,7 +256,7 @@ begin
             sCh1GainL <= '0';
             sRelayComH <= '0';
             sRelayComL <= '1';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh1GainStateLoc <= '1';
             end if;
          else
@@ -265,7 +265,7 @@ begin
             sCh1GainL <= '1';
             sRelayComH <= '1';
             sRelayComL <= '0';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh1GainStateLoc <= '0';
             end if;
          end if;
@@ -276,7 +276,7 @@ begin
             sCh2GainL <= '0';
             sRelayComH <= '0';
             sRelayComL <= '1';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh2GainStateLoc <= '1';
             end if;
          else                      
@@ -285,7 +285,7 @@ begin
             sCh2GainL <= '1';
             sRelayComH <= '1';
             sRelayComL <= '0';
-            if (sRelayTimer = kCount4msVal) then
+            if (sRelayTimer = sCount4msVal) then
                sCh2GainStateLoc <= '0';
             end if;
          end if;   
@@ -420,8 +420,9 @@ begin
 end process;
 
 -- Next state and output decode process.      
-ProcNextStateAndOutputDecode: process (sCurrentState, sRelayTimer, sCh1CouplingStateLoc, sInitDoneRdyRising,
-sCh2CouplingStateLoc, sCh1GainStateLoc, sCh2GainStateLoc, sCh1_AC_DC, sCh2_AC_DC, sCh1_HG_LG, sCh2_HG_LG)
+ProcNextStateAndOutputDecode: process (sCurrentState, sRelayTimer, sCh1CouplingStateLoc,
+sInitDoneRdyRising, sCh2CouplingStateLoc, sCh1GainStateLoc, sCh2GainStateLoc, sCh1_AC_DC,
+sCh2_AC_DC, sCh1_HG_LG, sCh2_HG_LG, sCount4msVal)
 begin         
    sNextState <= sCurrentState;  
    --fsmcfg_state <= "000000";
@@ -445,7 +446,7 @@ begin
          --fsmcfg_state <= "000001";
          sRelayTimerRst_n <= '1';
          sCh1TrigCouplingConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StConfigCouplingCh1Rst;
          end if;   
                   
@@ -459,7 +460,7 @@ begin
          --fsmcfg_state <= "000011";
          sRelayTimerRst_n <= '1';
          sCh2TrigCouplingConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StConfigCouplingCh2Rst;
          end if;
                 
@@ -473,7 +474,7 @@ begin
          --fsmcfg_state <= "000101";
          sRelayTimerRst_n <= '1';
          sCh1TrigGainConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StConfigGainCh1Rst;
          end if;
                 
@@ -487,7 +488,7 @@ begin
          --fsmcfg_state <= "001000";
          sRelayTimerRst_n <= '1';
          sCh2TrigGainConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StConfigGainCh2Rst;
          end if;
                 
@@ -553,7 +554,7 @@ begin
          --fsmcfg_state <= "001110";
          sRelayTimerRst_n <= '1';
          sCh1TrigCouplingConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StRstCfgPulse;
          end if;   
  
@@ -570,7 +571,7 @@ begin
          --fsmcfg_state <= "010000";
          sRelayTimerRst_n <= '1';
          sCh2TrigCouplingConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StRstCfgPulse;
          end if;
 
@@ -588,7 +589,7 @@ begin
          --fsmcfg_state <= "010010";
          sRelayTimerRst_n <= '1';
          sCh1TrigGainConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StRstCfgPulse;
          end if;
 
@@ -605,7 +606,7 @@ begin
          --fsmcfg_state <= "010100";
          sRelayTimerRst_n <= '1';
          sCh2TrigGainConfigFsm <= '1';
-         if (sRelayTimer = kCount4msVal) then
+         if (sRelayTimer = sCount4msVal) then
             sNextState <= StRstCfgPulse;
          end if;    
       

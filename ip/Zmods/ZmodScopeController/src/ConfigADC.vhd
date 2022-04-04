@@ -125,7 +125,7 @@ signal sADC_SPI_Width, sADC_SPI_WidthR : std_logic_vector(1 downto 0);
 signal sADC_SPI_RdWr, sADC_SPI_RdWrR : std_logic;
 signal sADC_SPI_Busy : std_logic;
 signal sADC_ApStart, sADC_ApStartR : std_logic;
-signal kCountResetResumeVal : unsigned(kCountResetResume'range);
+signal sCountResetResumeVal : unsigned(kCountResetResume'range);
 
 constant kCmdTotal : integer := SelCmdWrListLength(kZmodID);
 constant kADC_SPI_CmdDef : ADC_SPI_Commands_t := SelCmdList(kZmodID);
@@ -135,7 +135,7 @@ constant kADC_SPI_Rdbck : ADC_SPI_Readback_t := OverWriteID_ClkDiv(kZmodID, kADC
 
 begin
 
-kCountResetResumeVal <= kCountResetResumeSim when kSimulation else
+sCountResetResumeVal <= kCountResetResumeSim when kSimulation else
 						kCountResetResume;
 
 -- Instantiate the SPI controller.
@@ -279,7 +279,8 @@ end process;
 
 -- Next state and output decode.       
 ProcNextStateAndOutputDecode: process (sCurrentState, sADC_SPI_RdData, sADC_SPI_Done, sADC_SPI_Busy, 
-sCmdTxAxisTvalid, sCmdTxAxisTdata, sCmdTxDataReg, sCmdRxAxisTready, sCmdCntInt, sCfgTimer)
+sCmdTxAxisTvalid, sCmdTxAxisTdata, sCmdTxDataReg, sCmdRxAxisTready, sCmdCntInt, sCfgTimer,
+sCountResetResumeVal)
 begin         
    sNextState <= sCurrentState;  
    --fsmcfg_state <= "000000";
@@ -443,7 +444,7 @@ begin
          when StWaitRecover =>  
             --fsmcfg_state <= "001010";
             sCfgTimerRst_n <= '1';
-            if (sCfgTimer = kCountResetResumeVal) then
+            if (sCfgTimer = sCountResetResumeVal) then
                sNextState <= StInitDone;
             end if;
          
