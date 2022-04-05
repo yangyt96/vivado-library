@@ -567,11 +567,11 @@ function IDDR_ClockPhase(SamplingPeriod:real)
       --400MHz to 200MHz
       if ((SamplingPeriod > 2.5) and (SamplingPeriod <= 5.0)) then
          return 120.0;
-      --200MHz to 125MHz 
-      elsif ((SamplingPeriod > 5.0) and (SamplingPeriod <= 8.0)) then   
+      --200MHz to 111MHz 
+      elsif ((SamplingPeriod > 5.0) and (SamplingPeriod <= 9.0)) then   
          return 127.5;
-	  --125MHz to 100MHz 
-      elsif ((SamplingPeriod > 8.0) and (SamplingPeriod <= 10.0)) then   
+	  --111MHz to 100MHz 
+      elsif ((SamplingPeriod > 9.0) and (SamplingPeriod <= 10.0)) then   
          return 120.0;
       --100MHz to 50MHz    
       elsif ((SamplingPeriod > 10.0) and (SamplingPeriod <= 20.0)) then
