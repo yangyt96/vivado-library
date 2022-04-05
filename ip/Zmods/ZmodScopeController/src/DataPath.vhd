@@ -274,7 +274,7 @@ InstDcoBufio : BUFIO
       -- CLKOUT0_PHASE - CLKOUT6_PHASE: Phase offset for each CLKOUT (-360.000-360.000).
       CLKOUT0_PHASE => 0.0,
       CLKOUT1_PHASE => 0.0,
-      CLKOUT2_PHASE => kIDDR_ClockPhase,
+      CLKOUT2_PHASE => IDDR_ClockPhase(kSamplingPeriod),
       CLKOUT3_PHASE => 0.0,
       CLKOUT4_PHASE => 0.0,
       CLKOUT5_PHASE => 0.0,
@@ -295,7 +295,7 @@ InstDcoBufio : BUFIO
       CLKFBOUT_USE_FINE_PS => FALSE,
       CLKOUT0_USE_FINE_PS => FALSE,
       CLKOUT1_USE_FINE_PS => FALSE,
-      CLKOUT2_USE_FINE_PS => TRUE,
+      CLKOUT2_USE_FINE_PS => FALSE,
       CLKOUT3_USE_FINE_PS => FALSE,
       CLKOUT4_USE_FINE_PS => FALSE,
       CLKOUT5_USE_FINE_PS => FALSE,

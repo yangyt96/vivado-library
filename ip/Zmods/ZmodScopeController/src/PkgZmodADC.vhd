@@ -74,7 +74,6 @@ constant kTdcoMax : time := 4.4 ns;
 constant kRelayConfigTime : time := 3us;
 --ADC Model Registers
 constant aReg00_Mask : std_logic_vector(7 downto 0) := "01100110";
-constant kIDDR_ClockPhase : real := 126.0;
 
 --Implementation constants
 constant kCS_PulseWidthHigh : integer := 31;   --CS pulse width high not specified in AD9648
@@ -330,7 +329,13 @@ function SelCmdWrListLength(ZmodIC:integer)
 -- Used in the top level test bench.
 function SelADC_Width(ZmodIC:integer) 
         return integer;   
-                                                       
+
+-- Function used to compute the IDDR sampling clock phase as a function of the sampling
+-- period. This is necessary so the clock phase is always an integer multiple of
+-- (45 degrees/output clock division factor) of the MMCM which generates it.
+function IDDR_ClockPhase(SamplingPeriod:real) 
+        return real;
+
 end PkgZmodADC;
 
 package body PkgZmodADC is
@@ -554,6 +559,33 @@ function SelADC_Width(ZmodIC:integer)
          when others =>
             return 14;                                                                         
       end case;          
+end function;
+
+function IDDR_ClockPhase(SamplingPeriod:real) 
+        return real is
+   begin
+      --400MHz to 200MHz
+      if ((SamplingPeriod > 2.5) and (SamplingPeriod <= 5.0)) then
+         return 120.0;
+      --200MHz to 100MHz 
+      elsif ((SamplingPeriod > 5.0) and (SamplingPeriod <= 10.0)) then   
+         return 120.0;
+      --100MHz to 50MHz    
+      elsif ((SamplingPeriod > 10.0) and (SamplingPeriod <= 20.0)) then
+         return 123.75;
+      --50MHz to 25MHz 
+      elsif ((SamplingPeriod > 20.0) and (SamplingPeriod <= 40.0)) then
+         return 125.625;       
+      --25MHz to 12.5MHz 
+      elsif ((SamplingPeriod > 40.0) and (SamplingPeriod <= 80.0)) then
+         return 125.625;       
+      --12.5MHz to 10MHz 
+      elsif (SamplingPeriod > 80.0) then
+         return 125.859375; 
+      --Out of specifications;               
+      else
+         return 1.0;
+      end if;          
 end function;
 
 end PkgZmodADC;

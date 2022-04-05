@@ -310,7 +310,8 @@ begin
     wait;
   end process; 
 
-ZmodDcoClkDly <= ZmodDcoClk after (kIDDR_ClockPhase/360.0)*kADC_SamplingClkPeriod;
+ZmodDcoClkDly <= ZmodDcoClk after
+  (IDDR_ClockPhase(kSamplingPeriod)/360.0)*kADC_SamplingClkPeriod;
 
 -- Ramp signal generator
 ProcDataGen: process (ZmodDcoClk)  
