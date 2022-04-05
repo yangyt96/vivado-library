@@ -242,6 +242,8 @@ constant kCh2HgMultCoefStaticPad : std_logic_vector(19 downto 0) :=
 constant kCh2HgAddCoefStaticPad : std_logic_vector(19 downto 0) :=
   "00"&kCh2HgAddCoefStatic;
 
+constant kSamplingPeriodReal : real := (real(kSamplingPeriod)*0.001);
+
 begin
 
 ------------------------------------------------------------------------------------------
@@ -538,7 +540,7 @@ begin
 end process;  
 
 ZmodDcoClkDly <= ZmodDcoClk after
-  (IDDR_ClockPhase(kSamplingPeriod)/360.0)*kADC_SamplingClkPeriod;
+  (IDDR_ClockPhase(kSamplingPeriodReal)/360.0)*kADC_SamplingClkPeriod;
 
  ------------------------------------------------------------------------------------------
 -- Stimuli generation

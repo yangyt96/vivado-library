@@ -1814,13 +1814,13 @@
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>32</xilinx:coreRevision>
+      <xilinx:coreRevision>33</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC1410_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodADC_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodScopeController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2022-04-05T13:41:56Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-04-05T14:03:13Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@fe99ea0_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7ecb3ff9_ARCHIVE_LOCATION">c:/Vivado_Projects/SimAD9648LLController/CreatedIP</xilinx:tag>
@@ -4475,6 +4475,19 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@5f2607e7_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@15bfa35e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@553775f3_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@202a58cf_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2718c87e_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36134fae_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a70d594_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@702c3c86_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b9cb23b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@722aed52_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fc13ddb_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@55c7a8b_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4dbb4242_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@239a39af_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f3febbe_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4e3aa7b8_ARCHIVE_LOCATION">d:/Ionut/Review_Tudor/March2022_Changes/Eclypse-Z7-HW2/Eclypse-Z7-HW/repo/vivado-library/ip/Zmods/ZmodScopeController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
