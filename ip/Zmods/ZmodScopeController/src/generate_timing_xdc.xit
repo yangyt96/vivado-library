@@ -1,5 +1,4 @@
 set instname [current_inst]
-#set f_xdc [add_ipfile -usedIn  [list synthesis implementation board ] -processingOrder [late] -force ${instname}_data_bus_timing.xdc]
 set f_xdc [add_ipfile -usedIn  [list synthesis implementation board ] -processingOrder [list late] -force ConstrsZmodADC.xdc]
 puts "Generating $f_xdc...."
 
