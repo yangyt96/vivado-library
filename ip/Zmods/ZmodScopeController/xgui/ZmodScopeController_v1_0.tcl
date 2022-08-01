@@ -9,8 +9,6 @@ proc init_gui { IPINST } {
   set Page_0 [ipgui::add_page $IPINST -name "Page 0" -display_name {General}]
   set_property tooltip {General} ${Page_0}
   ipgui::add_param $IPINST -name "kSamplingPeriod" -parent ${Page_0}
-  ipgui::add_static_text $IPINST -name "Sampling Clock Period Observation" -parent ${Page_0} -text {For Sampling Clock Periods smaller than 10000 ps, you must update the IP timing constraints.
-Please consult the IP Product Guide for more details.}
   ipgui::add_param $IPINST -name "kADC_Width" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kADC_ClkDiv" -parent ${Page_0}
   ipgui::add_param $IPINST -name "kExtCmdInterfaceEn" -parent ${Page_0}

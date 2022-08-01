@@ -1,4 +1,3 @@
-#$kSamplingPeriod
 # Disable timing analysis for clock domain crossing dedicated modules
 set_false_path -through [get_pins -filter {NAME =~ *SyncAsync*/oSyncStages_reg[*]/D} -hier]
 set_false_path -through [get_pins -filter {NAME =~ *SyncAsync*/oSyncStages*/PRE || NAME =~ *SyncAsync*/oSyncStages*/CLR} -hier]
@@ -13,109 +12,114 @@ set_false_path -rise_from [get_pins -hier -filter {NAME =~ *InstADC_InClkReset*/
 #
 create_generated_clock -name ZmodAdcClkIn -source [get_pins InstADC_ClkODDR/C] -add -master_clock [get_clocks -of [get_ports ADC_InClk]] -divide_by 1 [get_ports ZmodAdcClkIn_p]
 
-#DCO Clock period  
+# DCO Clock period  
 set tDCO [get_property CLKIN1_PERIOD [get_cells InstDataPath/MMCME2_ADV_inst]];   
 set tDCO_half [expr $tDCO/2];
 create_clock -period $tDCO -name ZmodDcoClk -waveform "0.000 $tDCO_half" [get_ports ZmodDcoClk -prop_thru_buffers]
 
-#Specify timing parameters for AD9648 in CMOS mode
+# Specify timing parameters for AD9648 in CMOS mode
 set tskew_max 1.000;
-#For kSamplingPeriod values smaller than 10000 ps, use:
+# For kSamplingPeriod values smaller than 10000 ps, use:
 #set tskew_max 0.600;     
 
 set tskew_min  -1.200;
-#For kSamplingPeriod values smaller than 10000 ps, use:
+# For kSamplingPeriod values smaller than 10000 ps, use:
 #set tskew_min  -0.720;
+# Since the AD9648 DCO to Data Skew parameter is specified for the full operating
+# temperature range (−40°C to +85°C ambient) and the Zmod Scope works in a much narrower
+# temperature range, the above changes should work fine.
 
 #Reg 0x17 setting 
 set OutputDelay  1.12;     
 
-# Zmod Scope + Eclypse Z7 (SYZYGY Port A) Net Delays
-set net_delay_dcoclk 0.623;
-set net_delay_d0 0.558;
-set net_delay_d1 0.585;
-set net_delay_d2 0.595;
-set net_delay_d3 0.592;
-set net_delay_d4 0.599;
-set net_delay_d5 0.608;
-set net_delay_d6 0.623;
-set net_delay_d7 0.577;
-set net_delay_d8 0.619;
-set net_delay_d9 0.617;
-set net_delay_d10 0.617;
-set net_delay_d11 0.554;
-set net_delay_d12 0.569;
-set net_delay_d13 0.559;
+# Zmod Scope Net Delays
+set net_delay_dcoclk 0.169;
+set net_delay_d0 0.166;
+set net_delay_d1 0.165;
+set net_delay_d2 0.167;
+set net_delay_d3 0.167;
+set net_delay_d4 0.166;
+set net_delay_d5 0.167;
+set net_delay_d6 0.167;
+set net_delay_d7 0.166;
+set net_delay_d8 0.165;
+set net_delay_d9 0.165;
+set net_delay_d10 0.169;
+set net_delay_d11 0.168;
+set net_delay_d12 0.168;
+set net_delay_d13 0.168;
+# Maximum net skew on Eclypse Z7 is 1mm; @ 140mm / 1ns this means ~7ps
+set net_skew_ecl 0.007
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d1 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[1]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d2 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[2]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d3 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[3]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d4 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[4]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d5 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[5]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d6 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[6]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d7 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[7]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d8 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[8]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d9 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[9]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d10 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[10]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d11 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[11]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d12 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[12]} -prop_thru_buffers]
 
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
-set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
+set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max + $net_delay_d13 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[13]} -prop_thru_buffers]
 
 set_false_path -fall_from [get_pins -hier -filter {NAME =~ *InstADC_InClkReset*/SyncAsyncx/oSyncStages_reg[1]/C}] -to [get_pins -hier -filter {NAME=~ *InstADC_ClkODDR*/R}]
 set_false_path -rise_from [get_pins -hier -filter {NAME =~ *InstADC_InClkReset*/SyncAsyncx/oSyncStages_reg[1]/C}] -fall_to [get_pins -hier -filter {NAME=~ *InstADC_ClkODDR*/R}]
