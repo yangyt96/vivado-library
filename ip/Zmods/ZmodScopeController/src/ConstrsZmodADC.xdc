@@ -51,6 +51,16 @@ set net_delay_d13 0.168;
 # Maximum net skew on Eclypse Z7 is 1mm; @ 140mm / 1ns this means ~7ps
 set net_skew_ecl 0.007
 
+# Using the Vivado 2021.1 Language Template for input delay constraints, for a
+# source-synchronous, center-aligned double data rate interface and applying it to the ADC
+# interface, it results that we would need to add $tDCO_half to each constraint value.
+# However, based on post-implementation Vivado timing results, the conclusion was that the
+# clock is "hurried" so much by the MMCM that timing should be analyzed versus the
+# previous data phase, for both setup and hold. Therefore, I removed the “+ $tDCO_half”
+# term from the below constraints.
+# Also, I adjusted the MMCM clock output phase to 120...127.5deg (depending on sampling
+# period) to split the negative slack between setup and hold and to further optimize
+# timing (see DataPath.vhd and PkgZmodADC.vhd for more details).
 set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -min [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
 set_input_delay -clock [get_clocks ZmodDcoClk] -clock_fall -max [expr $tskew_max + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk + $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
 set_input_delay -clock [get_clocks ZmodDcoClk] -min -add_delay [expr $tskew_min + $net_delay_d0 - $OutputDelay - $net_delay_dcoclk - $net_skew_ecl] [get_ports {dZmodADC_Data[0]} -prop_thru_buffers]
