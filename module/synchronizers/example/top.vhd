@@ -56,7 +56,7 @@ SyncAsync1: entity work.SyncAsync
       kResetTo => '0',
       kStages => 3) --use double FF synchronizer
    port map (
-      aReset => aoRstPos,
+      aoReset => aoRstPos,
       aIn => aSignal,
       OutClk => OneClk,
       oOut => oSignal);
@@ -66,9 +66,10 @@ generic map (
       kResetTo => '0',
       kStages => 3) --use double FF synchronizer
    port map (
-      aReset => '0',
+      aiReset => '0',
       InClk => OneClk,
       iIn => oSignal,
+      aoReset => '0',
       OutClk => TwoClk,
       oOut => tSignal);
 

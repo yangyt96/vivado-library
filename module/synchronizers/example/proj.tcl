@@ -33,7 +33,7 @@ proc checkRequiredFiles { origin_dir} {
 
   set files [list \
  "[file normalize "$origin_dir/../SyncAsync.vhd"]"\
- "[file normalize "$origin_dir/../SyncAsyncReset.vhd"]"\
+ "[file normalize "$origin_dir/../ResetBridge.vhd"]"\
  "[file normalize "$origin_dir/../SyncBase.vhd"]"\
   ]
   foreach ifile $files {
@@ -151,7 +151,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 set obj [get_filesets sources_1]
 set files [list \
  [file normalize "${origin_dir}/../SyncAsync.vhd"] \
- [file normalize "${origin_dir}/../SyncAsyncReset.vhd"] \
+ [file normalize "${origin_dir}/../ResetBridge.vhd"] \
  [file normalize "${origin_dir}/../SyncBase.vhd"] \
 ]
 add_files -norecurse -fileset $obj $files
@@ -168,7 +168,7 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../SyncAsyncReset.vhd"
+set file "$origin_dir/../ResetBridge.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj

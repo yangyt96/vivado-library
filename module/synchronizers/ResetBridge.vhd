@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 --
--- File: SyncAsyncReset.vhd
+-- File: ResetBridge.vhd
 -- Author: Elod Gyorgy
 -- Original Project: HDMI input on 7-series Xilinx FPGA
 -- Date: 20 October 2014
--- Last modification date: 03 October 2022
+-- Last modification date: 05 October 2022
 --
 -------------------------------------------------------------------------------
 -- (c) 2014 Copyright Digilent Incorporated
@@ -41,13 +41,14 @@
 -- Purpose:
 -- This module is a reset-bridge. It takes a reset signal asynchronous to the 
 -- target clock domain (OutClk) and provides a safe asynchronous or synchronous
--- reset for the OutClk domain (oRst). The signal oRst is asserted immediately 
+-- reset for the OutClk domain (aoRst). The signal aoRst is asserted immediately 
 -- as aRst arrives, but is de-asserted synchronously with the OutClk rising
 -- edge. This means it can be used to safely reset any FF in the OutClk domain,
 -- respecting recovery time specs for FFs.
 -- The additional output register does not have placement and overly
 -- restrictive delay constraints, so that the tools can freely replicate it,
 -- if needed.
+--
 -- Constraints:
 -- # Replace <InstResetBridge> with path to ResetBridge instance, keep rest unchanged
 -- # Begin scope to ResetBridge instance
@@ -94,13 +95,13 @@ begin
 
 aRst_int <= kPolarity xnor aRst; --SyncAsync uses active-high reset
 
-OutputFFYes: if kOutputFF generate
+OutputFF_Yes: if kOutputFF generate
    SyncAsyncx: entity work.SyncAsync
       generic map (
          kResetTo => '1',
          kStages => kStages) --use double FF synchronizer
       port map (
-         aReset => aRst_int,
+         aoReset => aRst_int,
          aIn => '0',
          OutClk => OutClk,
          oOut => aoRst_int);
@@ -114,18 +115,18 @@ OutputFFYes: if kOutputFF generate
          aoRst <= not kPolarity;
       end if;
    end process;
-end generate OutputFFYes;
+end generate OutputFF_Yes;
 
-OutputFFNo: if not kOutputFF generate
+OutputFF_No: if not kOutputFF generate
    SyncAsyncx: entity work.SyncAsync
       generic map (
          kResetTo => kPolarity,
          kStages => kStages) --use double FF synchronizer
       port map (
-         aReset => aRst_int,
+         aoReset => aRst_int,
          aIn => not kPolarity,
          OutClk => OutClk,
          oOut => aoRst);
-end generate OutputFFNo;
+end generate OutputFF_No;
 
 end Behavioral;

@@ -4,7 +4,7 @@
 -- Author: Elod Gyorgy
 -- Original Project: HDMI input on 7-series Xilinx FPGA
 -- Date: 20 October 2014
--- Last modification date: 03 October 2022
+-- Last modification date: 05 October 2022
 --
 -------------------------------------------------------------------------------
 -- (c) 2014 Copyright Digilent Incorporated
@@ -43,7 +43,9 @@
 -- another clock domain (OutClk) and provides it on oOut.
 -- The number of FFs in the synchronizer chain
 -- can be configured with kStages. The reset value for oOut can be configured
--- with kResetTo. The asynchronous reset (aReset) is always active-high.
+-- with kResetTo. The asynchronous resets (aiReset and aoReset) is always
+-- active-high.
+--
 -- Constraints:
 -- # Replace <InstSyncBase> with path to SyncAsync instance, keep rest unchanged
 -- # Begin scope to SyncBase instance
@@ -75,9 +77,10 @@ entity SyncBase is
       kResetTo : std_logic := '0'; --value when reset and upon init
       kStages : natural := 2); --double sync by default
    Port (
-      aReset : in STD_LOGIC; -- active-high asynchronous reset
+      aiReset : in STD_LOGIC; -- active-high asynchronous reset
       InClk : in std_logic;
       iIn : in STD_LOGIC;
+      aoReset : in STD_LOGIC; -- active-high asynchronous reset
       OutClk : in STD_LOGIC;
       oOut : out STD_LOGIC);
    attribute keep_hierarchy : string;
@@ -90,9 +93,9 @@ signal iIn_q : std_logic;
 begin
 
 --By re-registering iIn on its own domain, we make sure iIn_q is glitch-free
-SyncSource: process(aReset, InClk)
+SyncSource: process(aiReset, InClk)
 begin
-   if (aReset = '1') then
+   if (aiReset = '1') then
       iIn_q <= kResetTo;
    elsif Rising_Edge(InClk) then
       iIn_q <= iIn;
@@ -105,7 +108,7 @@ SyncAsyncx: entity work.SyncAsync
       kResetTo => kResetTo,
       kStages => kStages)
    port map (
-      aReset => aReset,
+      aoReset => aoReset,
       aIn => iIn_q,
       OutClk => OutClk,
       oOut => oOut);
