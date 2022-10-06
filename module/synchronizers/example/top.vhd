@@ -42,14 +42,23 @@ entity top is
            atRstNeg : out STD_LOGIC;
            atRstXPMPos : out STD_LOGIC;
            atRstXPMNeg : out STD_LOGIC;
-           tSignal : out STD_LOGIC);
+           tSignal : out STD_LOGIC;
+           tSignalHs : out STD_LOGIC;
+           oPush : in STD_LOGIC;
+           oRdy : out STD_LOGIC;
+           tValid : out STD_LOGIC);
 end top;
 
 architecture Behavioral of top is
 
 signal aoRst, oSignal, oSignalXPM, aoRstPos, atRstPos_int : std_logic;
+signal oSignalVect : std_logic_vector(0 downto 0);
+signal tSignalVect : std_logic_vector(0 downto 0);
 
 begin
+
+oSignalVect(0) <= oSignal;
+tSignalHs <= tSignalVect(0);
 
 SyncAsync1: entity work.SyncAsync
    generic map (
@@ -102,7 +111,20 @@ ResetBridgeNeg: entity work.ResetBridge
       aoRst => atRstNeg
    );
 
-
+HandshakeData: entity work.HandshakeData
+    Generic map(
+        kDataWidth => 1)
+    Port map(
+        InClk => OneClk,
+        OutClk => TwoClk,
+        iData => oSignalVect,
+        oData => tSignalVect,
+        iPush => oPush,
+        iRdy => oRdy,
+        oValid => tValid,
+        aiReset => '0',
+        aoReset => '0'
+    );
 
 
 -- <-----Cut code below this line and paste into the architecture body---->

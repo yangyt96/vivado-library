@@ -43,8 +43,9 @@
 -- another clock domain (OutClk) and provides it on oOut.
 -- The number of FFs in the synchronizer chain
 -- can be configured with kStages. The reset value for oOut can be configured
--- with kResetTo. The asynchronous resets (aiReset and aoReset) is always
--- active-high.
+-- with kResetTo. The asynchronous resets (aiReset and aoReset) with
+-- synchronous deassertion are always active-high, and they should not be
+-- asserted independently.
 --
 -- Constraints:
 -- # Replace <InstSyncBase> with path to SyncAsync instance, keep rest unchanged
