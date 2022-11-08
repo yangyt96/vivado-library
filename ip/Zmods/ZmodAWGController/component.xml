@@ -159,18 +159,10 @@
     </spirit:busInterface>
     <spirit:busInterface>
       <spirit:name>ExtCh1Calib</spirit:name>
-      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration" spirit:version="1.0"/>
-      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration_rtl" spirit:version="1.0"/>
+      <spirit:busType spirit:vendor="digilent.com" spirit:library="user" spirit:name="ZmodAWG_Calibration" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="digilent.com" spirit:library="user" spirit:name="ZmodAWG_Calibration_rtl" spirit:version="1.0"/>
       <spirit:slave/>
       <spirit:portMaps>
-        <spirit:portMap>
-          <spirit:logicalPort>
-            <spirit:name>HgCoefMult</spirit:name>
-          </spirit:logicalPort>
-          <spirit:physicalPort>
-            <spirit:name>cExtCh1HgMultCoef</spirit:name>
-          </spirit:physicalPort>
-        </spirit:portMap>
         <spirit:portMap>
           <spirit:logicalPort>
             <spirit:name>LgCoefMult</spirit:name>
@@ -185,6 +177,14 @@
           </spirit:logicalPort>
           <spirit:physicalPort>
             <spirit:name>cExtCh1LgAddCoef</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>HgCoefMult</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>cExtCh1HgMultCoef</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
         <spirit:portMap>
@@ -206,8 +206,8 @@
     </spirit:busInterface>
     <spirit:busInterface>
       <spirit:name>ExtCh2Calib</spirit:name>
-      <spirit:busType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration" spirit:version="1.0"/>
-      <spirit:abstractionType spirit:vendor="natinst.com" spirit:library="user" spirit:name="ZmodADC_Calibration_rtl" spirit:version="1.0"/>
+      <spirit:busType spirit:vendor="digilent.com" spirit:library="user" spirit:name="ZmodAWG_Calibration" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="digilent.com" spirit:library="user" spirit:name="ZmodAWG_Calibration_rtl" spirit:version="1.0"/>
       <spirit:slave/>
       <spirit:portMaps>
         <spirit:portMap>
@@ -1473,14 +1473,14 @@
       </xilinx:taxonomies>
       <xilinx:displayName>ZmodAWGController</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>1</xilinx:coreRevision>
+      <xilinx:coreRevision>2</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodDAC1411_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodAWG1411_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>natinst.com:user:ZmodAWG_1411_Controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>digilent.com:user:ZmodAWGController:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2022-11-04T00:53:50Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-11-08T00:09:11Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@1facf044_ARCHIVE_LOCATION">c:/vivado_projects/simzmoddac</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@6f0f2a10_ARCHIVE_LOCATION">c:/vivado_projects/simzmoddac</xilinx:tag>
@@ -2206,11 +2206,21 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@509ff40b_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@6fa58db1_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7b0f4e4c_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6b192eb9_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@43432fdf_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2072260c_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65e585ce_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b975249_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67834e0_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@70045766_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@21ce452f_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@55389b2c_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d61dcc2_ARCHIVE_LOCATION">d:/Github/Eclypse-Review/ddr-streaming-awg-scope/hw/repo/vivado-library/ip/Zmods/ZmodAWGController</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="16694666"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="c40251ff"/>
       <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a2627d63"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="a9a5fb8d"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="d4184007"/>
