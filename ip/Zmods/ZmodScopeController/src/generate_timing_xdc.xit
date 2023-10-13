@@ -1,14 +1,13 @@
 set instname [current_inst]
 set f_xdc [add_ipfile -usedIn  [list synthesis implementation board ] -processingOrder [list late] -force ConstrsZmodADC.xdc]
-puts "Generating $f_xdc for $instname...."
+puts "Generating $f_xdc...."
 
 puts_ipfile $f_xdc {create_generated_clock -name ZmodAdcClkIn -source [get_pins InstADC_ClkODDR/C] -add -master_clock [get_clocks -of [get_ports ADC_InClk]] -divide_by 1 [get_ports ZmodAdcClkIn_p]}
 puts_ipfile $f_xdc {}
 puts_ipfile $f_xdc {# DCO Clock period}
 puts_ipfile $f_xdc {set tDCO [get_property CLKIN1_PERIOD [get_cells InstDataPath/MMCME2_ADV_inst]];}
 puts_ipfile $f_xdc {set tDCO_half [expr $tDCO/2];}
-set constr {create_clock -period $tDCO -name nameZmodDcoClk -waveform "0.000 $tDCO_half" [get_ports ZmodDcoClk -prop_thru_buffers]}
-puts_ipfile $f_xdc [string map "nameZmodDcoClk ${instname}_ZmodDcoClk" $constr]
+puts_ipfile $f_xdc {create_clock -period $tDCO -name ZmodDcoClk -waveform "0.000 $tDCO_half" [get_ports ZmodDcoClk -prop_thru_buffers]}
 puts_ipfile $f_xdc {}
 
 puts_ipfile $f_xdc {# Disable timing analysis for clock domain crossing double synchronizers, between clock domains}
@@ -131,7 +130,6 @@ set_input_delay -clock [get_clocks ZmodDcoClk] -max -add_delay [expr $tskew_max 
 	}
 	
 	set constr_block [string map "<index> $index" $constr_block]
-	set constr_block [string map "ZmodDcoClk ${instname}_ZmodDcoClk" $constr_block]
 	puts_ipfile $f_xdc $constr_block
 } 
 
