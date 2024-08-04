@@ -124,7 +124,7 @@ architecture arch_imp of axi_dynclk is
 	
 	
     signal CTRL_REG                       : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0);
-    signal STAT_REG                       : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0);
+    signal STAT_REG                       : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0) := (others => '0');
     signal CLK_O_REG                      : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0);
     signal CLK_FB_REG                     : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0);
     signal CLK_FRAC_REG                   : std_logic_vector(C_S_AXI_LITE_DATA_WIDTH-1 downto 0);

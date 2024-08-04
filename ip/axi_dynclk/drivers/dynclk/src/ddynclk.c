@@ -266,6 +266,67 @@ static void dglnt_dynclk_write_reg(struct dglnt_dynclk_reg *regValues,
 	DDynClk_WriteReg(baseaddr, (DDYNCLK_FLTR_LOCK_H), regValues->fltr_lockH);
 }
 
+double ClkFindParams(double freq, struct dglnt_dynclk_mode *bestPick)
+{
+	double bestError = 2000.0;
+	double curError;
+	double curClkMult;
+	double curFreq;
+	uint32_t curDiv, curFb, curClkDiv;
+	uint32_t minFb = 0;
+	uint32_t maxFb = 0;
+
+	/*
+	 * This is necessary because the MMCM actual is generating 5x the desired pixel clock, and that
+	 * clock is then run through a BUFR that divides it by 5 to generate the pixel clock. Note this
+	 * means the pixel clock is on the Regional clock network, not the global clock network. In the
+	 * future if options like these are parameterized in the axi_dynclk core, then this function will
+	 * need to change.
+	 */
+	freq = freq * 5.0;
+
+	bestPick->freq = 0.0;
+
+	/*
+	* TODO: replace with a smarter algorithm that doesn't doesn't check every possible combination
+	*/
+	for (curDiv = 1; curDiv <= 10; curDiv++)
+	{
+		minFb = curDiv * 6; //This accounts for the 100MHz input and the 600MHz minimum VCO
+		maxFb = curDiv * 12; //This accounts for the 100MHz input and the 1200MHz maximum VCO
+		if (maxFb > 64)
+			maxFb = 64;
+
+		curClkMult = (100.0 / (double) curDiv) / freq; //This multiplier is used to find the best clkDiv value for each FB value
+
+		curFb = minFb;
+		while (curFb <= maxFb)
+		{
+			curClkDiv = (uint32_t) ((curClkMult * (double)curFb) + 0.5);
+			curFreq = ((100.0 / (double) curDiv) / (double) curClkDiv) * (double) curFb;
+			curError = fabs(curFreq - freq);
+			if (curError < bestError)
+			{
+				bestError = curError;
+				bestPick->clkdiv = curClkDiv;
+				bestPick->fbmult = curFb;
+				bestPick->maindiv = curDiv;
+				bestPick->freq = (u32)curFreq;
+			}
+
+			curFb++;
+		}
+	}
+
+	/*
+	 * We want the ClkMode struct and errors to be based on the desired frequency. Need to check this doesn't introduce
+	 * rounding errors.
+	 */
+	bestPick->freq = bestPick->freq / 5;
+	bestError = bestError / 5.0;
+	return bestError;
+}
+
 static uint32_t dglnt_dynclk_find_mode(uint32_t freq, uint32_t parentFreq,
 			   struct dglnt_dynclk_mode *bestPick)
 {
@@ -370,15 +431,22 @@ static int dglnt_dynclk_set_rate(DDynClk* drv_inst,
 	if (rate == drv_inst->freq)
 		return 0;
 
-	/*
-	 * Convert from Hz to KHz, then multiply by five to account for
-	 * BUFR division
-	 */
-	rate = (rate + 100) / 200;
-	/* convert from Hz to KHz */
-	parent_rate = (parent_rate + 500) / 1000;
-	if (!dglnt_dynclk_find_mode(rate, parent_rate, &clkMode))
-		return XST_FAILURE;
+	if (parent_rate == 100000000) {
+		ClkFindParams((double)rate, &clkMode);
+		if (clkMode.freq == 0)
+			return XST_FAILURE;
+	}
+	else {
+		/*
+		* Convert from Hz to KHz, then multiply by five to account for
+		* BUFR division
+		*/
+		rate = (rate + 100) / 200;
+		/* convert from Hz to KHz */
+		parent_rate = (parent_rate + 500) / 1000;
+		if (!dglnt_dynclk_find_mode(rate, parent_rate, &clkMode))
+			return XST_FAILURE;
+	}
 
 	/*
 	 * Write to the PLL dynamic configuration registers to configure it
