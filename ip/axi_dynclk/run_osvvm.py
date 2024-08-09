@@ -42,7 +42,7 @@ axi_dynclk.add_source_files([
 
     root/"src/*.vhd",
     root/"src/*.v",
-    root/"tb/*.vhd",
+    root/"tb/*osvvm_tb.vhd",
 ])
 
 
@@ -56,7 +56,7 @@ axi_dynclk.set_sim_option(
 
 axi_dynclk.set_sim_option(
     name="modelsim.init_file.gui",
-    value=str(root/"tb/axi_dynclk_tb.do"),
+    value=str(root/"tb/axi_dynclk_osvvm_tb.do"),
     allow_empty=True
 )
 
