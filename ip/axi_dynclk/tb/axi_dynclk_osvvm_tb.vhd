@@ -120,7 +120,7 @@ begin
       if run("read all") then
 
         for itr in 0 to 63 loop
-          ReadAddressAsync(rec_manager, std_logic_vector(to_unsigned(0, C_S_AXI_LITE_ADDR_WIDTH)));
+          ReadAddressAsync(rec_manager, std_logic_vector(to_unsigned(itr, C_S_AXI_LITE_ADDR_WIDTH)));
         end loop;
 
         for itr in 0 to 63 loop
