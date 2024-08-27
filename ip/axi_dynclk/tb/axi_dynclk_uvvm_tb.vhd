@@ -159,6 +159,8 @@ begin
           axilite_read(AXILITE_VVCT, 1, to_unsigned(i, C_S_AXI_LITE_ADDR_WIDTH), "");
         end loop;
 
+        wait for 1 us;
+
       elsif run("write freq") then
 
         -- Disable Clock
